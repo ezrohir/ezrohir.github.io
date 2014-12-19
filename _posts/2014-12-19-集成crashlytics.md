@@ -20,4 +20,5 @@ App crash后，抢hook的真不少。一般App都会用到友盟统计，友盟�
 	[MobClick startWithAppkey:YOURKEY reportPolicy:YOURPOLICY channelId:YOURCHANNELID];
 
 
+最后强烈建议集成到slack中，真的很方便。
 PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话。
