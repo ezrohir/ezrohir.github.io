@@ -1,0 +1,26 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+relative_permalinks: true
+
+# Setup
+title:            
+tagline:          'hello world'
+description:      'iOS攻城师一枚<br />Instagram<a href="http://instagram.com/ezrohir/" target="_blank">@ezrohir</a>.<br /> Twitter<a href="https://twitter.com" target="_blank">@Ez</a>'
+url:              http://hyde.getpoole.com
+baseurl:          /
+
+author:
+  name:           'Mark Otto'
+  url:            https://twitter.com/mdo
+
+paginate:         5
+
+# Custom vars
+version:          2.1.0
+
+github:
+  repo:           https://github.com/poole/hyde
