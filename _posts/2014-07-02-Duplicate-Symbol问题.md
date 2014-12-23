@@ -14,9 +14,9 @@ OK，现在说说看到的解决方法。
 
 1. 工具解压静态库，删除相同编译文件，重新打包。如果的时间多想玩玩或者老板让这么干(我不是在黑老板)，[参考在这](http://atnan.com/blog/2012/01/12/avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries)	.
 2. 修改other linker flag，常见的other linker flag有`-ObjC `,`-all_load `,`-force_load `.
-	+ -ObjC .-ObjC allow the static library to use objective-c specific stuffs like kvc or categories.
-	+ -all_load . Loads all members of static archive libraries.
-	+ -force_load. -all_load forces all members of all archives to be loaded. This option allows you to target a specific archive.
+	+ -ObjC  -ObjC allow the static library to use objective-c specific stuffs like kvc or categories.
+	+ -all_load   Loads all members of static archive libraries.
+	+ -force_load   -all_load forces all members of all archives to be loaded. This option allows you to target a specific archive.
 
 看解释真没发现-ObjC和-all_load有什么区别，不过事实上other linker flag-> -all_load就会报Duplicate Symbol xxx，而other linker flag-> --ObjC编译通过，只能大胆假设-ObjC下linker会链接所有静态库文件，但不管多少静态库，有没有重复，反正静态库中文件保证只被链接一次，有点GCD中dispatch_once的味道。在求证过程中对-all_load的描述都指向[Technical Q&A QA1490](https://developer.apple.com/library/mac/qa/qa1490/_index.html)，但是该Document已修改，感觉苹果应该修正了这个问题。
 
