@@ -11,7 +11,7 @@
 
   <title>
     
-      What's Jekyll? &middot; 
+      集成crashlytics &middot; 
     
   </title>
 
@@ -79,32 +79,35 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">What's Jekyll?</h1>
-  <span class="post-date">06 Feb 2012</span>
-  <p><a href="http://jekyllrb.com">Jekyll</a> is a static site generator, an open-source tool for creating simple yet powerful websites of all shapes and sizes. From <a href="https://github.com/mojombo/jekyll/blob/master/README.markdown">the project&#39;s readme</a>:</p>
+  <h1 class="post-title">集成crashlytics</h1>
+  <span class="post-date">19 Dec 2014</span>
+  <h1>crash统计工具Crashlytics集成</h1>
 
-<blockquote>
-<p>Jekyll is a simple, blog aware, static site generator. It takes a template directory [...] and spits out a complete, static website suitable for serving with Apache or your favorite web server. This is also the engine behind GitHub Pages, which you can use to host your project’s page or blog right here from GitHub.</p>
-</blockquote>
+<p>相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的。</p>
 
-<p>It&#39;s an immensely useful tool and one we encourage you to use here with Hyde.</p>
+<h3>真机链接Xcode调试Crashlytics是收集不到crash日志的</h3>
 
-<p>Find out more by <a href="https://github.com/mojombo/jekyll">visiting the project on GitHub</a>.</p>
+<p>真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点。</p>
+
+<h3>debug-mode</h3>
+
+<p>Crashlytics 的SDK提供<code>debugMode</code>属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[Crashlytics sharedInstance].debugMode = YES;
+</code></pre></div>
+<h3>友盟也会拦截掉Crashlytics</h3>
+
+<p>App crash后，抢hook的真不少。一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[MobClick setCrashReportEnabled:NO];
+[MobClick startWithAppkey:YOURKEY reportPolicy:YOURPOLICY channelId:YOURCHANNELID];
+</code></pre></div>
+<p>最后强烈建议集成到slack中，真的很方便。
+PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话。</p>
 
 </div>
 
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2014/12/19/%E9%9B%86%E6%88%90crashlytics/">
-            集成crashlytics
-            <small>19 Dec 2014</small>
-          </a>
-        </h3>
-      </li>
     
       <li>
         <h3>
@@ -120,6 +123,15 @@
           <a href="/2013/12/28/introducing-hyde/">
             Introducing Hyde
             <small>28 Dec 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2012/02/07/example-content/">
+            Example content
+            <small>07 Feb 2012</small>
           </a>
         </h3>
       </li>

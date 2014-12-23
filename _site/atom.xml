@@ -4,13 +4,95 @@
  <title></title>
  <link href="http://hyde.getpoole.com/atom.xml" rel="self"/>
  <link href="http://hyde.getpoole.com/"/>
- <updated>2014-12-19T21:23:57+08:00</updated>
+ <updated>2014-12-23T13:46:25+08:00</updated>
  <id>http://hyde.getpoole.com</id>
  <author>
    <name>Mark Otto</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>集成crashlytics</title>
+   <link href="http://hyde.getpoole.com/2014/12/19/%E9%9B%86%E6%88%90crashlytics/"/>
+   <updated>2014-12-19T00:00:00+08:00</updated>
+   <id>http://hyde.getpoole.com/2014/12/19/集成crashlytics</id>
+   <content type="html">&lt;h1&gt;crash统计工具Crashlytics集成&lt;/h1&gt;
+
+&lt;p&gt;相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的。&lt;/p&gt;
+
+&lt;h3&gt;真机链接Xcode调试Crashlytics是收集不到crash日志的&lt;/h3&gt;
+
+&lt;p&gt;真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点。&lt;/p&gt;
+
+&lt;h3&gt;debug-mode&lt;/h3&gt;
+
+&lt;p&gt;Crashlytics 的SDK提供&lt;code&gt;debugMode&lt;/code&gt;属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便。&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;[Crashlytics sharedInstance].debugMode = YES;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;友盟也会拦截掉Crashlytics&lt;/h3&gt;
+
+&lt;p&gt;App crash后，抢hook的真不少。一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;[MobClick setCrashReportEnabled:NO];
+[MobClick startWithAppkey:YOURKEY reportPolicy:YOURPOLICY channelId:YOURCHANNELID];
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;最后强烈建议集成到slack中，真的很方便。
+PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Duplicate Symbol问题</title>
+   <link href="http://hyde.getpoole.com/2014/07/02/Duplicate-Symbol%E9%97%AE%E9%A2%98/"/>
+   <updated>2014-07-02T00:00:00+08:00</updated>
+   <id>http://hyde.getpoole.com/2014/07/02/Duplicate-Symbol问题</id>
+   <content type="html">&lt;h1&gt;Duplicate Symbol xxx 原因和解决&lt;/h1&gt;
+
+&lt;p&gt;今天引入新的静态库时发生Duplicate Symbol xxx，检查了下工程配置，other linker flag-&amp;gt; -all_load.(此处是铺垫)。然后网上参考了些资料，见尾部。&lt;/p&gt;
+
+&lt;h2&gt;Duplicate Symbol原因&lt;/h2&gt;
+
+&lt;p&gt;看报错描述大意知道是俩框架某个Symbol冲突了，那么问题来了，这个冲突的Symbol代表的是什么，函数还是类？其实仔细想想就答案了，Objective-C 这种runtime机制的语言Symbol怎么可能是函数，苹果文档也解释了这点:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Objective-C does not define linker symbols for each function (or method, in Objective-C) - instead, linker symbols are only generated for each class. &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2&gt;Duplicate Symbol解决&lt;/h2&gt;
+
+&lt;p&gt;OK，现在说说看到的解决方法。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;工具解压静态库，删除相同编译文件，重新打包。如果的时间多想玩玩或者老板让这么干(我不是在黑老板)，&lt;a href=&quot;http://atnan.com/blog/2012/01/12/avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries&quot;&gt;参考在这&lt;/a&gt;    .&lt;/li&gt;
+&lt;li&gt;修改other linker flag，常见的other linker flag有&lt;code&gt;-ObjC&lt;/code&gt;,&lt;code&gt;-all_load&lt;/code&gt;,&lt;code&gt;-force_load&lt;/code&gt;.
+
+&lt;ul&gt;
+&lt;li&gt;-ObjC .-ObjC allow the static library to use objective-c specific stuffs like kvc or categories.&lt;/li&gt;
+&lt;li&gt;-all_load . Loads all members of static archive libraries.&lt;/li&gt;
+&lt;li&gt;-force&lt;em&gt;load. -all&lt;/em&gt;load forces all members of all archives to be loaded. This option allows you to target a specific archive.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;看解释真没发现-ObjC和-all&lt;em&gt;load有什么区别，不过事实上other linker flag-&amp;gt; -all&lt;/em&gt;load就会报Duplicate Symbol xxx，而other linker flag-&amp;gt; --ObjC编译通过，只能大胆假设-ObjC下linker会链接所有静态库文件，但不管多少静态库，有没有重复，反正静态库中文件保证只被链接一次，有点GCD中dispatch&lt;em&gt;once的味道。在求证过程中对-all&lt;/em&gt;load的描述都指向&lt;a href=&quot;https://developer.apple.com/library/mac/qa/qa1490/_index.html&quot;&gt;Technical Q&amp;amp;A QA1490&lt;/a&gt;，但是该Document已修改，感觉苹果应该修正了这个问题。&lt;/p&gt;
+
+&lt;p&gt;PS -all_load引入的原因&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Important: For 64-bit and iPhone OS applications, there is a linker bug that prevents -ObjC from loading objects files from static libraries that contain only categories and no classes. The workaround is to use the -allload or -forceload flags.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Anyway,&lt;code&gt;-ObjC&lt;/code&gt;,&lt;code&gt;-force_load&lt;/code&gt;都是快速解决问题的方法。至于&lt;code&gt;-ObjC&lt;/code&gt;与&lt;code&gt;-all_load&lt;/code&gt;,&lt;code&gt;-force_load&lt;/code&gt;的区别，有空再研究下。&lt;/p&gt;
+
+&lt;h2&gt;参考引用&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.apple.com/library/mac/qa/qa1490/_index.html&quot;&gt;Technical Q&amp;amp;A QA1490
+Building Objective-C static libraries with categories&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://atnan.com/blog/2012/01/12/avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries&quot;&gt;avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/2567498/objective-c-categories-in-static-library&quot;&gt;Objective-C categories in static library&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Introducing Hyde</title>
