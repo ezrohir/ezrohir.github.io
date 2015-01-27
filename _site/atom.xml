@@ -4,7 +4,7 @@
  <title></title>
  <link href="http://hyde.getpoole.com/atom.xml" rel="self"/>
  <link href="http://hyde.getpoole.com/"/>
- <updated>2015-01-27T11:15:14+08:00</updated>
+ <updated>2015-01-27T11:42:09+08:00</updated>
  <id>http://hyde.getpoole.com</id>
  <author>
    <name>Mark Otto</name>
@@ -24,7 +24,7 @@
 &lt;h3&gt;Core Animation&lt;/h3&gt;
 
 &lt;p&gt;滑动帧率很低时,当为GPU瓶颈时,
-&lt;img src=&quot;https://www.dropbox.com/s/06xlytqakxz3mvb/insrument_CoremeAnimation2015-01-27%2010.24.26.png?dl=0&quot; alt=&quot;Insrument_CoreAnimation&quot;&gt;&lt;/p&gt;
+&lt;img src=&quot;http://7u2qbg.com1.z0.glb.clouddn.com/insrument_CoremeAnimation2015-01-27%2010.24.26.png&quot; alt=&quot;Insrument_CoreAnimation&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;这时候一般下面俩值数值很高.
 + &lt;strong&gt;&lt;em&gt;Renderer Utilization&lt;/em&gt;&lt;/strong&gt; 这个值一般大于50%有可能会掉帧,主要是因为视图过度混合(重叠的半透明图层)或者离屏渲染引起的.
@@ -33,7 +33,7 @@
 &lt;h3&gt;Time Profiler&lt;/h3&gt;
 
 &lt;p&gt;滑动时帧率很低时,有可能是CPU瓶颈,这时候一般都能在Time Profiler中看到,下图是正常情况,当App的CPU利用率接近渲染进程(backboardd),是时候优化Time Profiler中高危份子了.
-&lt;img src=&quot;https://www.dropbox.com/s/0b42anfijiriarx/instrument_timeProfiler%202015-01-27%2010.24.56.png?dl=0&quot; alt=&quot;instrument_timeProfiler&quot;&gt;&lt;/p&gt;
+&lt;img src=&quot;http://7u2qbg.com1.z0.glb.clouddn.com/instrument_timeProfiler%202015-01-27%2010.24.56.png&quot; alt=&quot;instrument_timeProfiler&quot;&gt;&lt;/p&gt;
 
 &lt;h3&gt;IO瓶颈&lt;/h3&gt;
 
@@ -41,9 +41,12 @@
 
 &lt;h3&gt;参考&lt;/h3&gt;
 
-&lt;p&gt;下面都是不错的参考
-&lt;a href=&quot;http://www.hrchen.com/2013/05/performance-with-instruments/&quot;&gt;Instruments的基本使用&lt;/a&gt;
-&lt;a href=&quot;http://stackoverflow.com/questions/13158796/what-triggers-offscreen-rendering-blending-and-layoutsubviews-in-ios&quot;&gt;Offscreen rendering, Blending, layout的触发条件&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下面都是不错的参考&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.hrchen.com/2013/05/performance-with-instruments/&quot;&gt;Instruments的基本使用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/13158796/what-triggers-offscreen-rendering-blending-and-layoutsubviews-in-ios&quot;&gt;Offscreen rendering, Blending, layout的触发条件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </content>
  </entry>
  
