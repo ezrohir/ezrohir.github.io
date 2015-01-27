@@ -4,13 +4,48 @@
  <title></title>
  <link href="http://hyde.getpoole.com/atom.xml" rel="self"/>
  <link href="http://hyde.getpoole.com/"/>
- <updated>2014-12-23T13:46:25+08:00</updated>
+ <updated>2015-01-27T11:15:14+08:00</updated>
  <id>http://hyde.getpoole.com</id>
  <author>
    <name>Mark Otto</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>iOS App滑动卡顿的优化</title>
+   <link href="http://hyde.getpoole.com/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/"/>
+   <updated>2015-01-04T00:00:00+08:00</updated>
+   <id>http://hyde.getpoole.com/2015/01/04/iOS App滑动卡顿的优化</id>
+   <content type="html">&lt;h1&gt;iOS App滑动卡顿的优化&lt;/h1&gt;
+
+&lt;p&gt;iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.&lt;/p&gt;
+
+&lt;h3&gt;Core Animation&lt;/h3&gt;
+
+&lt;p&gt;滑动帧率很低时,当为GPU瓶颈时,
+&lt;img src=&quot;https://www.dropbox.com/s/06xlytqakxz3mvb/insrument_CoremeAnimation2015-01-27%2010.24.26.png?dl=0&quot; alt=&quot;Insrument_CoreAnimation&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;这时候一般下面俩值数值很高.
++ &lt;strong&gt;&lt;em&gt;Renderer Utilization&lt;/em&gt;&lt;/strong&gt; 这个值一般大于50%有可能会掉帧,主要是因为视图过度混合(重叠的半透明图层)或者离屏渲染引起的.
++ &lt;strong&gt;&lt;em&gt;Tiler Utilization&lt;/em&gt;&lt;/strong&gt;这个值大于50%也会降低帧率,造成的原因是图层太多.&lt;/p&gt;
+
+&lt;h3&gt;Time Profiler&lt;/h3&gt;
+
+&lt;p&gt;滑动时帧率很低时,有可能是CPU瓶颈,这时候一般都能在Time Profiler中看到,下图是正常情况,当App的CPU利用率接近渲染进程(backboardd),是时候优化Time Profiler中高危份子了.
+&lt;img src=&quot;https://www.dropbox.com/s/0b42anfijiriarx/instrument_timeProfiler%202015-01-27%2010.24.56.png?dl=0&quot; alt=&quot;instrument_timeProfiler&quot;&gt;&lt;/p&gt;
+
+&lt;h3&gt;IO瓶颈&lt;/h3&gt;
+
+&lt;p&gt;待续&lt;/p&gt;
+
+&lt;h3&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;下面都是不错的参考
+&lt;a href=&quot;http://www.hrchen.com/2013/05/performance-with-instruments/&quot;&gt;Instruments的基本使用&lt;/a&gt;
+&lt;a href=&quot;http://stackoverflow.com/questions/13158796/what-triggers-offscreen-rendering-blending-and-layoutsubviews-in-ios&quot;&gt;Offscreen rendering, Blending, layout的触发条件&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>集成crashlytics</title>
@@ -67,9 +102,9 @@ PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的
 &lt;li&gt;修改other linker flag，常见的other linker flag有&lt;code&gt;-ObjC&lt;/code&gt;,&lt;code&gt;-all_load&lt;/code&gt;,&lt;code&gt;-force_load&lt;/code&gt;.
 
 &lt;ul&gt;
-&lt;li&gt;-ObjC .-ObjC allow the static library to use objective-c specific stuffs like kvc or categories.&lt;/li&gt;
-&lt;li&gt;-all_load . Loads all members of static archive libraries.&lt;/li&gt;
-&lt;li&gt;-force&lt;em&gt;load. -all&lt;/em&gt;load forces all members of all archives to be loaded. This option allows you to target a specific archive.&lt;/li&gt;
+&lt;li&gt;-ObjC  -ObjC allow the static library to use objective-c specific stuffs like kvc or categories.&lt;/li&gt;
+&lt;li&gt;-all_load   Loads all members of static archive libraries.&lt;/li&gt;
+&lt;li&gt;-force&lt;em&gt;load   -all&lt;/em&gt;load forces all members of all archives to be loaded. This option allows you to target a specific archive.&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
