@@ -2,7 +2,7 @@
 layout: post
 title: 集成crashlytics
 ---
-# crash统计工具Crashlytics集成
+## crash统计工具Crashlytics集成
 相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的。
 
 ### 真机链接Xcode调试Crashlytics是收集不到crash日志的

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ez&#39;s Blog</title>
+    <atom:link href="https://ezrohir.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <link>https://ezrohir.github.io/</link>
+    <description>A website with blog posts and pages</description>
+    <pubDate>Thu, 09 Jul 2015 15:47:12 +0800</pubDate>
+    
+      <item>
+        <title>App优化的一些总结</title>
+        <link>https://ezrohir.github.io/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96.html</link>
+        <guid isPermaLink="true">https://ezrohir.github.io/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96.html</guid>
+        <description>&lt;h2 id=&quot;ios-app&quot;&gt;iOS App滑动卡顿的优化&lt;/h2&gt;
+&lt;p&gt;iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.&lt;/p&gt;
+
+&lt;h3 id=&quot;core-animation&quot;&gt;Core Animation&lt;/h3&gt;
+&lt;p&gt;滑动帧率很低时,当为GPU瓶颈时,
+&lt;img src=&quot;http://7u2qbg.com1.z0.glb.clouddn.com/insrument_CoremeAnimation2015-01-27 10.24.26.png&quot; alt=&quot;Insrument_CoreAnimation&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这时候一般下面俩值数值很高.
++ &lt;strong&gt;&lt;em&gt;Renderer Utilization&lt;/em&gt;&lt;/strong&gt; 这个值一般大于50%有可能会掉帧,主要是因为视图过度混合(重叠的半透明图层)或者离屏渲染引起的.
++ &lt;strong&gt;&lt;em&gt;Tiler Utilization&lt;/em&gt;&lt;/strong&gt;这个值大于50%也会降低帧率,造成的原因是图层太多.&lt;/p&gt;
+
+&lt;h3 id=&quot;time-profiler&quot;&gt;Time Profiler&lt;/h3&gt;
+&lt;p&gt;滑动时帧率很低时,有可能是CPU瓶颈,这时候一般都能在Time Profiler中看到,下图是正常情况,当App的CPU利用率接近渲染进程(backboardd),是时候优化Time Profiler中高危份子了.
+&lt;img src=&quot;http://7u2qbg.com1.z0.glb.clouddn.com/instrument_timeProfiler%202015-01-27%2010.24.56.png&quot; alt=&quot;instrument_timeProfiler&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;io&quot;&gt;IO瓶颈&lt;/h3&gt;
+&lt;p&gt;待续&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;参考&lt;/h3&gt;
+&lt;p&gt;下面都是不错的参考&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.hrchen.com/2013/05/performance-with-instruments/&quot;&gt;Instruments的基本使用&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/13158796/what-triggers-offscreen-rendering-blending-and-layoutsubviews-in-ios&quot;&gt;Offscreen rendering, Blending, layout的触发条件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sun, 04 Jan 2015 00:00:00 +0800</pubDate>
+      </item>
+    
+      <item>
+        <title>集成crashlytics</title>
+        <link>https://ezrohir.github.io/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html</link>
+        <guid isPermaLink="true">https://ezrohir.github.io/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html</guid>
+        <description>&lt;h2 id=&quot;crashcrashlytics&quot;&gt;crash统计工具Crashlytics集成&lt;/h2&gt;
+&lt;p&gt;相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的。&lt;/p&gt;
+
+&lt;h3 id=&quot;xcodecrashlyticscrash&quot;&gt;真机链接Xcode调试Crashlytics是收集不到crash日志的&lt;/h3&gt;
+&lt;p&gt;真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点。&lt;/p&gt;
+
+&lt;h3 id=&quot;debug-mode&quot;&gt;debug-mode&lt;/h3&gt;
+&lt;p&gt;Crashlytics 的SDK提供&lt;code&gt;debugMode&lt;/code&gt;属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Crashlytics sharedInstance].debugMode = YES;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;crashlytics&quot;&gt;友盟也会拦截掉Crashlytics&lt;/h3&gt;
+&lt;p&gt;App crash后，抢hook的真不少。一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[MobClick setCrashReportEnabled:NO];
+[MobClick startWithAppkey:YOURKEY reportPolicy:YOURPOLICY channelId:YOURCHANNELID];
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后强烈建议集成到slack中，真的很方便。
+PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话。&lt;/p&gt;
+</description>
+        <pubDate>Fri, 19 Dec 2014 00:00:00 +0800</pubDate>
+      </item>
+    
+      <item>
+        <title>Duplicate Symbol问题</title>
+        <link>https://ezrohir.github.io/2014/07/02/Duplicate-Symbol%E9%97%AE%E9%A2%98.html</link>
+        <guid isPermaLink="true">https://ezrohir.github.io/2014/07/02/Duplicate-Symbol%E9%97%AE%E9%A2%98.html</guid>
+        <description>&lt;h2 id=&quot;duplicate-symbol-xxx-&quot;&gt;Duplicate Symbol xxx 原因和解决&lt;/h2&gt;
+&lt;p&gt;今天引入新的静态库时发生Duplicate Symbol xxx，检查了下工程配置，other linker flag-&amp;gt; -all_load.(此处是铺垫)。然后网上参考了些资料，见尾部。&lt;/p&gt;
+
+&lt;h3 id=&quot;duplicate-symbol&quot;&gt;Duplicate Symbol原因&lt;/h3&gt;
+&lt;p&gt;看报错描述大意知道是俩框架某个Symbol冲突了，那么问题来了，这个冲突的Symbol代表的是什么，函数还是类？其实仔细想想就答案了，Objective-C 这种runtime机制的语言Symbol怎么可能是函数，苹果文档也解释了这点:
+&amp;gt;Objective-C does not define linker symbols for each function (or method, in Objective-C) - instead, linker symbols are only generated for each class. &lt;/p&gt;
+
+&lt;h3 id=&quot;duplicate-symbol-1&quot;&gt;Duplicate Symbol解决&lt;/h3&gt;
+&lt;p&gt;OK，现在说说看到的解决方法。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;工具解压静态库，删除相同编译文件，重新打包。如果的时间多想玩玩或者老板让这么干(我不是在黑老板)，&lt;a href=&quot;http://atnan.com/blog/2012/01/12/avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries&quot;&gt;参考在这&lt;/a&gt;	.&lt;/li&gt;
+  &lt;li&gt;修改other linker flag，常见的other linker flag有&lt;code&gt;-ObjC &lt;/code&gt;,&lt;code&gt;-all_load &lt;/code&gt;,&lt;code&gt;-force_load &lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;-ObjC  -ObjC allow the static library to use objective-c specific stuffs like kvc or categories.&lt;/li&gt;
+      &lt;li&gt;-all_load   Loads all members of static archive libraries.&lt;/li&gt;
+      &lt;li&gt;-force_load   -all_load forces all members of all archives to be loaded. This option allows you to target a specific archive.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;看解释真没发现-ObjC和-all_load有什么区别，不过事实上other linker flag-&amp;gt; -all_load就会报Duplicate Symbol xxx，而other linker flag-&amp;gt; –ObjC编译通过，只能大胆假设-ObjC下linker会链接所有静态库文件，但不管多少静态库，有没有重复，反正静态库中文件保证只被链接一次，有点GCD中dispatch_once的味道。在求证过程中对-all_load的描述都指向&lt;a href=&quot;https://developer.apple.com/library/mac/qa/qa1490/_index.html&quot;&gt;Technical Q&amp;amp;A QA1490&lt;/a&gt;，但是该Document已修改，感觉苹果应该修正了这个问题。&lt;/p&gt;
+
+&lt;p&gt;PS -all_load引入的原因
+&amp;gt;Important: For 64-bit and iPhone OS applications, there is a linker bug that prevents -ObjC from loading objects files from static libraries that contain only categories and no classes. The workaround is to use the -allload or -forceload flags.&lt;/p&gt;
+
+&lt;p&gt;Anyway,&lt;code&gt;-ObjC&lt;/code&gt;,&lt;code&gt;-force_load &lt;/code&gt;都是快速解决问题的方法。至于&lt;code&gt;-ObjC &lt;/code&gt;与&lt;code&gt;-all_load &lt;/code&gt;,&lt;code&gt;-force_load &lt;/code&gt;的区别，有空再研究下。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;参考引用&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developer.apple.com/library/mac/qa/qa1490/_index.html&quot;&gt;Technical Q&amp;amp;A QA1490
+Building Objective-C static libraries with categories&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://atnan.com/blog/2012/01/12/avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries&quot;&gt;avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/2567498/objective-c-categories-in-static-library&quot;&gt;Objective-C categories in static library&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 02 Jul 2014 00:00:00 +0800</pubDate>
+      </item>
+    
+  </channel>
+</rss>

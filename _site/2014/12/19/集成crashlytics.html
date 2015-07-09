@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>集成crashlytics | Ez's Blog</title>
+	<meta name="description" content="crash统计工具Crashlytics集成相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的。真机链接Xcode调试Crashlytics是收集不到crash日志的真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Sche...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="https://ezrohir.github.io/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Ez's Blog" href="https://ezrohir.github.io/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/">
+			<img class="avatar" src="/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/">Ez's Blog</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+<li>
+	<a href="mailto:jie.tane@gmail.com" title="Email">
+		<i class="fa fa-fw fa-envelope"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/ezrohir" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+<li>
+	<a href="http://instagram.com/ezrohir" title="Follow on Instagram">
+		<i class="fa fa-fw fa-instagram"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/ezrohir" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">集成crashlytics</h1>
+    <p class="meta">
+    December 19, 2014
+    
+    </p>
+  </header>
+  <section class="post-content"><h2 id="crashcrashlytics">crash统计工具Crashlytics集成</h2>
+<p>相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的。</p>
+
+<h3 id="xcodecrashlyticscrash">真机链接Xcode调试Crashlytics是收集不到crash日志的</h3>
+<p>真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点。</p>
+
+<h3 id="debug-mode">debug-mode</h3>
+<p>Crashlytics 的SDK提供<code>debugMode</code>属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便。</p>
+
+<pre><code>[Crashlytics sharedInstance].debugMode = YES;
+</code></pre>
+
+<h3 id="crashlytics">友盟也会拦截掉Crashlytics</h3>
+<p>App crash后，抢hook的真不少。一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:</p>
+
+<pre><code>[MobClick setCrashReportEnabled:NO];
+[MobClick startWithAppkey:YOURKEY reportPolicy:YOURPOLICY channelId:YOURCHANNELID];
+</code></pre>
+
+<p>最后强烈建议集成到slack中，真的很方便。
+PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话。</p>
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    <script src="/js/main.js"></script>
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

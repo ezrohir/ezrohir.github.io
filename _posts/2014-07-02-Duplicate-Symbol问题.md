@@ -2,14 +2,14 @@
 layout: post
 title: Duplicate Symbol问题
 ---
-# Duplicate Symbol xxx 原因和解决
+## Duplicate Symbol xxx 原因和解决
 今天引入新的静态库时发生Duplicate Symbol xxx，检查了下工程配置，other linker flag-> -all_load.(此处是铺垫)。然后网上参考了些资料，见尾部。
 
-## Duplicate Symbol原因
+### Duplicate Symbol原因
 看报错描述大意知道是俩框架某个Symbol冲突了，那么问题来了，这个冲突的Symbol代表的是什么，函数还是类？其实仔细想想就答案了，Objective-C 这种runtime机制的语言Symbol怎么可能是函数，苹果文档也解释了这点:
 >Objective-C does not define linker symbols for each function (or method, in Objective-C) - instead, linker symbols are only generated for each class. 
 
-## Duplicate Symbol解决
+### Duplicate Symbol解决
 OK，现在说说看到的解决方法。
 
 1. 工具解压静态库，删除相同编译文件，重新打包。如果的时间多想玩玩或者老板让这么干(我不是在黑老板)，[参考在这](http://atnan.com/blog/2012/01/12/avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries)	.
@@ -26,7 +26,7 @@ PS -all_load引入的原因
 Anyway,`-ObjC`,`-force_load `都是快速解决问题的方法。至于`-ObjC `与`-all_load `,`-force_load `的区别，有空再研究下。
 
 
-## 参考引用
+### 参考引用
 
 [Technical Q&A QA1490
 Building Objective-C static libraries with categories](https://developer.apple.com/library/mac/qa/qa1490/_index.html)
