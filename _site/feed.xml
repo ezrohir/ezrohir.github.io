@@ -5,7 +5,7 @@
     <atom:link href="https://ezrohir.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <link>https://ezrohir.github.io/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Thu, 09 Jul 2015 15:47:12 +0800</pubDate>
+    <pubDate>Tue, 28 Jul 2015 15:20:48 +0800</pubDate>
     
       <item>
         <title>App优化的一些总结</title>
@@ -42,32 +42,74 @@
       </item>
     
       <item>
-        <title>集成crashlytics</title>
+        <title>集成Crashlytics</title>
         <link>https://ezrohir.github.io/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html</link>
         <guid isPermaLink="true">https://ezrohir.github.io/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html</guid>
-        <description>&lt;h2 id=&quot;crashcrashlytics&quot;&gt;crash统计工具Crashlytics集成&lt;/h2&gt;
-&lt;p&gt;相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的。&lt;/p&gt;
+        <description>&lt;h2 id=&quot;crashlytics&quot;&gt;Crashlytics集成&lt;/h2&gt;
+&lt;p&gt;相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的.&lt;/p&gt;
 
-&lt;h3 id=&quot;xcodecrashlyticscrash&quot;&gt;真机链接Xcode调试Crashlytics是收集不到crash日志的&lt;/h3&gt;
-&lt;p&gt;真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点。&lt;/p&gt;
+&lt;h3 id=&quot;xcodecrashlyticscrash&quot;&gt;真机链接Xcode调试Crashlytics是收集不到Crash日志的&lt;/h3&gt;
+
+&lt;p&gt;真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点.&lt;/p&gt;
 
 &lt;h3 id=&quot;debug-mode&quot;&gt;debug-mode&lt;/h3&gt;
-&lt;p&gt;Crashlytics 的SDK提供&lt;code&gt;debugMode&lt;/code&gt;属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便。&lt;/p&gt;
+&lt;p&gt;Crashlytics 的SDK提供&lt;code&gt;debugMode&lt;/code&gt;属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[Crashlytics sharedInstance].debugMode = YES;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;crashlytics&quot;&gt;友盟也会拦截掉Crashlytics&lt;/h3&gt;
-&lt;p&gt;App crash后，抢hook的真不少。一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:&lt;/p&gt;
+&lt;h3 id=&quot;crashlytics-1&quot;&gt;友盟也会拦截掉Crashlytics&lt;/h3&gt;
+&lt;p&gt;App crash后，抢hook的真不少.一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[MobClick setCrashReportEnabled:NO];
 [MobClick startWithAppkey:YOURKEY reportPolicy:YOURPOLICY channelId:YOURCHANNELID];
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;最后强烈建议集成到slack中，真的很方便。
-PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话。&lt;/p&gt;
+&lt;p&gt;最后强烈建议集成到slack中，真的很方便.
+PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话.&lt;/p&gt;
 </description>
         <pubDate>Fri, 19 Dec 2014 00:00:00 +0800</pubDate>
+      </item>
+    
+      <item>
+        <title>URL Encoding 的坑</title>
+        <link>https://ezrohir.github.io/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91.html</link>
+        <guid isPermaLink="true">https://ezrohir.github.io/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91.html</guid>
+        <description>&lt;h2 id=&quot;url-encoding&quot;&gt;URL Encoding&lt;/h2&gt;
+&lt;p&gt;URLs can only be sent over the Internet using the &lt;a href=&quot;http://www.w3schools.com/charsets/ref_html_ascii.asp&quot;&gt;ASCII character-set&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since URLs often contain characters outside the ASCII set, the URL has to be converted into a valid ASCII format.&lt;/p&gt;
+
+&lt;p&gt;URL encoding replaces unsafe ASCII characters with a “%” followed by two hexadecimal digits.&lt;/p&gt;
+
+&lt;p&gt;URLs cannot contain spaces. URL encoding normally replaces a space with a plus (+) sign or with %20.&lt;/p&gt;
+
+&lt;p&gt;掉坑是因为App内动态控制 url ,服务端返回的 url 带中文字符, NSString类提供了 &lt;code&gt;stringByAddingPercentEscapesUsingEncoding:&lt;/code&gt; 方法.该方法能编码非 url 的字符,但对于类似 &lt;code&gt;/&lt;/code&gt; &lt;code&gt;&amp;amp;&lt;/code&gt; 的 reserved characters 没有做处理,也就是没有严格遵守 url 应该编码成 ASCII 字符的规范.
+网上给的通用String的Category:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- (NSString *)urlencode {
+    NSMutableString *output = [NSMutableString string];
+    const unsigned char *source = (const unsigned char *)[self UTF8String];
+    int sourceLen = strlen((const char *)source);
+    for (int i = 0; i &amp;lt; sourceLen; ++i) {
+        const unsigned char thisChar = source[i];
+        if (thisChar == &#39; &#39;){
+            [output appendString:@&quot;+&quot;];
+        } else if (thisChar == &#39;.&#39; || thisChar == &#39;-&#39; ||
+                   thisChar == &#39;_&#39; || thisChar == &#39;~&#39; ||
+                   (thisChar &amp;gt;= &#39;a&#39; &amp;amp;&amp;amp; thisChar &amp;lt;= &#39;z&#39;) ||
+                   (thisChar &amp;gt;= &#39;A&#39; &amp;amp;&amp;amp; thisChar &amp;lt;= &#39;Z&#39;) ||
+                   (thisChar &amp;gt;= &#39;0&#39; &amp;amp;&amp;amp; thisChar &amp;lt;= &#39;9&#39;)) {
+            [output appendFormat:@&quot;%c&quot;, thisChar];
+        } else {
+            [output appendFormat:@&quot;%%%02X&quot;, thisChar];
+        }
+  }
+  return output;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+        <pubDate>Mon, 28 Jul 2014 00:00:00 +0800</pubDate>
       </item>
     
       <item>
