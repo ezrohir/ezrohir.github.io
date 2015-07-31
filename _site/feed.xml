@@ -5,7 +5,7 @@
     <atom:link href="https://ezrohir.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <link>https://ezrohir.github.io/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Tue, 28 Jul 2015 18:26:39 +0800</pubDate>
+    <pubDate>Fri, 31 Jul 2015 16:51:27 +0800</pubDate>
     
       <item>
         <title>Runtime随感</title>
@@ -197,6 +197,23 @@ Building Objective-C static libraries with categories&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/2567498/objective-c-categories-in-static-library&quot;&gt;Objective-C categories in static library&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 02 Jul 2014 00:00:00 +0800</pubDate>
+      </item>
+    
+      <item>
+        <title>阅读笔记索引</title>
+        <link>https://ezrohir.github.io/2014/03/03/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E7%B4%A2%E5%BC%95.html</link>
+        <guid isPermaLink="true">https://ezrohir.github.io/2014/03/03/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E7%B4%A2%E5%BC%95.html</guid>
+        <description>&lt;h2 id=&quot;section&quot;&gt;图形相关&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques.md&quot;&gt;Core-Animation-Advanced-Techniques-寄宿图&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques-图层几何学.md&quot;&gt;Core-Animation-Advanced-Techniques-图层几何学&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques-变换.md&quot;&gt;Core-Animation-Advanced-Techniques-变换&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques-视觉效果.md&quot;&gt;Core-Animation-Advanced-Techniques-视觉效果&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques隐式动画.md&quot;&gt;Core-Animation-Advanced-Techniques-隐式动画&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques显示动画.md&quot;&gt;Core-Animation-Advanced-Techniques-显式动画&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 03 Mar 2014 00:00:00 +0800</pubDate>
       </item>
     
   </channel>
