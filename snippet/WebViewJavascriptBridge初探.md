@@ -104,7 +104,7 @@ responseCallback 是js掉本地的方法的一种情况.
             if (message[@"handlerName"]) {
                 handler = _messageHandlers[message[@"handlerName"]];
             } else {
-                handler = _messageHandler;
+                <!-- handler = _messageHandler; -->
             }
 
             if (!handler) {

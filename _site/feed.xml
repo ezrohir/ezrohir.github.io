@@ -5,15 +5,13 @@
     <atom:link href="https://ezrohir.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <link>https://ezrohir.github.io/</link>
     <description>A website with blog posts and pages</description>
-    <pubDate>Fri, 31 Jul 2015 16:51:27 +0800</pubDate>
+    <pubDate>Thu, 06 Aug 2015 23:02:10 +0800</pubDate>
     
       <item>
-        <title>Runtime随感</title>
+        <title>Runtime随感合集</title>
         <link>https://ezrohir.github.io/2015/07/28/Runtime%E9%9A%8F%E6%84%9F.html</link>
         <guid isPermaLink="true">https://ezrohir.github.io/2015/07/28/Runtime%E9%9A%8F%E6%84%9F.html</guid>
-        <description>&lt;h2 id=&quot;runtime-&quot;&gt;Runtime 念念叨叨&lt;/h2&gt;
-
-&lt;h3 id=&quot;property-&quot;&gt;不能动态添加 property 问题&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;property-&quot;&gt;不能动态添加 property 问题&lt;/h3&gt;
 &lt;p&gt;这个其实还是很好理解的, property 可以理解为对实例变量的 get set 方法.关键点在实例变量,编译的时候实例变量的布局已经确定.
 至于动态添加方法 Class 结构中有对于 指针数组,用于存储方法列表的指针.
 至于实例变量,是能动态添加的,通过 Runtime 的 Associated Objects 函数添加实例变量,印象中是添加在一个全局的管理器中.&lt;/p&gt;
@@ -52,11 +50,128 @@ Runtime 问码农,你愿意给改类动态添加对应的message吗? 我不愿�
       </item>
     
       <item>
+        <title>WebViewJavascriptBridge 初探</title>
+        <link>https://ezrohir.github.io/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2.html</link>
+        <guid isPermaLink="true">https://ezrohir.github.io/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2.html</guid>
+        <description>&lt;p&gt;一般而言,对 native 调用h5中的js方法, &lt;code&gt;UIWebView&lt;/code&gt; 有提供API &lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;
+,改方法返回 string 类型的字符串,传入参数为一个 string 类型的js方法.&lt;/p&gt;
+
+&lt;p&gt;对于h5中的js与 native 通信,是通过拦截 &lt;code&gt;UIWebView&lt;/code&gt; 的 &lt;code&gt;webView:shouldStartLoadWithRequest:navigationType&lt;/code&gt; 方法.&lt;/p&gt;
+
+&lt;p&gt;以上为大致的原理, WebViewJavascriptBridge 在此基础上做了写封装.&lt;/p&gt;
+
+&lt;h3 id=&quot;js&quot;&gt;本地调js&lt;/h3&gt;
+
+&lt;p&gt;WebViewJavascriptBridge 中调用 js 方法,还是通过 &lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt; .如下代码
+```
+- (void)_sendData:(id)data responseCallback:(WVJBResponseCallback)responseCallback handlerName:(NSString&lt;em&gt;)handlerName {
+    NSMutableDictionary&lt;/em&gt; message = [NSMutableDictionary dictionary];
+    if (data) {
+        message[@”data”] = data;
+    }&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if (responseCallback) {
+    NSString* callbackId = [NSString stringWithFormat:@&quot;objc_cb_%ld&quot;, ++_uniqueId];
+    _responseCallbacks[callbackId] = [responseCallback copy];
+    message[@&quot;callbackId&quot;] = callbackId;
+}
+
+if (handlerName) {
+    message[@&quot;handlerName&quot;] = handlerName;
+}
+[self _queueMessage:message]; } ``` 1. 将传到js的数据封装下. 2. 将responseCallback 这个block存到本地的一个 `NSMutableDictionary` 容器中,key值为一个每次调用   `_sendData:responseCallback:handlerName` 自增的int型的标识和特定字符串的组合(`[NSString stringWithFormat:@&quot;objc_cb_%ld&quot;, ++_uniqueId]`). 3. 移交给其他函数处理这个message,核心就是调用 `stringByEvaluatingJavaScriptFromString`,期间会有   数据的转换(json).
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;js-1&quot;&gt;js调本地&lt;/h3&gt;
+&lt;p&gt;上述代码中,responseCallback 的实现是js会伪造一个新url请求,让 &lt;code&gt;UIWebView&lt;/code&gt; 来拦截.
+responseCallback 是js掉本地的方法的一种情况.
+&lt;code&gt;
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (webView != _webView) { return YES; }
+    NSURL *url = [request URL];
+    __strong WVJB_WEBVIEW_DELEGATE_TYPE* strongDelegate = _webViewDelegate;
+    // 拦截是不是 js 伪造的请求
+    if ([[url scheme] isEqualToString:kCustomProtocolScheme]) {
+        if ([[url host] isEqualToString:kQueueHasMessage]) {
+            [self _flushMessageQueue];
+        } else {
+            NSLog(@&quot;WebViewJavascriptBridge: WARNING: Received unknown WebViewJavascriptBridge command %@://%@&quot;, kCustomProtocolScheme, [url path]);
+        }
+        return NO;
+    } else if (strongDelegate &amp;amp;&amp;amp; [strongDelegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+        return [strongDelegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+    } else {
+        return YES;
+    }
+}
+&lt;/code&gt;
+如上述注释,如果有拦截到会调用 &lt;code&gt;[self _flushMessageQueue]&lt;/code&gt; 方法.
+改方法主要是 主动再次掉 &lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;,js 方法明是 &lt;code&gt;WebViewJavascriptBridge._fetchQueue&lt;/code&gt;,该方法在js容器中存储了回调数据.其他顺利成章的处理数据流程.如下:
+```
+- (void)_flushMessageQueue {
+    NSString *messageQueueString = [_webView stringByEvaluatingJavaScriptFromString:@”WebViewJavascriptBridge._fetchQueue();”];&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;id messages = [self _deserializeMessageJSON:messageQueueString];
+if (![messages isKindOfClass:[NSArray class]]) {
+    NSLog(@&quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&quot;, [messages class], messages);
+    return;
+}
+for (WVJBMessage* message in messages) {
+    if (![message isKindOfClass:[WVJBMessage class]]) {
+        NSLog(@&quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&quot;, [message class], message);
+        continue;
+    }
+    [self _log:@&quot;RCVD&quot; json:message];
+
+    NSString* responseId = message[@&quot;responseId&quot;];
+    if (responseId) {
+        WVJBResponseCallback responseCallback = _responseCallbacks[responseId];
+        responseCallback(message[@&quot;responseData&quot;]);
+        [_responseCallbacks removeObjectForKey:responseId];
+    } else {
+        WVJBResponseCallback responseCallback = NULL;
+        NSString* callbackId = message[@&quot;callbackId&quot;];
+        if (callbackId) {
+            responseCallback = ^(id responseData) {
+                if (responseData == nil) {
+                    responseData = [NSNull null];
+                }
+
+                WVJBMessage* msg = @{ @&quot;responseId&quot;:callbackId, @&quot;responseData&quot;:responseData };
+                [self _queueMessage:msg];
+            };
+        } else {
+            responseCallback = ^(id ignoreResponseData) {
+                // Do nothing
+            };
+        }
+
+        WVJBHandler handler;
+        if (message[@&quot;handlerName&quot;]) {
+            handler = _messageHandlers[message[@&quot;handlerName&quot;]];
+        } else {
+            handler = _messageHandler;
+        }
+
+        if (!handler) {
+            [NSException raise:@&quot;WVJBNoHandlerException&quot; format:@&quot;No handler for message from JS: %@&quot;, message];
+        }
+
+        handler(message[@&quot;data&quot;], responseCallback);
+    }
+} } ```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不懂 js 是硬伤,以上很多都是基于假设,不过假设应该是对的.  &lt;/p&gt;
+</description>
+        <pubDate>Sun, 05 Jul 2015 00:00:00 +0800</pubDate>
+      </item>
+    
+      <item>
         <title>App优化的一些总结</title>
         <link>https://ezrohir.github.io/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96.html</link>
         <guid isPermaLink="true">https://ezrohir.github.io/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96.html</guid>
-        <description>&lt;h2 id=&quot;ios-app&quot;&gt;iOS App滑动卡顿的优化&lt;/h2&gt;
-&lt;p&gt;iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.&lt;/p&gt;
+        <description>&lt;p&gt;iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.&lt;/p&gt;
 
 &lt;h3 id=&quot;core-animation&quot;&gt;Core Animation&lt;/h3&gt;
 &lt;p&gt;滑动帧率很低时,当为GPU瓶颈时,
@@ -85,30 +200,27 @@ Runtime 问码农,你愿意给改类动态添加对应的message吗? 我不愿�
       </item>
     
       <item>
-        <title>集成Crashlytics</title>
+        <title>集成crashlystics</title>
         <link>https://ezrohir.github.io/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html</link>
         <guid isPermaLink="true">https://ezrohir.github.io/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html</guid>
-        <description>&lt;h2 id=&quot;crashlytics&quot;&gt;Crashlytics集成&lt;/h2&gt;
-&lt;p&gt;相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的.&lt;/p&gt;
+        <description>&lt;p&gt;相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的&lt;/p&gt;
 
 &lt;h3 id=&quot;xcodecrashlyticscrash&quot;&gt;真机链接Xcode调试Crashlytics是收集不到Crash日志的&lt;/h3&gt;
-
 &lt;p&gt;真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点.&lt;/p&gt;
 
 &lt;h3 id=&quot;debug-mode&quot;&gt;debug-mode&lt;/h3&gt;
-&lt;p&gt;Crashlytics 的SDK提供&lt;code&gt;debugMode&lt;/code&gt;属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.&lt;/p&gt;
+&lt;p&gt;Crashlytics 的SDK提供&lt;code&gt;debugMode&lt;/code&gt;属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.
+&lt;code&gt;
+[Crashlytics sharedInstance].debugMode = YES;
+&lt;/code&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;[Crashlytics sharedInstance].debugMode = YES;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&quot;crashlytics-1&quot;&gt;友盟也会拦截掉Crashlytics&lt;/h3&gt;
-&lt;p&gt;App crash后，抢hook的真不少.一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[MobClick setCrashReportEnabled:NO];
+&lt;h3 id=&quot;crashlytics&quot;&gt;友盟也会拦截掉Crashlytics&lt;/h3&gt;
+&lt;p&gt;App crash后，抢hook的真不少.一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:
+&lt;code&gt;
+[MobClick setCrashReportEnabled:NO];
 [MobClick startWithAppkey:YOURKEY reportPolicy:YOURPOLICY channelId:YOURCHANNELID];
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;最后强烈建议集成到slack中，真的很方便.
+&lt;/code&gt;
+最后强烈建议集成到slack中，真的很方便.
 PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话.&lt;/p&gt;
 </description>
         <pubDate>Fri, 19 Dec 2014 00:00:00 +0800</pubDate>
@@ -211,6 +323,8 @@ Building Objective-C static libraries with categories&lt;/a&gt;&lt;/p&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques-视觉效果.md&quot;&gt;Core-Animation-Advanced-Techniques-视觉效果&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques隐式动画.md&quot;&gt;Core-Animation-Advanced-Techniques-隐式动画&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques显示动画.md&quot;&gt;Core-Animation-Advanced-Techniques-显式动画&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/iOS-Core-Animation-Advanced-Techniques-图层性能.md&quot;&gt;Core-Animation-Advanced-Techniques-图层性能&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/iOS-Core-Animation-Advanced-Techniques-高效绘图.md&quot;&gt;Core-Animation-Advanced-Techniques-高效绘图&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 03 Mar 2014 00:00:00 +0800</pubDate>

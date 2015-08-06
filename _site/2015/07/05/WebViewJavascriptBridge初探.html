@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>WebViewJavascriptBridge 初探 | Ez's Blog</title>
+	<meta name="description" content="一般而言,对 native 调用h5中的js方法, UIWebView 有提供API stringByEvaluatingJavaScriptFromString,改方法返回 string 类型的字符串,传入参数为一个 string 类型的js方法.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-Frame-Options" content="sameorigin">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="https://ezrohir.github.io/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2.html">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Ez's Blog" href="https://ezrohir.github.io/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+  <body>
+    <header class="site-header">
+	<div class="branding">
+		
+		<a href="/">
+			<img class="avatar" src="/img/avatar.png" alt=""/>
+		</a>
+		
+		<h1 class="site-title">
+			<a href="/">Ez's Blog</a>
+		</h1>
+	</div>
+	<nav class="site-nav">
+		<ul>
+			
+			
+			
+			
+			<li>
+				<a class="page-link" href="/about/">
+					About
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Social icons from Font Awesome, if enabled -->
+			
+
+
+<li>
+	<a href="mailto:jie.tane@gmail.com" title="Email">
+		<i class="fa fa-fw fa-envelope"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://github.com/ezrohir" title="Follow on GitHub">
+		<i class="fa fa-fw fa-github"></i>
+	</a>
+</li>
+
+
+
+
+
+<li>
+	<a href="http://instagram.com/ezrohir" title="Follow on Instagram">
+		<i class="fa fa-fw fa-instagram"></i>
+	</a>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<a href="https://twitter.com/ezrohir" title="Follow on Twitter">
+		<i class="fa fa-fw fa-twitter"></i>
+	</a>
+</li>
+
+
+
+
+
+
+		</ul>
+	</nav>
+</header>
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">WebViewJavascriptBridge 初探</h1>
+    <p class="meta">
+    July 5, 2015
+    
+    </p>
+  </header>
+  <section class="post-content"><p>一般而言,对 native 调用h5中的js方法, <code>UIWebView</code> 有提供API <code>stringByEvaluatingJavaScriptFromString</code>
+,改方法返回 string 类型的字符串,传入参数为一个 string 类型的js方法.</p>
+
+<p>对于h5中的js与 native 通信,是通过拦截 <code>UIWebView</code> 的 <code>webView:shouldStartLoadWithRequest:navigationType</code> 方法.</p>
+
+<p>以上为大致的原理, WebViewJavascriptBridge 在此基础上做了写封装.</p>
+
+<h3 id="js">本地调js</h3>
+
+<p>WebViewJavascriptBridge 中调用 js 方法,还是通过 <code>stringByEvaluatingJavaScriptFromString</code> .如下代码
+```
+- (void)_sendData:(id)data responseCallback:(WVJBResponseCallback)responseCallback handlerName:(NSString<em>)handlerName {
+    NSMutableDictionary</em> message = [NSMutableDictionary dictionary];
+    if (data) {
+        message[@”data”] = data;
+    }</p>
+
+<pre><code>if (responseCallback) {
+    NSString* callbackId = [NSString stringWithFormat:@"objc_cb_%ld", ++_uniqueId];
+    _responseCallbacks[callbackId] = [responseCallback copy];
+    message[@"callbackId"] = callbackId;
+}
+
+if (handlerName) {
+    message[@"handlerName"] = handlerName;
+}
+[self _queueMessage:message]; } ``` 1. 将传到js的数据封装下. 2. 将responseCallback 这个block存到本地的一个 `NSMutableDictionary` 容器中,key值为一个每次调用   `_sendData:responseCallback:handlerName` 自增的int型的标识和特定字符串的组合(`[NSString stringWithFormat:@"objc_cb_%ld", ++_uniqueId]`). 3. 移交给其他函数处理这个message,核心就是调用 `stringByEvaluatingJavaScriptFromString`,期间会有   数据的转换(json).
+</code></pre>
+
+<h3 id="js-1">js调本地</h3>
+<p>上述代码中,responseCallback 的实现是js会伪造一个新url请求,让 <code>UIWebView</code> 来拦截.
+responseCallback 是js掉本地的方法的一种情况.
+<code>
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (webView != _webView) { return YES; }
+    NSURL *url = [request URL];
+    __strong WVJB_WEBVIEW_DELEGATE_TYPE* strongDelegate = _webViewDelegate;
+    // 拦截是不是 js 伪造的请求
+    if ([[url scheme] isEqualToString:kCustomProtocolScheme]) {
+        if ([[url host] isEqualToString:kQueueHasMessage]) {
+            [self _flushMessageQueue];
+        } else {
+            NSLog(@"WebViewJavascriptBridge: WARNING: Received unknown WebViewJavascriptBridge command %@://%@", kCustomProtocolScheme, [url path]);
+        }
+        return NO;
+    } else if (strongDelegate &amp;&amp; [strongDelegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+        return [strongDelegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+    } else {
+        return YES;
+    }
+}
+</code>
+如上述注释,如果有拦截到会调用 <code>[self _flushMessageQueue]</code> 方法.
+改方法主要是 主动再次掉 <code>stringByEvaluatingJavaScriptFromString</code>,js 方法明是 <code>WebViewJavascriptBridge._fetchQueue</code>,该方法在js容器中存储了回调数据.其他顺利成章的处理数据流程.如下:
+```
+- (void)_flushMessageQueue {
+    NSString *messageQueueString = [_webView stringByEvaluatingJavaScriptFromString:@”WebViewJavascriptBridge._fetchQueue();”];</p>
+
+<pre><code>id messages = [self _deserializeMessageJSON:messageQueueString];
+if (![messages isKindOfClass:[NSArray class]]) {
+    NSLog(@"WebViewJavascriptBridge: WARNING: Invalid %@ received: %@", [messages class], messages);
+    return;
+}
+for (WVJBMessage* message in messages) {
+    if (![message isKindOfClass:[WVJBMessage class]]) {
+        NSLog(@"WebViewJavascriptBridge: WARNING: Invalid %@ received: %@", [message class], message);
+        continue;
+    }
+    [self _log:@"RCVD" json:message];
+
+    NSString* responseId = message[@"responseId"];
+    if (responseId) {
+        WVJBResponseCallback responseCallback = _responseCallbacks[responseId];
+        responseCallback(message[@"responseData"]);
+        [_responseCallbacks removeObjectForKey:responseId];
+    } else {
+        WVJBResponseCallback responseCallback = NULL;
+        NSString* callbackId = message[@"callbackId"];
+        if (callbackId) {
+            responseCallback = ^(id responseData) {
+                if (responseData == nil) {
+                    responseData = [NSNull null];
+                }
+
+                WVJBMessage* msg = @{ @"responseId":callbackId, @"responseData":responseData };
+                [self _queueMessage:msg];
+            };
+        } else {
+            responseCallback = ^(id ignoreResponseData) {
+                // Do nothing
+            };
+        }
+
+        WVJBHandler handler;
+        if (message[@"handlerName"]) {
+            handler = _messageHandlers[message[@"handlerName"]];
+        } else {
+            handler = _messageHandler;
+        }
+
+        if (!handler) {
+            [NSException raise:@"WVJBNoHandlerException" format:@"No handler for message from JS: %@", message];
+        }
+
+        handler(message[@"data"], responseCallback);
+    }
+} } ```
+</code></pre>
+
+<p>不懂 js 是硬伤,以上很多都是基于假设,不过假设应该是对的.  </p>
+</section>
+</article>
+
+<!-- Post navigation -->
+
+
+<!-- Disqus -->
+
+
+    </div>
+    <script src="/js/main.js"></script>
+
+
+<footer class="site-footer">
+	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+</p>
+</footer>
+
+
+  </body>
+</html>

@@ -2,8 +2,8 @@
 <html class="no-js">
   <head>
 	<meta charset="utf-8">
-	<title>Runtime随感 | Ez's Blog</title>
-	<meta name="description" content="Runtime 念念叨叨">
+	<title>Runtime随感合集 | Ez's Blog</title>
+	<meta name="description" content="不能动态添加 property 问题这个其实还是很好理解的, property 可以理解为对实例变量的 get set 方法.关键点在实例变量,编译的时候实例变量的布局已经确定.至于动态添加方法 Class 结构中有对于 指针数组,用于存储方法列表的指针.至于实例变量,是能动态添加的,通过 Runtime 的 A...">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-Frame-Options" content="sameorigin">
 
@@ -142,15 +142,13 @@
     <div class="content">
       <article >
   <header style="background-image: url('/')">
-    <h1 class="title">Runtime随感</h1>
+    <h1 class="title">Runtime随感合集</h1>
     <p class="meta">
     July 28, 2015
     
     </p>
   </header>
-  <section class="post-content"><h2 id="runtime-">Runtime 念念叨叨</h2>
-
-<h3 id="property-">不能动态添加 property 问题</h3>
+  <section class="post-content"><h3 id="property-">不能动态添加 property 问题</h3>
 <p>这个其实还是很好理解的, property 可以理解为对实例变量的 get set 方法.关键点在实例变量,编译的时候实例变量的布局已经确定.
 至于动态添加方法 Class 结构中有对于 指针数组,用于存储方法列表的指针.
 至于实例变量,是能动态添加的,通过 Runtime 的 Associated Objects 函数添加实例变量,印象中是添加在一个全局的管理器中.</p>
