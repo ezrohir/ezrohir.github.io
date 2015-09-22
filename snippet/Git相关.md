@@ -17,3 +17,17 @@ git tag -a tagName -m 'here is annotation'
 ```
 git show tagName
 ```
+分享标签,默认情况下```git push```不会把标签推到远端服务器上,
+只能通过显式命令```git push orgin [tagName]```推送.
+
+### 跟踪远程仓库
+`git checkout -b [分支名] [远程名]/[分支名]`
+1.6以上Git版本的简化命令
+`git checkout --track origin/serverfix`
+
+### 删除远程仓库
+`git push [远程名] [本地分支]:[远程分支]`.如果省略[本地分支],可以删除远程仓库
+```git push origin :serverfix```
+
+或者
+```git branch -r -d origin/my_remote_branch```
