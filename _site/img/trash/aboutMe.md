@@ -11,21 +11,25 @@ Email: jie.tane@gmail.com
 早期阅读笔记: [http://jie-tane.farbox.com](http://jie-tane.farbox.com)
 
 ### Education
+-------------------------------------------------
+
 + 2008.09-2012.06 江苏师范大学,计算机科学与技术,本科.
 
 ### Skills
+-------------------------------------------------
+
 + 熟悉 Git 工作流及开发相关各种工具.
 + 熟悉社区类+电商类 App 常用技术点,基本的 App 构架,能独立承担 App 开发,优化,上架.
 
 ### Work Experlence
+-------------------------------------------------
+
 + 2015.10 - 至今: ***上海烈熊网络有限公司***
 
 	>完成刷呗App 1.0,1.1版本的开发工作.
 	主要负责基础架构搭建,定位切换模块,富文本模块.
 
 	刷呗 App [下载地址](https://itunes.apple.com/cn/app/shua-bei-9yuan-kan-dian-ying/id1063024394?l=en&mt=8)
-
-     <br />
 
 
 + 2014.04 - 2015.10: ***上海动享网络科技有限公司***
@@ -36,7 +40,6 @@ Email: jie.tane@gmail.com
 
 	酷动 App [下载地址](https://itunes.apple.com/cn/app/ku-dong-hu-wai-ji-xian-yun/id897489848?mt=8)
 
-     <br />
 
 
 + 2013.03 - 2014.3:  ***上海银贤信息有限公司***
@@ -47,7 +50,6 @@ Email: jie.tane@gmail.com
 
 	样例铂珏公馆[下载地址](https://itunes.apple.com/cn/app/bo-jue-gong-guan/id802814669?mt=8)(仅支持 iPad )
 
-     <br />       
 
 + 2012.07 -2013.02: ***上海素数信息***
 
@@ -61,5 +63,7 @@ Email: jie.tane@gmail.com
 
 
 ### Others
+-------------------------------------------------
+
 + 喜欢户外运动.
 + 数码剁手党,耳机初烧.
