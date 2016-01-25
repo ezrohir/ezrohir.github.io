@@ -1,4 +1,8 @@
-# iOS多Target配置
+---
+layout: post
+title: iOS多Target配置
+---
+
 开发过程中我们都有根据不同需求场景构建不同配置App的需求.以我们现在开发的App为例,因为没有使用 TestFight,每天的daylibulid放在fir.im上并通过fir.im提供的构建工具打包上传, 所以有如下环境版本:
 
 - **Beta版** : 提供一些开发调试选项,比如切换 host ,设置数据是否加密
