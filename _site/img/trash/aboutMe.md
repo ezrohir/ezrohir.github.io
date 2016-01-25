@@ -2,9 +2,9 @@
 -------------------------------------------------
 `iOS`  `3年经验`  `现居上海`  `在职` `本科`
 
-Tel: 131-6725-0575
+Tel: 186-1006-4610
 
- Email: jie.tane@gmail.com
+Email: jie.tane@gmail.com
 
 关于我 : [https://ezrohir.github.com](http://ezrohir.github.io)
 

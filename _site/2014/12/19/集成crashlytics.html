@@ -150,22 +150,22 @@
   </header>
   <section class="post-content"><p>相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的</p>
 
-<h3 id="xcodecrashlyticscrash">真机链接Xcode调试Crashlytics是收集不到Crash日志的</h3>
+<h3 id="真机链接xcode调试crashlytics是收集不到crash日志的">真机链接Xcode调试Crashlytics是收集不到Crash日志的</h3>
+
 <p>真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点.</p>
 
 <h3 id="debug-mode">debug-mode</h3>
-<p>Crashlytics 的SDK提供<code>debugMode</code>属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.
-<code>
-[Crashlytics sharedInstance].debugMode = YES;
-</code></p>
 
-<h3 id="crashlytics">友盟也会拦截掉Crashlytics</h3>
-<p>App crash后，抢hook的真不少.一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:
-<code>
-[MobClick setCrashReportEnabled:NO];
+<p>Crashlytics 的SDK提供<code class="prettyprint">debugMode</code>属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[Crashlytics sharedInstance].debugMode = YES;
+</code></pre></div>
+<h3 id="友盟也会拦截掉crashlytics">友盟也会拦截掉Crashlytics</h3>
+
+<p>App crash后，抢hook的真不少.一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[MobClick setCrashReportEnabled:NO];
 [MobClick startWithAppkey:YOURKEY reportPolicy:YOURPOLICY channelId:YOURCHANNELID];
-</code>
-最后强烈建议集成到slack中，真的很方便.
+</code></pre></div>
+<p>最后强烈建议集成到slack中，真的很方便.
 PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话.</p>
 </section>
 </article>
@@ -179,11 +179,6 @@ PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的
     </div>
     <script src="/js/main.js"></script>
 
-
-<footer class="site-footer">
-	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
-</p>
-</footer>
 
 
   </body>

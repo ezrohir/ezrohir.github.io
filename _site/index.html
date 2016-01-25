@@ -154,6 +154,26 @@
     <div class="post-teaser">
       <header>
         <h1>
+          <a class="post-link" href="/2016/01/25/iOS_Multi-Target_Configuration.html">
+            iOS多Target配置
+          </a>
+        </h1>
+        <p class="meta">
+          January 25, 2016
+        </p>
+      </header>
+      <div class="excerpt">
+        <p>开发过程中我们都有根据不同需求场景构建不同配置App的需求.以我们现在开发的App为例,因为没有使用 TestFight,每天的daylibulid放在fir.im上并通过fir.im提供的构建工具打包上传, 所以有如下环境版本:</p>
+
+        <a class="button" href="/2016/01/25/iOS_Multi-Target_Configuration.html">
+          Continue reading
+        </a>
+      </div>
+    </div>
+    
+    <div class="post-teaser">
+      <header>
+        <h1>
           <a class="post-link" href="/2015/07/28/Runtime%E9%9A%8F%E6%84%9F.html">
             Runtime随感合集
           </a>
@@ -163,11 +183,11 @@
         </p>
       </header>
       <div class="excerpt">
-        <h3 id="property-">不能动态添加 property 问题</h3>
+        <h3 id="不能动态添加-property-问题">不能动态添加 property 问题</h3>
+
 <p>这个其实还是很好理解的, property 可以理解为对实例变量的 get set 方法.关键点在实例变量,编译的时候实例变量的布局已经确定.
 至于动态添加方法 Class 结构中有对于 指针数组,用于存储方法列表的指针.
 至于实例变量,是能动态添加的,通过 Runtime 的 Associated Objects 函数添加实例变量,印象中是添加在一个全局的管理器中.</p>
-
 
         <a class="button" href="/2015/07/28/Runtime%E9%9A%8F%E6%84%9F.html">
           Continue reading
@@ -187,9 +207,8 @@
         </p>
       </header>
       <div class="excerpt">
-        <p>一般而言,对 native 调用h5中的js方法, <code>UIWebView</code> 有提供API <code>stringByEvaluatingJavaScriptFromString</code>
+        <p>一般而言,对 native 调用h5中的js方法, <code class="prettyprint">UIWebView</code> 有提供API <code class="prettyprint">stringByEvaluatingJavaScriptFromString</code>
 ,改方法返回 string 类型的字符串,传入参数为一个 string 类型的js方法.</p>
-
 
         <a class="button" href="/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2.html">
           Continue reading
@@ -211,7 +230,6 @@
       <div class="excerpt">
         <p>iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.</p>
 
-
         <a class="button" href="/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96.html">
           Continue reading
         </a>
@@ -232,30 +250,7 @@
       <div class="excerpt">
         <p>相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的</p>
 
-
         <a class="button" href="/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html">
-          Continue reading
-        </a>
-      </div>
-    </div>
-    
-    <div class="post-teaser">
-      <header>
-        <h1>
-          <a class="post-link" href="/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91.html">
-            URL Encoding 的坑
-          </a>
-        </h1>
-        <p class="meta">
-          July 28, 2014
-        </p>
-      </header>
-      <div class="excerpt">
-        <h2 id="url-encoding">URL Encoding</h2>
-<p>URLs can only be sent over the Internet using the <a href="http://www.w3schools.com/charsets/ref_html_ascii.asp">ASCII character-set</a>.</p>
-
-
-        <a class="button" href="/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91.html">
           Continue reading
         </a>
       </div>
@@ -279,11 +274,6 @@
     </div>
     <script src="/js/main.js"></script>
 
-
-<footer class="site-footer">
-	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
-</p>
-</footer>
 
 
   </body>

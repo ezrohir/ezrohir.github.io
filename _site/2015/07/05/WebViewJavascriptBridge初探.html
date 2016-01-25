@@ -148,40 +148,47 @@
     
     </p>
   </header>
-  <section class="post-content"><p>一般而言,对 native 调用h5中的js方法, <code>UIWebView</code> 有提供API <code>stringByEvaluatingJavaScriptFromString</code>
+  <section class="post-content"><p>一般而言,对 native 调用h5中的js方法, <code class="prettyprint">UIWebView</code> 有提供API <code class="prettyprint">stringByEvaluatingJavaScriptFromString</code>
 ,改方法返回 string 类型的字符串,传入参数为一个 string 类型的js方法.</p>
 
-<p>对于h5中的js与 native 通信,是通过拦截 <code>UIWebView</code> 的 <code>webView:shouldStartLoadWithRequest:navigationType</code> 方法.</p>
+<p>对于h5中的js与 native 通信,是通过拦截 <code class="prettyprint">UIWebView</code> 的 <code class="prettyprint">webView:shouldStartLoadWithRequest:navigationType</code> 方法.</p>
 
 <p>以上为大致的原理, WebViewJavascriptBridge 在此基础上做了写封装.</p>
 
-<h3 id="js">本地调js</h3>
+<h3 id="本地调js">本地调js</h3>
 
-<p>WebViewJavascriptBridge 中调用 js 方法,还是通过 <code>stringByEvaluatingJavaScriptFromString</code> .如下代码
-```
-- (void)_sendData:(id)data responseCallback:(WVJBResponseCallback)responseCallback handlerName:(NSString<em>)handlerName {
-    NSMutableDictionary</em> message = [NSMutableDictionary dictionary];
+<p>WebViewJavascriptBridge 中调用 js 方法,还是通过 <code class="prettyprint">stringByEvaluatingJavaScriptFromString</code> .如下代码</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">- (void)_sendData:(id)data responseCallback:(WVJBResponseCallback)responseCallback handlerName:(NSString*)handlerName {
+    NSMutableDictionary* message = [NSMutableDictionary dictionary];
     if (data) {
-        message[@”data”] = data;
-    }</p>
+        message[@&quot;data&quot;] = data;
+    }
 
-<pre><code>if (responseCallback) {
-    NSString* callbackId = [NSString stringWithFormat:@"objc_cb_%ld", ++_uniqueId];
-    _responseCallbacks[callbackId] = [responseCallback copy];
-    message[@"callbackId"] = callbackId;
+    if (responseCallback) {
+        NSString* callbackId = [NSString stringWithFormat:@&quot;objc_cb_%ld&quot;, ++_uniqueId];
+        _responseCallbacks[callbackId] = [responseCallback copy];
+        message[@&quot;callbackId&quot;] = callbackId;
+    }
+
+    if (handlerName) {
+        message[@&quot;handlerName&quot;] = handlerName;
+    }
+    [self _queueMessage:message];
 }
+</code></pre></div>
+<ol>
+<li>将传到js的数据封装下.</li>
+<li>将responseCallback 这个block存到本地的一个 <code class="prettyprint">NSMutableDictionary</code> 容器中,key值为一个每次调用
+<code class="prettyprint">_sendData:responseCallback:handlerName</code> 自增的int型的标识和特定字符串的组合(<code class="prettyprint">[NSString stringWithFormat:@&quot;objc_cb_%ld&quot;, ++_uniqueId]</code>).</li>
+<li>移交给其他函数处理这个message,核心就是调用 <code class="prettyprint">stringByEvaluatingJavaScriptFromString</code>,期间会有
+数据的转换(json).</li>
+</ol>
 
-if (handlerName) {
-    message[@"handlerName"] = handlerName;
-}
-[self _queueMessage:message]; } ``` 1. 将传到js的数据封装下. 2. 将responseCallback 这个block存到本地的一个 `NSMutableDictionary` 容器中,key值为一个每次调用   `_sendData:responseCallback:handlerName` 自增的int型的标识和特定字符串的组合(`[NSString stringWithFormat:@"objc_cb_%ld", ++_uniqueId]`). 3. 移交给其他函数处理这个message,核心就是调用 `stringByEvaluatingJavaScriptFromString`,期间会有   数据的转换(json).
-</code></pre>
+<h3 id="js调本地">js调本地</h3>
 
-<h3 id="js-1">js调本地</h3>
-<p>上述代码中,responseCallback 的实现是js会伪造一个新url请求,让 <code>UIWebView</code> 来拦截.
-responseCallback 是js掉本地的方法的一种情况.
-<code>
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+<p>上述代码中,responseCallback 的实现是js会伪造一个新url请求,让 <code class="prettyprint">UIWebView</code> 来拦截.
+responseCallback 是js掉本地的方法的一种情况.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (webView != _webView) { return YES; }
     NSURL *url = [request URL];
     __strong WVJB_WEBVIEW_DELEGATE_TYPE* strongDelegate = _webViewDelegate;
@@ -190,7 +197,7 @@ responseCallback 是js掉本地的方法的一种情况.
         if ([[url host] isEqualToString:kQueueHasMessage]) {
             [self _flushMessageQueue];
         } else {
-            NSLog(@"WebViewJavascriptBridge: WARNING: Received unknown WebViewJavascriptBridge command %@://%@", kCustomProtocolScheme, [url path]);
+            NSLog(@&quot;WebViewJavascriptBridge: WARNING: Received unknown WebViewJavascriptBridge command %@://%@&quot;, kCustomProtocolScheme, [url path]);
         }
         return NO;
     } else if (strongDelegate &amp;&amp; [strongDelegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
@@ -199,64 +206,63 @@ responseCallback 是js掉本地的方法的一种情况.
         return YES;
     }
 }
-</code>
-如上述注释,如果有拦截到会调用 <code>[self _flushMessageQueue]</code> 方法.
-改方法主要是 主动再次掉 <code>stringByEvaluatingJavaScriptFromString</code>,js 方法明是 <code>WebViewJavascriptBridge._fetchQueue</code>,该方法在js容器中存储了回调数据.其他顺利成章的处理数据流程.如下:
-```
-- (void)_flushMessageQueue {
-    NSString *messageQueueString = [_webView stringByEvaluatingJavaScriptFromString:@”WebViewJavascriptBridge._fetchQueue();”];</p>
+</code></pre></div>
+<p>如上述注释,如果有拦截到会调用 <code class="prettyprint">[self _flushMessageQueue]</code> 方法.
+改方法主要是 主动再次掉 <code class="prettyprint">stringByEvaluatingJavaScriptFromString</code>,js 方法明是 <code class="prettyprint">WebViewJavascriptBridge._fetchQueue</code>,该方法在js容器中存储了回调数据.其他顺利成章的处理数据流程.如下:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">- (void)_flushMessageQueue {
+    NSString *messageQueueString = [_webView stringByEvaluatingJavaScriptFromString:@&quot;WebViewJavascriptBridge._fetchQueue();&quot;];
 
-<pre><code>id messages = [self _deserializeMessageJSON:messageQueueString];
-if (![messages isKindOfClass:[NSArray class]]) {
-    NSLog(@"WebViewJavascriptBridge: WARNING: Invalid %@ received: %@", [messages class], messages);
-    return;
+    id messages = [self _deserializeMessageJSON:messageQueueString];
+    if (![messages isKindOfClass:[NSArray class]]) {
+        NSLog(@&quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&quot;, [messages class], messages);
+        return;
+    }
+    for (WVJBMessage* message in messages) {
+        if (![message isKindOfClass:[WVJBMessage class]]) {
+            NSLog(@&quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&quot;, [message class], message);
+            continue;
+        }
+        [self _log:@&quot;RCVD&quot; json:message];
+
+        NSString* responseId = message[@&quot;responseId&quot;];
+        if (responseId) {
+            WVJBResponseCallback responseCallback = _responseCallbacks[responseId];
+            responseCallback(message[@&quot;responseData&quot;]);
+            [_responseCallbacks removeObjectForKey:responseId];
+        } else {
+            WVJBResponseCallback responseCallback = NULL;
+            NSString* callbackId = message[@&quot;callbackId&quot;];
+            if (callbackId) {
+                responseCallback = ^(id responseData) {
+                    if (responseData == nil) {
+                        responseData = [NSNull null];
+                    }
+
+                    WVJBMessage* msg = @{ @&quot;responseId&quot;:callbackId, @&quot;responseData&quot;:responseData };
+                    [self _queueMessage:msg];
+                };
+            } else {
+                responseCallback = ^(id ignoreResponseData) {
+                    // Do nothing
+                };
+            }
+
+            WVJBHandler handler;
+            if (message[@&quot;handlerName&quot;]) {
+                handler = _messageHandlers[message[@&quot;handlerName&quot;]];
+            } else {
+                handler = _messageHandler;
+            }
+
+            if (!handler) {
+                [NSException raise:@&quot;WVJBNoHandlerException&quot; format:@&quot;No handler for message from JS: %@&quot;, message];
+            }
+
+            handler(message[@&quot;data&quot;], responseCallback);
+        }
+    }
 }
-for (WVJBMessage* message in messages) {
-    if (![message isKindOfClass:[WVJBMessage class]]) {
-        NSLog(@"WebViewJavascriptBridge: WARNING: Invalid %@ received: %@", [message class], message);
-        continue;
-    }
-    [self _log:@"RCVD" json:message];
-
-    NSString* responseId = message[@"responseId"];
-    if (responseId) {
-        WVJBResponseCallback responseCallback = _responseCallbacks[responseId];
-        responseCallback(message[@"responseData"]);
-        [_responseCallbacks removeObjectForKey:responseId];
-    } else {
-        WVJBResponseCallback responseCallback = NULL;
-        NSString* callbackId = message[@"callbackId"];
-        if (callbackId) {
-            responseCallback = ^(id responseData) {
-                if (responseData == nil) {
-                    responseData = [NSNull null];
-                }
-
-                WVJBMessage* msg = @{ @"responseId":callbackId, @"responseData":responseData };
-                [self _queueMessage:msg];
-            };
-        } else {
-            responseCallback = ^(id ignoreResponseData) {
-                // Do nothing
-            };
-        }
-
-        WVJBHandler handler;
-        if (message[@"handlerName"]) {
-            handler = _messageHandlers[message[@"handlerName"]];
-        } else {
-            handler = _messageHandler;
-        }
-
-        if (!handler) {
-            [NSException raise:@"WVJBNoHandlerException" format:@"No handler for message from JS: %@", message];
-        }
-
-        handler(message[@"data"], responseCallback);
-    }
-} } ```
-</code></pre>
-
+</code></pre></div>
 <p>不懂 js 是硬伤,以上很多都是基于假设,不过假设应该是对的.  </p>
 </section>
 </article>
@@ -270,11 +276,6 @@ for (WVJBMessage* message in messages) {
     </div>
     <script src="/js/main.js"></script>
 
-
-<footer class="site-footer">
-	<p class="text">Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
-</p>
-</footer>
 
 
   </body>
