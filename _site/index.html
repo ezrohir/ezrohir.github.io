@@ -1,280 +1,341 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html>
+
   <head>
 	<meta charset="utf-8">
-	<title> Ez's Blog</title>
-	<meta name="description" content="A website with blog posts and pages">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="X-Frame-Options" content="sameorigin">
-
-	<!-- CSS -->
-	<link rel="stylesheet" href="/css/main.css">
-
-	<!--Favicon-->
-	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-	<!-- Canonical -->
-	<link rel="canonical" href="https://ezrohir.github.io/">
-
-	<!-- RSS -->
-	<link rel="alternate" type="application/atom+xml" title="Ez's Blog" href="https://ezrohir.github.io/feed.xml" />
-
-	<!-- Font Awesome -->
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
-	<!-- Google Fonts -->
+	<title>Ez's Personal Website</title>
+	<meta name="description" content="Ez's Ideas & Blogs">
 	
-	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	<link rel="canonical" href="/">
+	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="/feed.xml" />
 	
+	<!-- <link rel="stylesheet" href="/css/main.css"> -->
+    
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+	<script type="text/javascript" src="/static/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/monokai_sublime.min.css">
+	<script type="text/javascript" src="/static/js/highlight.min.js"></script>
 
-	<!-- KaTeX -->
-	
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">
-	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.js"></script>
-	
-
-	<!-- Google Analytics -->
-	
+    <!--
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/highlight.js/8.4/styles/monokai_sublime.min.css">
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/highlight.js/8.4/highlight.min.js"></script>
+    -->
+    
+	<script type="text/javascript" src="/static/js/index.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
 </head>
 
+ <!--  <body data-spy="scroll" data-target="#myAffix"> -->
   <body>
-    <header class="site-header">
-	<div class="branding">
-		
-		<a href="/">
-			<img class="avatar" src="/img/avatar.png" alt=""/>
-		</a>
-		
-		<h1 class="site-title">
-			<a href="/">Ez's Blog</a>
-		</h1>
-	</div>
-	<nav class="site-nav">
-		<ul>
-			
-			
-			
-			
-			<li>
-				<a class="page-link" href="/about/">
-					About
-				</a>
-			</li>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			<!-- Social icons from Font Awesome, if enabled -->
-			
 
+    <header>
 
-<li>
-	<a href="mailto:jie.tane@gmail.com" title="Email">
-		<i class="fa fa-fw fa-envelope"></i>
-	</a>
-</li>
+<!-- navbar -->
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Ez's Personal Website</a>
+      <p class="navbar-text"></p>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
 
+        
+          <li class="active">
+          
+        <a href="/">Home</a></li>
 
+        
+          
+            
+              <li>
+            
+            <a href="/projects/"><span class="glyphicon "></span> Projects</a></li>
+          
+        
+          
+            
+              <li>
+            
+            <a href="/about/"><span class="glyphicon "></span> About</a></li>
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
-
-
-
-
-
-
-
-
-
-
-<li>
-	<a href="https://github.com/ezrohir" title="Follow on GitHub">
-		<i class="fa fa-fw fa-github"></i>
-	</a>
-</li>
-
-
-
-
-
-<li>
-	<a href="http://instagram.com/ezrohir" title="Follow on Instagram">
-		<i class="fa fa-fw fa-instagram"></i>
-	</a>
-</li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li>
-	<a href="https://twitter.com/ezrohir" title="Follow on Twitter">
-		<i class="fa fa-fw fa-twitter"></i>
-	</a>
-</li>
-
-
-
-
-
-
-		</ul>
-	</nav>
 </header>
 
-    <div class="content">
-      <div class="home">
-  
-  <div class="call-out" 
-  style="background-image: url('/')">
-    <h2>Hello World.</h2>
+    <div id="main" class="container main">
+      <div class="row">
+  <div id="myArticle" class="col-sm-9">
+    <div class="post-area post">
+      <article>
+        <h2 id="welcome-to-my-website">Welcome to my website</h2>
 
+<p>Enjoy yourself!</p>
+
+      </article>
+    </div>
   </div>
-  
-
-  <div class="posts">
-    
-    <div class="post-teaser">
-      <header>
-        <h1>
-          <a class="post-link" href="/2016/01/25/iOS_Multi-Target_Configuration.html">
-            iOS多Target配置
-          </a>
-        </h1>
-        <p class="meta">
-          January 25, 2016
-        </p>
-      </header>
-      <div class="excerpt">
-        <p>开发过程中我们都有根据不同需求场景构建不同配置App的需求.以我们现在开发的App为例,因为没有使用 TestFight,每天的daylibulid放在fir.im上并通过fir.im提供的构建工具打包上传, 所以有如下环境版本:</p>
-
-        <a class="button" href="/2016/01/25/iOS_Multi-Target_Configuration.html">
-          Continue reading
-        </a>
-      </div>
-    </div>
-    
-    <div class="post-teaser">
-      <header>
-        <h1>
-          <a class="post-link" href="/2015/07/28/Runtime%E9%9A%8F%E6%84%9F.html">
-            Runtime随感合集
-          </a>
-        </h1>
-        <p class="meta">
-          July 28, 2015
-        </p>
-      </header>
-      <div class="excerpt">
-        <h3 id="不能动态添加-property-问题">不能动态添加 property 问题</h3>
-
-<p>这个其实还是很好理解的, property 可以理解为对实例变量的 get set 方法.关键点在实例变量,编译的时候实例变量的布局已经确定.
-至于动态添加方法 Class 结构中有对于 指针数组,用于存储方法列表的指针.
-至于实例变量,是能动态添加的,通过 Runtime 的 Associated Objects 函数添加实例变量,印象中是添加在一个全局的管理器中.</p>
-
-        <a class="button" href="/2015/07/28/Runtime%E9%9A%8F%E6%84%9F.html">
-          Continue reading
-        </a>
-      </div>
-    </div>
-    
-    <div class="post-teaser">
-      <header>
-        <h1>
-          <a class="post-link" href="/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2.html">
-            WebViewJavascriptBridge 初探
-          </a>
-        </h1>
-        <p class="meta">
-          July 5, 2015
-        </p>
-      </header>
-      <div class="excerpt">
-        <p>一般而言,对 native 调用h5中的js方法, <code class="prettyprint">UIWebView</code> 有提供API <code class="prettyprint">stringByEvaluatingJavaScriptFromString</code>
-,改方法返回 string 类型的字符串,传入参数为一个 string 类型的js方法.</p>
-
-        <a class="button" href="/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2.html">
-          Continue reading
-        </a>
-      </div>
-    </div>
-    
-    <div class="post-teaser">
-      <header>
-        <h1>
-          <a class="post-link" href="/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96.html">
-            App优化的一些总结
-          </a>
-        </h1>
-        <p class="meta">
-          January 4, 2015
-        </p>
-      </header>
-      <div class="excerpt">
-        <p>iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.</p>
-
-        <a class="button" href="/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96.html">
-          Continue reading
-        </a>
-      </div>
-    </div>
-    
-    <div class="post-teaser">
-      <header>
-        <h1>
-          <a class="post-link" href="/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html">
-            集成crashlystics
-          </a>
-        </h1>
-        <p class="meta">
-          December 19, 2014
-        </p>
-      </header>
-      <div class="excerpt">
-        <p>相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的</p>
-
-        <a class="button" href="/2014/12/19/%E9%9B%86%E6%88%90crashlytics.html">
-          Continue reading
-        </a>
-      </div>
-    </div>
-    
-  </div>
-
-  
-  <div class="pagination">
-    
-    
-    <a href="/blog/page2" class="button" >
-      Next
-      <i class="fa fa-chevron-right"></i>
-    </a>
-    
-  </div>
-  
 </div>
-
+<p><br/></p>
+<div id="index" class="row">
+  <div class="col-sm-9">
+    <div class="post-area ">
+	  <div class="post-list-header">
+	  Posts
+	  </div>
+      <div class="post-list-body">
+        <div class="all-posts" post-cate="All">
+          
+            <a class="post-list-item" href="/2016/01/25/iOS_Multi-Target_Configuration/">
+              <h2>
+              iOS多Target配置
+              </h2>
+              <span class="">Jan 25, 2016</span>
+            </a>
+          
+            <a class="post-list-item" href="/2015/07/28/Runtime%E9%9A%8F%E6%84%9F/">
+              <h2>
+              Runtime随感合集
+              </h2>
+              <span class="">Jul 28, 2015</span>
+            </a>
+          
+            <a class="post-list-item" href="/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2/">
+              <h2>
+              WebViewJavascriptBridge 初探
+              </h2>
+              <span class="">Jul 5, 2015</span>
+            </a>
+          
+            <a class="post-list-item" href="/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/">
+              <h2>
+              App优化的一些总结
+              </h2>
+              <span class="">Jan 4, 2015</span>
+            </a>
+          
+            <a class="post-list-item" href="/2014/12/19/%E9%9B%86%E6%88%90crashlytics/">
+              <h2>
+              集成crashlystics
+              </h2>
+              <span class="">Dec 19, 2014</span>
+            </a>
+          
+            <a class="post-list-item" href="/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91/">
+              <h2>
+              URL Encoding 的坑
+              </h2>
+              <span class="">Jul 28, 2014</span>
+            </a>
+          
+            <a class="post-list-item" href="/2014/07/02/Duplicate-Symbol%E9%97%AE%E9%A2%98/">
+              <h2>
+              Duplicate Symbol问题
+              </h2>
+              <span class="">Jul 2, 2014</span>
+            </a>
+          
+            <a class="post-list-item" href="/2014/03/03/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E7%B4%A2%E5%BC%95/">
+              <h2>
+              阅读笔记索引
+              </h2>
+              <span class="">Mar 3, 2014</span>
+            </a>
+          
+        </div>
+        <!-- <div class="posts-in-categories"> -->
+        
+          <div post-cate="ios">
+            
+              
+                
+              
+            
+              
+                
+                  <a href="/2016/01/25/iOS_Multi-Target_Configuration/" class="post-list-item">
+                    <h2>
+                    iOS多Target配置
+                    </h2>
+                    <span class="">Jan 25, 2016</span>
+                  </a>
+                
+              
+                
+                  <a href="/2015/07/28/Runtime%E9%9A%8F%E6%84%9F/" class="post-list-item">
+                    <h2>
+                    Runtime随感合集
+                    </h2>
+                    <span class="">Jul 28, 2015</span>
+                  </a>
+                
+              
+                
+                  <a href="/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2/" class="post-list-item">
+                    <h2>
+                    WebViewJavascriptBridge 初探
+                    </h2>
+                    <span class="">Jul 5, 2015</span>
+                  </a>
+                
+              
+                
+                  <a href="/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/" class="post-list-item">
+                    <h2>
+                    App优化的一些总结
+                    </h2>
+                    <span class="">Jan 4, 2015</span>
+                  </a>
+                
+              
+                
+                  <a href="/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91/" class="post-list-item">
+                    <h2>
+                    URL Encoding 的坑
+                    </h2>
+                    <span class="">Jul 28, 2014</span>
+                  </a>
+                
+              
+            
+          </div>
+        
+          <div post-cate="tool">
+            
+              
+                
+              
+            
+              
+                
+                  <a href="/2014/12/19/%E9%9B%86%E6%88%90crashlytics/" class="post-list-item">
+                    <h2>
+                    集成crashlystics
+                    </h2>
+                    <span class="">Dec 19, 2014</span>
+                  </a>
+                
+              
+            
+          </div>
+        
+        <!-- </div> -->
+      </div>
     </div>
-    <script src="/js/main.js"></script>
+  </div>
+  <div class="col-sm-3">
+    <div class="shadow-corner-curl hidden-xs">
+      <div class="categories-list-header">
+        Categories
+      </div>
+      
+      <a href="javascript:;" class="categories-list-item" cate="All">
+        All<span class="my-badge"> 8</span>
+      </a>
+      
+        <a href="javascript:;" class="categories-list-item" cate="ios">
+          ios <span class="my-badge">5</span>
+        </a>
+      
+        <a href="javascript:;" class="categories-list-item" cate="tool">
+          tool <span class="my-badge">1</span>
+        </a>
+      
+    </div>
+  </div>
+</div>
+    </div>
+
+    
+    <div id="top" data-toggle="tooltip" data-placement="left" title="back to top">
+      <a href="javascript:;">
+        <div class="arrow"></div>
+        <div class="stick"></div>
+      </a>
+    </div>
+
+    <footer class="">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <a href="mailto:jie.tane@gmail.com"><span class="glyphicon glyphicon-envelope"></span> jie.tane@gmail.com</a>
+        <span class="point"> · </span>
+        
+          <a href="https://github.com/ezrohir">
+            <span class="icon">
+              <svg viewBox="0 0 16 16">
+                <path fill="#aaa" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+              </svg>
+            </span>
+            Github
+            <!-- <span>ezrohir</span> -->
+          </a>
+          
+          <span class="point"> · </span>
+          <span><a href="https://github.com/LiXizhi/LiXizhi.github.io/blob/master/index.md">View source</a></span>
+          <span class="point"> · </span>
+          <span><a href="/feed.xml">RSS</a></span>
+          <span class="point"> · </span>
+      </div>
+    </div>
+  </div>
+</footer>
 
 
-
+    <script type="text/javascript">
+    function OnClickNewPost()
+    {
+        var title = prompt("Please enter title of your post");
+        if (title!=null){
+            title = title.replace(" ", "-");
+            var currentdate = new Date();
+            var urlNewPage = "https://github.com/LiXizhi/LiXizhi.github.io/new/master?filename=_posts/" 
+                + currentdate.getFullYear() + "-" + (currentdate.getMonth()+1) + "-" + currentdate.getDate() + "-" + title + ".md";
+                
+            var defaultText =  [
+                '---',
+                'layout: post',
+                'comments: true',
+                'categories: diary',
+                '---',
+                '## Title',
+                'text'
+                ].join('\n');
+            urlNewPage += "&value=" + encodeURIComponent(defaultText);
+            window.open(urlNewPage);
+        }
+    }
+    
+    $(function() {
+      // CreateNewPostLinks
+      $('.newpost').each(function(){
+          $(this).click(OnClickNewPost);
+      });
+    });
+</script>
+  
   </body>
 </html>

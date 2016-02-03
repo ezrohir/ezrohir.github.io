@@ -1,89 +1,35 @@
-# SITE CONFIGURATION
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "https://ezrohir.github.io" # the base hostname & protocol for your site
+# Site settings
+title: Ez's Personal Website
+email: jie.tane@gmail.com
+description: Ez's Ideas & Blogs
+# > # this means to ignore newlines until "baseurl:"
+#   Write an awesome description for your new site here. You can edit this
+#   line in _config.yml. It will appear in your document head meta (for
+#   Google search results) and in your feed.xml site description.
 
-# THEME-SPECIFIC CONFIGURATION
-theme:
-  # Meta
-  title: Ez's Blog
-  avatar: avatar.png
-  gravatar: # Email MD5 hash
-  description: "A website with blog posts and pages" # used by search engines
+# baseurl: "" # the subpath of your site, e.g. /blog/
+# url: "http://yourdomain.com" # the base hostname & protocol for your site
+# twitter_username: jekyllrb
+github_username: ezrohir
+twitter_username: ezrohir
+permalink: /:year/:month/:day/:title/
+# this is the url root of the view source link on the footer page.
+viewsourceroot: https://github.com/LiXizhi/LiXizhi.github.io/blob/master/
+# this is the url root of the create page link on the footer page.
+newsourceroot: https://github.com/LiXizhi/LiXizhi.github.io/new/master
+#########################################
+# for duoshuo.com commenting system, uncomment following line if you do not want to include duoshuo.com.
+#duoshuo_shortname: lixizhi
+#duoshuo_url: "http://lixizhi.github.io"
+# disqus.com commenting system. please note that it is exclusive with duoshuo.com
+# disqus_shortname: lixizhi
+# disqus_url: "http://lixizhi.github.io"
+#########################################
 
-  # Header and footer text
-  header_text: >
-     <h2>Hello World.</h2>
-  header_text_feature_image:
-  # footer_text: >
-  #  Powered by <a href="http://jekyllrb.com">Jekyll</a> with <a href="https://rohanchandra.github.io/project/type/">Type Theme</a>
+# Build settings
+markdown: kramdown
 
-  # Icons
-  rss: false
-  email_address: "jie.tane@gmail.com"# Full email address, e.g. "sam@example.com"
-  behance:
-  bitbucket:
-  dribbble:
-  facebook:
-  flickr:
-  github: "ezrohir"
-  google_plus:
-  instagram: "ezrohir"
-  linkedin:  # Full URL
-  pinterest:
-  reddit:
-  soundcloud:
-  stack_exchange:  # Full URL
-  steam:
-  tumblr:
-  twitter: "ezrohir"
-  wordpress:
-  youtube:
-
-  # Scripts
-  google_analytics: # Tracking ID, e.g. "UA-000000-01"
-  disqus_shortname:
-  katex: true # Enable if using math markup
-
-  # Localization strings
-  str_follow_on: "Follow on"
-  str_rss_follow: "Follow RSS feed"
-  str_email: "Email"
-  str_next: "Next"
-  str_prev: "Prev"
-  str_continue_reading: "Continue reading"
-
-  # Colours, typography and padding
-  # Open the "_sass > base" folder, and open "_variables.scss"
-  google_fonts: "Source+Sans+Pro:400,700,700italic,400italic"
-
-  # Post navigation
-  post_navigation: false
-
-# PAGINATION
-paginate: 5
-paginate_path: "blog/page:num"
-
-# BUILD SETTINGS
-highlighter: pygments
-markdown: redcarpet
-redcarpet:
-  extensions: [
-   "no_intra_emphasis"
-   ,"fenced_code_blocks"
-   ,"autolink"
-   ,"tables"
-   ,"strikethrough"
-   ,"superscript"
-   ,"with_toc_data"
-   ,"footnotes"
-   ,"highlight"
-   ,"underline"
-   ,"quote"
-   ,"lax_spacing"
-   ,"prettify"
-#   ,"html_toc"
-  ]
-
-sass:
-  sass_dir: _sass
-  style: :compressed
+# highlight
+# highlighter: pygments
+# highlighter: rouge
+# highlighter: false
