@@ -96,12 +96,12 @@
       </header>
       <hr>
       <article>
-        <h2 id="ios-native--javascript-">iOS Native 与 JavaScript 交互</h2>
+        <h1 id="ios-native--javascript-">iOS Native 与 JavaScript 交互</h1>
 
 <p>iOS提供的 webView 控件<code>UIWebView</code><code>WKWebView</code>都提供了与JavaScript交互的能力.<br />
 抛开UI展示,iOS7 还提供了 JavaScriptCore 库,封装了WebKit的JavaScript引擎,赋予了在iOS App中调用 JavaScript代码的能力.<br /></p>
 
-<h4 id="uiwebview">UIWebView</h4>
+<h2 id="uiwebview">UIWebView</h2>
 <p>我们都对<code>UIWebView</code>API很熟悉.<a href="https://github.com/marcuswestin/WebViewJavascriptBridge">WebViewJavascriptBridge</a>是老牌的桥接库了,最近还在更新.<br />
 具体实现WebViewJavascriptBridge 反复利用 UIWebView 的<code>stringByEvaluatingJavaScriptFromString</code>方法.对于 Native 调用 JavaScript ,大概思路是:</p>
 
@@ -131,18 +131,65 @@
 
 <p>具体可以断点查看源码. JavaScript 调用 Native 方法大同小异.</p>
 
-<h4 id="wkwebview">WKWebView</h4>
-<p>相比之下,<code>WKWebView</code>API要友好的多.<br />
-待续</p>
+<h2 id="wkwebview">WKWebView</h2>
+<p>相比之下, WKWebView API要友好的多.<br />
+WKWebView 提供了 WKScriptMessageHandler ,JavaScript能通过改对象Post信息到 WKWebView 实例.<br />
+而 WKWebView 调用 JavaScript ,还是通过 <code>- evaluateJavaScript:completionHandler:</code> 方法.<br />
+注意该方法提供了一个 block 回调,这有别与 UIWebView 的 <code>- stringByEvaluatingJavaScriptFromString:</code> 方法,其返回 NSString .<br />
+那么从 API 主观上看起来 WKWebView 调用 <code>- evaluateJavaScript:completionHandler:</code>  是异步的,而 UIWebView 调用 <code>- stringByEvaluatingJavaScriptFromString:</code> 是同步的. <br /></p>
 
-<h3 id="javascriptcore">JavaScriptCore</h3>
-<p>待续</p>
+<p>WKWebView 的配置比较流程化</p>
+
+<div class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="o">//</span> <span class="err">基本配置</span>
+<span class="n">WKWebViewConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="s">[[WKWebViewConfiguration alloc]</span>
+<span class="s">                                         init];</span>
+<span class="s">WKUserContentController *controller = [[WKUserContentController alloc]</span>
+<span class="s">                                       init];</span>
+
+<span class="s">[controller addScriptMessageHandler:self name:@&quot;observe&quot;];</span>
+<span class="s">configuration.userContentController = controller;</span>
+
+<span class="s">NSURL *jsbin = [NSURL URLWithString:E_WEB_URL];</span>
+
+<span class="s">_webView = [[WKWebView alloc] initWithFrame:self.view.frame</span>
+<span class="s">                              configuration:configuration];</span>
+
+<span class="s">[_webView loadRequest:[NSURLRequest requestWithURL:jsbin]]</span><span class="p">;</span>
+<span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="n">addSubview</span><span class="p">:</span><span class="n">_webView</span><span class="p">];</span>
+
+<span class="o">//</span> <span class="n">JavaScript</span> <span class="err">回调</span>
+<span class="o">-</span> <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">userContentController</span><span class="p">:(</span><span class="n">WKUserContentController</span> <span class="o">*</span><span class="p">)</span><span class="n">userContentController</span>
+      <span class="n">didReceiveScriptMessage</span><span class="p">:(</span><span class="n">WKScriptMessage</span> <span class="o">*</span><span class="p">)</span><span class="n">message</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">([</span><span class="n">message</span><span class="p">.</span><span class="n">name</span> <span class="n">isEqualToString</span><span class="p">:</span><span class="err">@</span><span class="s2">&quot;</span><span class="s">observe&quot;</span><span class="p">])</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="err">@</span><span class="s2">&quot;</span><span class="s">Received event %@&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">body</span><span class="p">);</span>
+
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>在JavaScript中如下调用Post信息到客户端</p>
+
+<div class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="n">window</span><span class="p">.</span><span class="n">webkit</span><span class="p">.</span><span class="n">messageHandlers</span><span class="p">.</span><span class="n">observe</span><span class="p">.</span><span class="n">postMessage</span><span class="p">(</span><span class="n">message_object_send_to_client</span><span class="p">);</span></code></pre></div>
+
+<p>单从 API 设计上看,WKWebView 比 UIWebView 不知高到哪里去了.</p>
+
+<h2 id="javascriptcore">JavaScriptCore</h2>
+<p>Nshipster 上有很好的<a href="http://nshipster.cn/javascriptcore/">文章</a>.</p>
+
+<h2 id="section">其他</h2>
+<p>以上只是 iOS Native 与 JavaScript 交互的通信渠道,在此基层上应封装自己的通信组件.<br />
+<a href="https://github.com/casatwy/CTMediator">CTMediator</a>是简单明了的参考.<br />
+安全是个大问题,关注的朋友可以参考<a href="https://github.com/bang590/JSPatch">JSPatch</a>.<br />
+本文 Demo 地址 <a href="https://github.com/ezrohir/Native.JavaScript">https://github.com/ezrohir/Native.JavaScript</a>
+也不懂 Dom 的生命周期,所以 Demo 仅供参考.</p>
+
+<h2 id="section-1">参考</h2>
+<p><a href="http://www.joshuakehn.com/2014/10/29/using-javascript-with-wkwebview-in-ios-8.html">Using JavaScript with WKWebView in iOS 8</a></p>
 
       </article>
       <hr>
         </div> -->
         <script>
-            window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+            window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"26"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     </div>
 	

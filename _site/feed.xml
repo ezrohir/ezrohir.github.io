@@ -5,18 +5,18 @@
     <description>Ez&#39;s Ideas &amp; Blogs</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 Apr 2016 16:58:52 +0800</pubDate>
-    <lastBuildDate>Thu, 07 Apr 2016 16:58:52 +0800</lastBuildDate>
+    <pubDate>Thu, 07 Apr 2016 21:46:41 +0800</pubDate>
+    <lastBuildDate>Thu, 07 Apr 2016 21:46:41 +0800</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
         <title>iOS Native 与 JavaScript 交互</title>
-        <description>&lt;h2 id=&quot;ios-native--javascript-&quot;&gt;iOS Native 与 JavaScript 交互&lt;/h2&gt;
+        <description>&lt;h1 id=&quot;ios-native--javascript-&quot;&gt;iOS Native 与 JavaScript 交互&lt;/h1&gt;
 
 &lt;p&gt;iOS提供的 webView 控件&lt;code&gt;UIWebView&lt;/code&gt;&lt;code&gt;WKWebView&lt;/code&gt;都提供了与JavaScript交互的能力.&lt;br /&gt;
 抛开UI展示,iOS7 还提供了 JavaScriptCore 库,封装了WebKit的JavaScript引擎,赋予了在iOS App中调用 JavaScript代码的能力.&lt;br /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;uiwebview&quot;&gt;UIWebView&lt;/h4&gt;
+&lt;h2 id=&quot;uiwebview&quot;&gt;UIWebView&lt;/h2&gt;
 &lt;p&gt;我们都对&lt;code&gt;UIWebView&lt;/code&gt;API很熟悉.&lt;a href=&quot;https://github.com/marcuswestin/WebViewJavascriptBridge&quot;&gt;WebViewJavascriptBridge&lt;/a&gt;是老牌的桥接库了,最近还在更新.&lt;br /&gt;
 具体实现WebViewJavascriptBridge 反复利用 UIWebView 的&lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;方法.对于 Native 调用 JavaScript ,大概思路是:&lt;/p&gt;
 
@@ -46,17 +46,66 @@
 
 &lt;p&gt;具体可以断点查看源码. JavaScript 调用 Native 方法大同小异.&lt;/p&gt;
 
-&lt;h4 id=&quot;wkwebview&quot;&gt;WKWebView&lt;/h4&gt;
-&lt;p&gt;相比之下,&lt;code&gt;WKWebView&lt;/code&gt;API要友好的多.&lt;br /&gt;
-待续&lt;/p&gt;
+&lt;h2 id=&quot;wkwebview&quot;&gt;WKWebView&lt;/h2&gt;
+&lt;p&gt;相比之下, WKWebView API要友好的多.&lt;br /&gt;
+WKWebView 提供了 WKScriptMessageHandler ,JavaScript能通过改对象Post信息到 WKWebView 实例.&lt;br /&gt;
+而 WKWebView 调用 JavaScript ,还是通过 &lt;code&gt;- evaluateJavaScript:completionHandler:&lt;/code&gt; 方法.&lt;br /&gt;
+注意该方法提供了一个 block 回调,这有别与 UIWebView 的 &lt;code&gt;- stringByEvaluatingJavaScriptFromString:&lt;/code&gt; 方法,其返回 NSString .&lt;br /&gt;
+那么从 API 主观上看起来 WKWebView 调用 &lt;code&gt;- evaluateJavaScript:completionHandler:&lt;/code&gt;  是异步的,而 UIWebView 调用 &lt;code&gt;- stringByEvaluatingJavaScriptFromString:&lt;/code&gt; 是同步的. &lt;br /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;javascriptcore&quot;&gt;JavaScriptCore&lt;/h3&gt;
-&lt;p&gt;待续&lt;/p&gt;
+&lt;p&gt;WKWebView 的配置比较流程化&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;基本配置&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;WKWebViewConfiguration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;[[WKWebViewConfiguration alloc]&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;                                         init];&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;WKUserContentController *controller = [[WKUserContentController alloc]&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;                                       init];&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;[controller addScriptMessageHandler:self name:@&amp;quot;observe&amp;quot;];&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;configuration.userContentController = controller;&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;NSURL *jsbin = [NSURL URLWithString:E_WEB_URL];&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;_webView = [[WKWebView alloc] initWithFrame:self.view.frame&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;                              configuration:configuration];&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;[_webView loadRequest:[NSURLRequest requestWithURL:jsbin]]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;view&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addSubview&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_webView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JavaScript&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;回调&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userContentController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WKUserContentController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userContentController&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;didReceiveScriptMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WKScriptMessage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isEqualToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;observe&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Received event %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;在JavaScript中如下调用Post信息到客户端&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;n&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;webkit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;messageHandlers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;observe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;postMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message_object_send_to_client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;单从 API 设计上看,WKWebView 比 UIWebView 不知高到哪里去了.&lt;/p&gt;
+
+&lt;h2 id=&quot;javascriptcore&quot;&gt;JavaScriptCore&lt;/h2&gt;
+&lt;p&gt;Nshipster 上有很好的&lt;a href=&quot;http://nshipster.cn/javascriptcore/&quot;&gt;文章&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;其他&lt;/h2&gt;
+&lt;p&gt;以上只是 iOS Native 与 JavaScript 交互的通信渠道,在此基层上应封装自己的通信组件.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/casatwy/CTMediator&quot;&gt;CTMediator&lt;/a&gt;是简单明了的参考.&lt;br /&gt;
+安全是个大问题,关注的朋友可以参考&lt;a href=&quot;https://github.com/bang590/JSPatch&quot;&gt;JSPatch&lt;/a&gt;.&lt;br /&gt;
+本文 Demo 地址 &lt;a href=&quot;https://github.com/ezrohir/Native.JavaScript&quot;&gt;https://github.com/ezrohir/Native.JavaScript&lt;/a&gt;
+也不懂 Dom 的生命周期,所以 Demo 仅供参考.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;参考&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.joshuakehn.com/2014/10/29/using-javascript-with-wkwebview-in-ios-8.html&quot;&gt;Using JavaScript with WKWebView in iOS 8&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 07 Apr 2016 06:14:54 +0800</pubDate>
         <link>/2016/04/07/native-to-webview/</link>
         <guid isPermaLink="true">/2016/04/07/native-to-webview/</guid>
         
+        
+        <category>ios</category>
         
       </item>
     
@@ -139,11 +188,13 @@
 至于实例变量,是能动态添加的,通过 Runtime 的 Associated Objects 函数添加实例变量,印象中是添加在一个全局的管理器中.&lt;/p&gt;
 
 &lt;h3 id=&quot;receiver-message--objective-c-runtime-&quot;&gt;从 [receiver message] 引发的对 Objective-C Runtime 的理解&lt;/h3&gt;
-&lt;p&gt;对于执行某个方法,最简单的模型是能直接找到函数指针.这样就不能是Runtime了,因为在编译的时候就知道了要掉哪个地址的函数.
-站在运行时看, receiver 是对象是实例, message 可以直观上理解为函数指针,但我也是上过小学的人,这么理解肯定不对,好歹也是个函数指针的封装,还有些额外信息,看起来问题复杂了.&lt;/p&gt;
+&lt;p&gt;对于执行某个方法,最简单的模型是能直接找到函数指针.这样就不能是Runtime了,因为在编译的时候就知道了要掉哪个地址的函数.&lt;/p&gt;
+
+&lt;p&gt;站在运行时看, receiver 是对象是实例, message 可以直观上理解为函数指针,但我也是上过小学的人,这么理解肯定不对,好歹也是个函数指针的封装,还有些额外信息,看起来问题复杂了.&lt;/p&gt;
 
 &lt;p&gt;事实上 Objective-C 语言做了某些拓展,增加了某些数据结构,比如 receiver 是指向 objc_class 的指针,黑魔法都在 objc_class
-结构体中.站在面向对象的角度看,姑且将 objc_class 当成一个类, objc_class类中 有俩重要指针, 一个指向 superClass ,一个指向
+结构体中.
+站在面向对象的角度看,姑且将 objc_class 当成一个类, objc_class类中 有俩重要指针, 一个指向 superClass ,一个指向
 metaClass ,还有一些其他重要的指针数组,比如装实例变量的数组,装方法的数组,等等.但事实上 objc_class 是一个结构体,所有面向
 对象都是一个幌子,站在底层角度看,是如何优雅的实现一个结构体.&lt;/p&gt;
 
