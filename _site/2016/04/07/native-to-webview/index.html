@@ -107,26 +107,25 @@
 
 <ol>
   <li>WebViewJavascriptBridge injectJavascriptFile ,在 JavaScript 中初始化保存注册方法名字的 messageHandlers 对象.<br /></li>
-  <li>
-    <p>当如下调用 JavaScript 代码时
+  <li>当如下调用 JavaScript 代码时<br />
 <code>
 [_bridge callHandler:@"testJavascriptHandler" data:data responseCallback:^(id response) {
      NSLog(@"testJavascriptHandler responded: %@", response);
  }];
-</code></p>
-
-    <p>上述代码会最终转换为
+</code>
+ <br />
+上述代码会最终转换为<br />
 <code>
 [_webView stringByEvaluatingJavaScriptFromString:javascriptCommand];
-</code></p>
-
-    <p>而 javascriptCommand 一般是某种形式JavaScript调用,某个案例是
+</code>
+<br />
+而 javascriptCommand 一般是某种形式JavaScript调用,某个案例是
  <code>
   WebViewJavascriptBridge._handleMessageFromObjC('{\"callbackId\":\"objc_cb_1\",\"data\":{\"greetingFromObjC\":\"Hi there, JS!\"},\"handlerName\":\"testJavascriptHandler\"}');
-</code></p>
-  </li>
+</code>
+ <br /></li>
   <li>上述会引发执行 WebViewJavascriptBridge_JS.m 中的 <code>_handleMessageFromObjC</code> JavaScript 方法,大概是映射到 JavaScript 注册的 testJavascriptHandler 方法,执行   testJavascriptHandler 方法,结果存储.<br /></li>
-  <li>3中的方法执行完毕,会伪造一个自定义的 url 跳转.被 <code>UIWebView</code> 拦截,解析是否是自定义的 url ,是的话 执行命令<code>stringByEvaluatingJavaScriptFromString</code> 参数是<code>WebViewJavascriptBridge._fetchQueue()</code>.</li>
+  <li>3中的方法执行完毕,会伪造一个自定义的 url 跳转.被 <code>UIWebView</code> 拦截,解析是否是自定义的 url ,是的话 执行命令<code>stringByEvaluatingJavaScriptFromString</code> 参数是<code>WebViewJavascriptBridge._fetchQueue()</code>.<br /></li>
   <li>4步骤执行的结果是取3步骤的存储结果,回调 responseCallback ,一次完成的调用Native 调用 H5 过程结束.<br /></li>
 </ol>
 

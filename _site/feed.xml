@@ -5,8 +5,8 @@
     <description>Ez&#39;s Ideas &amp; Blogs</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 Apr 2016 16:54:13 +0800</pubDate>
-    <lastBuildDate>Thu, 07 Apr 2016 16:54:13 +0800</lastBuildDate>
+    <pubDate>Thu, 07 Apr 2016 16:58:52 +0800</pubDate>
+    <lastBuildDate>Thu, 07 Apr 2016 16:58:52 +0800</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -22,26 +22,25 @@
 
 &lt;ol&gt;
   &lt;li&gt;WebViewJavascriptBridge injectJavascriptFile ,在 JavaScript 中初始化保存注册方法名字的 messageHandlers 对象.&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;当如下调用 JavaScript 代码时
+  &lt;li&gt;当如下调用 JavaScript 代码时&lt;br /&gt;
 &lt;code&gt;
 [_bridge callHandler:@&quot;testJavascriptHandler&quot; data:data responseCallback:^(id response) {
      NSLog(@&quot;testJavascriptHandler responded: %@&quot;, response);
  }];
-&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;上述代码会最终转换为
+&lt;/code&gt;
+ &lt;br /&gt;
+上述代码会最终转换为&lt;br /&gt;
 &lt;code&gt;
 [_webView stringByEvaluatingJavaScriptFromString:javascriptCommand];
-&lt;/code&gt;&lt;/p&gt;
-
-    &lt;p&gt;而 javascriptCommand 一般是某种形式JavaScript调用,某个案例是
+&lt;/code&gt;
+&lt;br /&gt;
+而 javascriptCommand 一般是某种形式JavaScript调用,某个案例是
  &lt;code&gt;
   WebViewJavascriptBridge._handleMessageFromObjC(&#39;{\&quot;callbackId\&quot;:\&quot;objc_cb_1\&quot;,\&quot;data\&quot;:{\&quot;greetingFromObjC\&quot;:\&quot;Hi there, JS!\&quot;},\&quot;handlerName\&quot;:\&quot;testJavascriptHandler\&quot;}&#39;);
-&lt;/code&gt;&lt;/p&gt;
-  &lt;/li&gt;
+&lt;/code&gt;
+ &lt;br /&gt;&lt;/li&gt;
   &lt;li&gt;上述会引发执行 WebViewJavascriptBridge_JS.m 中的 &lt;code&gt;_handleMessageFromObjC&lt;/code&gt; JavaScript 方法,大概是映射到 JavaScript 注册的 testJavascriptHandler 方法,执行   testJavascriptHandler 方法,结果存储.&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;3中的方法执行完毕,会伪造一个自定义的 url 跳转.被 &lt;code&gt;UIWebView&lt;/code&gt; 拦截,解析是否是自定义的 url ,是的话 执行命令&lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt; 参数是&lt;code&gt;WebViewJavascriptBridge._fetchQueue()&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;3中的方法执行完毕,会伪造一个自定义的 url 跳转.被 &lt;code&gt;UIWebView&lt;/code&gt; 拦截,解析是否是自定义的 url ,是的话 执行命令&lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt; 参数是&lt;code&gt;WebViewJavascriptBridge._fetchQueue()&lt;/code&gt;.&lt;br /&gt;&lt;/li&gt;
   &lt;li&gt;4步骤执行的结果是取3步骤的存储结果,回调 responseCallback ,一次完成的调用Native 调用 H5 过程结束.&lt;br /&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
