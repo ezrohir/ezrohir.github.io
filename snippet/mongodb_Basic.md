@@ -72,7 +72,7 @@ db.user.insert({'name':'Gal Gadot','gender':'female','age':28,'salary':10000})
 
 条件查找
 ```
-db.user.find()
+"date": datetime.datetime.utcnow()}
 
 
 查询age为23的数据
