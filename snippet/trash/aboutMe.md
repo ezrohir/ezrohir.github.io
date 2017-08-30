@@ -23,7 +23,7 @@ Email: jie.tane@gmail.com
 ------------------------
 + 2016.04 - 至今: ***上海游戏多***
 
-	负责手游直播产品 [狮吼](https://itunes.apple.com/us/app/shi-hou-zhi-bo-re-men-shou/id1139133397?mt=8) 客户端开发,维护,发布管理.
+	负责手游直播产品 [狮吼](https://itunes.apple.com/cn/app/狮吼-热门手游直播平台/id1139133397?mt=8) 客户端开发,维护,发布管理.
 
 	主要完成功能:
 	+ 网络,本地路由,登录,分享,环境切换等基础模块
