@@ -5,68 +5,9 @@
     <description>Ez's Ideas &amp; Blogs</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 12 Sep 2017 10:41:50 +0800</pubDate>
-    <lastBuildDate>Tue, 12 Sep 2017 10:41:50 +0800</lastBuildDate>
+    <pubDate>Tue, 12 Sep 2017 10:53:13 +0800</pubDate>
+    <lastBuildDate>Tue, 12 Sep 2017 10:53:13 +0800</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
-    
-      <item>
-        <title>CrashLog常见类型</title>
-        <description>&lt;h2 id=&quot;crashlog常见类型&quot;&gt;CrashLog常见类型&lt;/h2&gt;
-&lt;p&gt;App大了后,各种奇怪的问题出现了,以下为碰到的常见的CrashLog,所有CrashLog都是Symbolicated,样本有些是Crashlytics的,有些是本地Xcode解析出来的.&lt;/p&gt;
-
-&lt;h4 id=&quot;calayer-position-contains-nan&quot;&gt;CALayer position contains NaN&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Fatal Exception: CALayerInvalidGeometry
-0  CoreFoundation                 0x1c9bfb3d __exceptionPreprocess
-1  libobjc.A.dylib                0x1bc47067 objc_exception_throw
-2  CoreFoundation                 0x1c9bfa85 -[NSException initWithCoder:]
-3  QuartzCore                     0x1f83d82b CA::Layer::set_position(CA::Vec2&amp;lt;double&amp;gt; const&amp;amp;, bool)
-4  QuartzCore                     0x1f83d9e3 -[CALayer setPosition:]
-5  QuartzCore                     0x1f83e049 -[CALayer setFrame:]
-6  UIKit                          0x21be5429 -[UIView(Geometry) setFrame:]
-7  UIKit                          0x21bf7ffd -[UIImageView _setViewGeometry:forMetric:]
-8  UIKit                          0x21bf7f63 -[UIImageView setFrame:]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;有时候觉得匪夷所思,但是它确实就产生了.产生的主要原因可能是除数是0, 网上看了看也有可能初始化造成,比如&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UIEdgeInsets a;
-a.left = (...some calculation);
-button.imageEdgeInsets = a;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;线程限制&quot;&gt;线程限制&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Date/Time:           2017-08-17 15:32:36.822 +0800
-Launch Time:         2017-08-17 15:24:50.041 +0800
-OS Version:          iOS 8.4.1 (12H321)
-Report Version:      105
-
-Exception Type:  EXC_RESOURCE
-Exception Subtype: WAKEUPS
-Exception Message: (Limit 150/sec) Observed 269/sec over 300 secs
-Triggered by Thread:  16
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;Your app is sending a wakeup command to a particular thread in the app quite often - apparently an average of 206 times a second. Background threads in iOS 8 have a hard limit on how many times you can run a sleep/wake cycle on each thread per second, and having a high count here is usually an indication that something is wrong / inefficient in your thread management.&lt;/p&gt;
-
-&lt;p&gt;Without seeing your code, my recommendation is that you check your C++ algorithms for sleep/wake calls, or multithread the background process to start new threads each cycle.&lt;/p&gt;
-
-&lt;h4 id=&quot;其他类型&quot;&gt;其他类型&lt;/h4&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.raywenderlich.com/23704/demystifying-ios-application-crash-logs&quot;&gt;Raywenderlich&lt;/a&gt;有很好的教程.&lt;/p&gt;
-
-&lt;h3 id=&quot;参考引用&quot;&gt;参考引用&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/25848441/app-shutdown-with-exc-resource-wakeups-exception-on-ios-8-gm&quot;&gt;EXC_RESOURCE WAKEUPS&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/library/content/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184&quot;&gt;Understanding and Analyzing Application Crash Reports&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 12 Sep 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/09/12/CrashLog%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/09/12/CrashLog%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B/</guid>
-        
-        
-        <category>iOS</category>
-        
-      </item>
     
       <item>
         <title>iOS Native 与 JavaScript 交互</title>
@@ -163,6 +104,65 @@ _webView = [[WKWebView alloc] initWithFrame:self.view.frame
         <pubDate>Thu, 07 Apr 2016 06:14:54 +0800</pubDate>
         <link>http://localhost:4000/2016/04/07/native-to-webview/</link>
         <guid isPermaLink="true">http://localhost:4000/2016/04/07/native-to-webview/</guid>
+        
+        
+        <category>iOS</category>
+        
+      </item>
+    
+      <item>
+        <title>CrashLog常见类型</title>
+        <description>&lt;h2 id=&quot;crashlog常见类型&quot;&gt;CrashLog常见类型&lt;/h2&gt;
+&lt;p&gt;App大了后,各种奇怪的问题出现了,以下为碰到的常见的CrashLog,所有CrashLog都是Symbolicated,样本有些是Crashlytics的,有些是本地Xcode解析出来的.&lt;/p&gt;
+
+&lt;h4 id=&quot;calayer-position-contains-nan&quot;&gt;CALayer position contains NaN&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Fatal Exception: CALayerInvalidGeometry
+0  CoreFoundation                 0x1c9bfb3d __exceptionPreprocess
+1  libobjc.A.dylib                0x1bc47067 objc_exception_throw
+2  CoreFoundation                 0x1c9bfa85 -[NSException initWithCoder:]
+3  QuartzCore                     0x1f83d82b CA::Layer::set_position(CA::Vec2&amp;lt;double&amp;gt; const&amp;amp;, bool)
+4  QuartzCore                     0x1f83d9e3 -[CALayer setPosition:]
+5  QuartzCore                     0x1f83e049 -[CALayer setFrame:]
+6  UIKit                          0x21be5429 -[UIView(Geometry) setFrame:]
+7  UIKit                          0x21bf7ffd -[UIImageView _setViewGeometry:forMetric:]
+8  UIKit                          0x21bf7f63 -[UIImageView setFrame:]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;有时候觉得匪夷所思,但是它确实就产生了.产生的主要原因可能是除数是0, 网上看了看也有可能初始化造成,比如&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UIEdgeInsets a;
+a.left = (...some calculation);
+button.imageEdgeInsets = a;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;线程限制&quot;&gt;线程限制&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Date/Time:           2017-08-17 15:32:36.822 +0800
+Launch Time:         2017-08-17 15:24:50.041 +0800
+OS Version:          iOS 8.4.1 (12H321)
+Report Version:      105
+
+Exception Type:  EXC_RESOURCE
+Exception Subtype: WAKEUPS
+Exception Message: (Limit 150/sec) Observed 269/sec over 300 secs
+Triggered by Thread:  16
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Your app is sending a wakeup command to a particular thread in the app quite often - apparently an average of 206 times a second. Background threads in iOS 8 have a hard limit on how many times you can run a sleep/wake cycle on each thread per second, and having a high count here is usually an indication that something is wrong / inefficient in your thread management.&lt;/p&gt;
+
+&lt;p&gt;Without seeing your code, my recommendation is that you check your C++ algorithms for sleep/wake calls, or multithread the background process to start new threads each cycle.&lt;/p&gt;
+
+&lt;h4 id=&quot;其他类型&quot;&gt;其他类型&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.raywenderlich.com/23704/demystifying-ios-application-crash-logs&quot;&gt;Raywenderlich&lt;/a&gt;有很好的教程.&lt;/p&gt;
+
+&lt;h3 id=&quot;参考引用&quot;&gt;参考引用&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/25848441/app-shutdown-with-exc-resource-wakeups-exception-on-ios-8-gm&quot;&gt;EXC_RESOURCE WAKEUPS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/library/content/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184&quot;&gt;Understanding and Analyzing Application Crash Reports&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 07 Apr 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2016/04/07/helloworld/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/04/07/helloworld/</guid>
         
         
         <category>iOS</category>
