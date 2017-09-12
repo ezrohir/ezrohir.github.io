@@ -8,8 +8,8 @@
 	<title>Runtime随感合集</title>
 	<meta name="description" content="不能动态添加 property 问题这个其实还是很好理解的, property 可以理解为对实例变量的 get set 方法.关键点在实例变量,编译的时候实例变量的布局已经确定.至于动态添加方法 Class 结构中有对于 指针数组,用于存储方法列表的指针.至于实例变量,是能动态添加的,通过 Runtime 的 A...">
 	
-	<link rel="canonical" href="/2015/07/28/Runtime%E9%9A%8F%E6%84%9F/">
-	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="/feed.xml" />
+	<link rel="canonical" href="http://localhost:4000/2015/07/28/Runtime%E9%9A%8F%E6%84%9F/">
+	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="http://localhost:4000/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
     
@@ -96,12 +96,12 @@
       </header>
       <hr>
       <article>
-        <h3 id="property-">不能动态添加 property 问题</h3>
+        <h3 id="不能动态添加-property-问题">不能动态添加 property 问题</h3>
 <p>这个其实还是很好理解的, property 可以理解为对实例变量的 get set 方法.关键点在实例变量,编译的时候实例变量的布局已经确定.
 至于动态添加方法 Class 结构中有对于 指针数组,用于存储方法列表的指针.
 至于实例变量,是能动态添加的,通过 Runtime 的 Associated Objects 函数添加实例变量,印象中是添加在一个全局的管理器中.</p>
 
-<h3 id="receiver-message--objective-c-runtime-">从 [receiver message] 引发的对 Objective-C Runtime 的理解</h3>
+<h3 id="从-receiver-message-引发的对-objective-c-runtime-的理解">从 [receiver message] 引发的对 Objective-C Runtime 的理解</h3>
 <p>对于执行某个方法,最简单的模型是能直接找到函数指针.这样就不能是Runtime了,因为在编译的时候就知道了要掉哪个地址的函数.</p>
 
 <p>站在运行时看, receiver 是对象是实例, message 可以直观上理解为函数指针,但我也是上过小学的人,这么理解肯定不对,好歹也是个函数指针的封装,还有些额外信息,看起来问题复杂了.</p>
@@ -121,16 +121,16 @@ metaClass ,还有一些其他重要的指针数组,比如装实例变量的数�
 理想情况下 message 会被找到,但是万一没有了?Runtime 提供了一些补救的措施,这也是 Runtime 的一部分.有三个重要环节,
 动态方法解析,重定向,方法转发.</p>
 
-<p>如果 message 对应的结构体封装没找到,首先执行动态方法解析,给一个改过自新的机会,<code>+ (BOOL)resolveInstanceMethod:(SEL)aSEL</code>,
-Runtime 问码农,你愿意给改类动态添加对应的message吗? 我不愿意.OK,Runtime还是会再给一次机会. <code>- (id)forwardingTargetForSelector:(SEL)aSelector</code> 将被调用, Runtime 的期望值降低了,你不干那你把活仍给其他对象干总OK吧.
-码农比较倔,就不扔给其他对象,本是同根生,相煎何太急,就返回 <code>nil</code> 怎么滴. Runtime 还是比较温和的, <code>- (void)forwardInvocation:(NSInvocation *)anInvocation</code> 方法转发的调用被抛出,不过已经很无语了.不坚持的码农不是好码农,就是不处理,代价就是App崩溃了.用户在骂,尼玛,这破软件
+<p>如果 message 对应的结构体封装没找到,首先执行动态方法解析,给一个改过自新的机会,<code class="highlighter-rouge">+ (BOOL)resolveInstanceMethod:(SEL)aSEL</code>,
+Runtime 问码农,你愿意给改类动态添加对应的message吗? 我不愿意.OK,Runtime还是会再给一次机会. <code class="highlighter-rouge">- (id)forwardingTargetForSelector:(SEL)aSelector</code> 将被调用, Runtime 的期望值降低了,你不干那你把活仍给其他对象干总OK吧.
+码农比较倔,就不扔给其他对象,本是同根生,相煎何太急,就返回 <code class="highlighter-rouge">nil</code> 怎么滴. Runtime 还是比较温和的, <code class="highlighter-rouge">- (void)forwardInvocation:(NSInvocation *)anInvocation</code> 方法转发的调用被抛出,不过已经很无语了.不坚持的码农不是好码农,就是不处理,代价就是App崩溃了.用户在骂,尼玛,这破软件
 请的什么临时工啊.</p>
 
 <p>以上是 Runtime 的主要流程,看起来比较枯燥,但是用的好,普通码农和优秀码农的区别就出来了.经典案例, <a href="http://tech.glowing.com/cn/method-swizzling-aop/">Method Swizzling 和 AOP 实践</a>,看完整个人就不好.他们怎么能成角儿啊，得敲多少行代码，我什么时候才能成角儿啊.(出自霸王别姬).</p>
 
 <p>发现今天思维异常活跃,一气呵成,感觉非常好.PS,这只是自己念念叨叨,随感而发. Runtime 这块,很多蚂蝗的文章写的深入浅出.</p>
 
-<h3 id="app">App不能添加动态库的问题</h3>
+<h3 id="app不能添加动态库的问题">App不能添加动态库的问题</h3>
 <p>悬而未决,现在的认识只是系统安全限制,技术上添加动态库是没问题的.这个需要研究下.</p>
 
       </article>

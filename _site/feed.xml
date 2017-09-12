@@ -1,46 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ez&#39;s Personal Website</title>
-    <description>Ez&#39;s Ideas &amp; Blogs</description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 19 Apr 2016 11:24:19 +0800</pubDate>
-    <lastBuildDate>Tue, 19 Apr 2016 11:24:19 +0800</lastBuildDate>
-    <generator>Jekyll v2.5.3</generator>
+    <title>Ez's Personal Website</title>
+    <description>Ez's Ideas &amp; Blogs</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 12 Sep 2017 10:36:54 +0800</pubDate>
+    <lastBuildDate>Tue, 12 Sep 2017 10:36:54 +0800</lastBuildDate>
+    <generator>Jekyll v3.5.2</generator>
+    
+      <item>
+        <title>CrashLog常见类型</title>
+        <description>&lt;h2 id=&quot;crashlog常见类型&quot;&gt;CrashLog常见类型&lt;/h2&gt;
+&lt;p&gt;App大了后,各种奇怪的问题出现了,以下为碰到的常见的CrashLog,所有CrashLog都是Symbolicated,样本有些是Crashlytics的,有些是本地Xcode解析出来的.&lt;/p&gt;
+
+&lt;h4 id=&quot;calayer-position-contains-nan&quot;&gt;CALayer position contains NaN&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Fatal Exception: CALayerInvalidGeometry
+0  CoreFoundation                 0x1c9bfb3d __exceptionPreprocess
+1  libobjc.A.dylib                0x1bc47067 objc_exception_throw
+2  CoreFoundation                 0x1c9bfa85 -[NSException initWithCoder:]
+3  QuartzCore                     0x1f83d82b CA::Layer::set_position(CA::Vec2&amp;lt;double&amp;gt; const&amp;amp;, bool)
+4  QuartzCore                     0x1f83d9e3 -[CALayer setPosition:]
+5  QuartzCore                     0x1f83e049 -[CALayer setFrame:]
+6  UIKit                          0x21be5429 -[UIView(Geometry) setFrame:]
+7  UIKit                          0x21bf7ffd -[UIImageView _setViewGeometry:forMetric:]
+8  UIKit                          0x21bf7f63 -[UIImageView setFrame:]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;有时候觉得匪夷所思,但是它确实就产生了.产生的主要原因可能是除数是0, 网上看了看也有可能初始化造成,比如&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UIEdgeInsets a;
+a.left = (...some calculation);
+button.imageEdgeInsets = a;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;线程限制&quot;&gt;线程限制&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Date/Time:           2017-08-17 15:32:36.822 +0800
+Launch Time:         2017-08-17 15:24:50.041 +0800
+OS Version:          iOS 8.4.1 (12H321)
+Report Version:      105
+
+Exception Type:  EXC_RESOURCE
+Exception Subtype: WAKEUPS
+Exception Message: (Limit 150/sec) Observed 269/sec over 300 secs
+Triggered by Thread:  16
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Your app is sending a wakeup command to a particular thread in the app quite often - apparently an average of 206 times a second. Background threads in iOS 8 have a hard limit on how many times you can run a sleep/wake cycle on each thread per second, and having a high count here is usually an indication that something is wrong / inefficient in your thread management.&lt;/p&gt;
+
+&lt;p&gt;Without seeing your code, my recommendation is that you check your C++ algorithms for sleep/wake calls, or multithread the background process to start new threads each cycle.&lt;/p&gt;
+
+&lt;h4 id=&quot;其他类型&quot;&gt;其他类型&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.raywenderlich.com/23704/demystifying-ios-application-crash-logs&quot;&gt;Raywenderlich&lt;/a&gt;有很好的教程.&lt;/p&gt;
+
+&lt;h3 id=&quot;参考引用&quot;&gt;参考引用&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/25848441/app-shutdown-with-exc-resource-wakeups-exception-on-ios-8-gm&quot;&gt;EXC_RESOURCE WAKEUPS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/library/content/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184&quot;&gt;Understanding and Analyzing Application Crash Reports&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 12 Sep 2017 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2017/09/12/CrashLog%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/09/12/CrashLog%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B/</guid>
+        
+        
+        <category>iOS</category>
+        
+      </item>
     
       <item>
         <title>iOS Native 与 JavaScript 交互</title>
-        <description>&lt;h1 id=&quot;ios-native--javascript-&quot;&gt;iOS Native 与 JavaScript 交互&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;ios-native-与-javascript-交互&quot;&gt;iOS Native 与 JavaScript 交互&lt;/h1&gt;
 
-&lt;p&gt;iOS提供的 webView 控件&lt;code&gt;UIWebView&lt;/code&gt;&lt;code&gt;WKWebView&lt;/code&gt;都提供了与JavaScript交互的能力.&lt;br /&gt;
+&lt;p&gt;iOS提供的 webView 控件&lt;code class=&quot;highlighter-rouge&quot;&gt;UIWebView&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;WKWebView&lt;/code&gt;都提供了与JavaScript交互的能力.&lt;br /&gt;
 抛开UI展示,iOS7 还提供了 JavaScriptCore 库,封装了WebKit的JavaScript引擎,赋予了在iOS App中调用 JavaScript代码的能力.&lt;br /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;uiwebview&quot;&gt;UIWebView&lt;/h2&gt;
-&lt;p&gt;我们都对&lt;code&gt;UIWebView&lt;/code&gt;API很熟悉.&lt;a href=&quot;https://github.com/marcuswestin/WebViewJavascriptBridge&quot;&gt;WebViewJavascriptBridge&lt;/a&gt;是老牌的桥接库了,最近还在更新.&lt;br /&gt;
-具体实现WebViewJavascriptBridge 反复利用 UIWebView 的&lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;方法.对于 Native 调用 JavaScript ,大概思路是:&lt;/p&gt;
+&lt;p&gt;我们都对&lt;code class=&quot;highlighter-rouge&quot;&gt;UIWebView&lt;/code&gt;API很熟悉.&lt;a href=&quot;https://github.com/marcuswestin/WebViewJavascriptBridge&quot;&gt;WebViewJavascriptBridge&lt;/a&gt;是老牌的桥接库了,最近还在更新.&lt;br /&gt;
+具体实现WebViewJavascriptBridge 反复利用 UIWebView 的&lt;code class=&quot;highlighter-rouge&quot;&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;方法.对于 Native 调用 JavaScript ,大概思路是:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;WebViewJavascriptBridge injectJavascriptFile ,在 JavaScript 中初始化保存注册方法名字的 messageHandlers 对象.&lt;br /&gt;&lt;/li&gt;
   &lt;li&gt;当如下调用 JavaScript 代码时&lt;br /&gt;
-&lt;code&gt;
-[_bridge callHandler:@&quot;testJavascriptHandler&quot; data:data responseCallback:^(id response) {
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[_bridge callHandler:@&quot;testJavascriptHandler&quot; data:data responseCallback:^(id response) {
      NSLog(@&quot;testJavascriptHandler responded: %@&quot;, response);
  }];
-&lt;/code&gt;
- &lt;br /&gt;
-上述代码会最终转换为&lt;br /&gt;
-&lt;code&gt;
-[_webView stringByEvaluatingJavaScriptFromString:javascriptCommand];
-&lt;/code&gt;
-&lt;br /&gt;
-而 javascriptCommand 一般是某种形式JavaScript调用,某个案例是
- &lt;code&gt;
-  WebViewJavascriptBridge._handleMessageFromObjC(&#39;{\&quot;callbackId\&quot;:\&quot;objc_cb_1\&quot;,\&quot;data\&quot;:{\&quot;greetingFromObjC\&quot;:\&quot;Hi there, JS!\&quot;},\&quot;handlerName\&quot;:\&quot;testJavascriptHandler\&quot;}&#39;);
-&lt;/code&gt;
- &lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;上述会引发执行 WebViewJavascriptBridge_JS.m 中的 &lt;code&gt;_handleMessageFromObjC&lt;/code&gt; JavaScript 方法,大概是映射到 JavaScript 注册的 testJavascriptHandler 方法,执行   testJavascriptHandler 方法,结果存储.&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;3中的方法执行完毕,会伪造一个自定义的 url 跳转.被 &lt;code&gt;UIWebView&lt;/code&gt; 拦截,解析是否是自定义的 url ,是的话 执行命令&lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt; 参数是&lt;code&gt;WebViewJavascriptBridge._fetchQueue()&lt;/code&gt;.&lt;br /&gt;&lt;/li&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;p&gt;&lt;br /&gt;
+上述代码会最终转换为&lt;br /&gt;&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[_webView stringByEvaluatingJavaScriptFromString:javascriptCommand];
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;p&gt;&lt;br /&gt;
+而 javascriptCommand 一般是某种形式JavaScript调用,某个案例是&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  WebViewJavascriptBridge._handleMessageFromObjC('{\&quot;callbackId\&quot;:\&quot;objc_cb_1\&quot;,\&quot;data\&quot;:{\&quot;greetingFromObjC\&quot;:\&quot;Hi there, JS!\&quot;},\&quot;handlerName\&quot;:\&quot;testJavascriptHandler\&quot;}');
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;上述会引发执行 WebViewJavascriptBridge_JS.m 中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;_handleMessageFromObjC&lt;/code&gt; JavaScript 方法,大概是映射到 JavaScript 注册的 testJavascriptHandler 方法,执行   testJavascriptHandler 方法,结果存储.&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;3中的方法执行完毕,会伪造一个自定义的 url 跳转.被 &lt;code class=&quot;highlighter-rouge&quot;&gt;UIWebView&lt;/code&gt; 拦截,解析是否是自定义的 url ,是的话 执行命令&lt;code class=&quot;highlighter-rouge&quot;&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt; 参数是&lt;code class=&quot;highlighter-rouge&quot;&gt;WebViewJavascriptBridge._fetchQueue()&lt;/code&gt;.&lt;br /&gt;&lt;/li&gt;
   &lt;li&gt;4步骤执行的结果是取3步骤的存储结果,回调 responseCallback ,一次完成的调用Native 调用 H5 过程结束.&lt;br /&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
@@ -49,63 +109,63 @@
 &lt;h2 id=&quot;wkwebview&quot;&gt;WKWebView&lt;/h2&gt;
 &lt;p&gt;相比之下, WKWebView API要友好的多.&lt;br /&gt;
 WKWebView 提供了 WKScriptMessageHandler ,JavaScript能通过改对象Post信息到 WKWebView 实例.&lt;br /&gt;
-而 WKWebView 调用 JavaScript ,还是通过 &lt;code&gt;- evaluateJavaScript:completionHandler:&lt;/code&gt; 方法.&lt;br /&gt;
-注意该方法提供了一个 block 回调,这有别与 UIWebView 的 &lt;code&gt;- stringByEvaluatingJavaScriptFromString:&lt;/code&gt; 方法,其返回 NSString .&lt;br /&gt;
-那么从 API 主观上看起来 WKWebView 调用 &lt;code&gt;- evaluateJavaScript:completionHandler:&lt;/code&gt;  是异步的,而 UIWebView 调用 &lt;code&gt;- stringByEvaluatingJavaScriptFromString:&lt;/code&gt; 是同步的. &lt;br /&gt;&lt;/p&gt;
+而 WKWebView 调用 JavaScript ,还是通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;- evaluateJavaScript:completionHandler:&lt;/code&gt; 方法.&lt;br /&gt;
+注意该方法提供了一个 block 回调,这有别与 UIWebView 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;- stringByEvaluatingJavaScriptFromString:&lt;/code&gt; 方法,其返回 NSString .&lt;br /&gt;
+那么从 API 主观上看起来 WKWebView 调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;- evaluateJavaScript:completionHandler:&lt;/code&gt;  是异步的,而 UIWebView 调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;- stringByEvaluatingJavaScriptFromString:&lt;/code&gt; 是同步的. &lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;WKWebView 的配置比较流程化&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;基本配置&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;WKWebViewConfiguration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;[[WKWebViewConfiguration alloc]&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;                                         init];&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;WKUserContentController *controller = [[WKUserContentController alloc]&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;                                       init];&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;基本配置&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;WKWebViewConfiguration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;[[WKWebViewConfiguration alloc]
+                                         init];
+WKUserContentController *controller = [[WKUserContentController alloc]
+                                       init];
 
-&lt;span class=&quot;s&quot;&gt;[controller addScriptMessageHandler:self name:@&amp;quot;observe&amp;quot;];&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;configuration.userContentController = controller;&lt;/span&gt;
+[controller addScriptMessageHandler:self name:@&quot;observe&quot;];
+configuration.userContentController = controller;
 
-&lt;span class=&quot;s&quot;&gt;NSURL *jsbin = [NSURL URLWithString:E_WEB_URL];&lt;/span&gt;
+NSURL *jsbin = [NSURL URLWithString:E_WEB_URL];
 
-&lt;span class=&quot;s&quot;&gt;_webView = [[WKWebView alloc] initWithFrame:self.view.frame&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;                              configuration:configuration];&lt;/span&gt;
+_webView = [[WKWebView alloc] initWithFrame:self.view.frame
+                              configuration:configuration];
 
-&lt;span class=&quot;s&quot;&gt;[_webView loadRequest:[NSURLRequest requestWithURL:jsbin]]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+[_webView loadRequest:[NSURLRequest requestWithURL:jsbin]]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;view&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addSubview&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_webView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
 
 &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JavaScript&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;回调&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userContentController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WKUserContentController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userContentController&lt;/span&gt;
       &lt;span class=&quot;n&quot;&gt;didReceiveScriptMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WKScriptMessage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isEqualToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;observe&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Received event %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isEqualToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;observe&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Received event %@&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;在JavaScript中如下调用Post信息到客户端&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;n&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;webkit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;messageHandlers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;observe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;postMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message_object_send_to_client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;n&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;webkit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;messageHandlers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;observe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;postMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message_object_send_to_client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;单从 API 设计上看,WKWebView 比 UIWebView 不知高到哪里去了.&lt;/p&gt;
 
 &lt;h2 id=&quot;javascriptcore&quot;&gt;JavaScriptCore&lt;/h2&gt;
 &lt;p&gt;Nshipster 上有很好的&lt;a href=&quot;http://nshipster.cn/javascriptcore/&quot;&gt;文章&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;其他&lt;/h2&gt;
+&lt;h2 id=&quot;其他&quot;&gt;其他&lt;/h2&gt;
 &lt;p&gt;以上只是 iOS Native 与 JavaScript 交互的通信渠道,在此基层上应封装自己的通信组件.&lt;br /&gt;
 &lt;a href=&quot;https://github.com/casatwy/CTMediator&quot;&gt;CTMediator&lt;/a&gt;是简单明了的参考.&lt;br /&gt;
 安全是个大问题,关注的朋友可以参考&lt;a href=&quot;https://github.com/bang590/JSPatch&quot;&gt;JSPatch&lt;/a&gt;.&lt;br /&gt;
 本文 Demo 地址 &lt;a href=&quot;https://github.com/ezrohir/Native.JavaScript&quot;&gt;https://github.com/ezrohir/Native.JavaScript&lt;/a&gt;
 也不懂 Dom 的生命周期,所以 Demo 仅供参考.&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;参考&lt;/h2&gt;
+&lt;h2 id=&quot;参考&quot;&gt;参考&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;http://www.joshuakehn.com/2014/10/29/using-javascript-with-wkwebview-in-ios-8.html&quot;&gt;Using JavaScript with WKWebView in iOS 8&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 07 Apr 2016 06:14:54 +0800</pubDate>
-        <link>/2016/04/07/native-to-webview/</link>
-        <guid isPermaLink="true">/2016/04/07/native-to-webview/</guid>
+        <link>http://localhost:4000/2016/04/07/native-to-webview/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/04/07/native-to-webview/</guid>
         
         
-        <category>ios</category>
+        <category>iOS</category>
         
       </item>
     
@@ -122,19 +182,19 @@ WKWebView 提供了 WKScriptMessageHandler ,JavaScript能通过改对象Post信�
 &lt;p&gt;很显然,不同的 Tagget 的配置是不一样的.手动改的话经常遗漏,比如我在提交1.1版本的时候就忘记移除开发调试选项的bundle发现后不得不重新提交ipa文件,痛定思痛,参考了一些优秀博客,使App支持多了Target的自动配置,以下为一点感悟.&lt;/p&gt;
 
 &lt;h3 id=&quot;preprocessor-macros&quot;&gt;Preprocessor Macros&lt;/h3&gt;
-&lt;p&gt;在Project-&amp;gt;Targets-&amp;gt;Build Settings-&amp;gt;Apple LLVM7.0 - Preprocessing 中可以设置宏,代码中出镜率很高的 &lt;code&gt;DEBUG&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;在Project-&amp;gt;Targets-&amp;gt;Build Settings-&amp;gt;Apple LLVM7.0 - Preprocessing 中可以设置宏,代码中出镜率很高的 &lt;code class=&quot;highlighter-rouge&quot;&gt;DEBUG&lt;/code&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ifdef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DEBUG&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endif&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ifdef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DEBUG&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endif&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;在这里可以发现它的身影.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://7u2qbg.com1.z0.glb.clouddn.com/Screen_Shot_2016-01-25_at_16_06_41.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;同理,可以添加自定义的预处理宏 &lt;code&gt;ADHOC_DEBUG_TARGET=1&lt;/code&gt;
+&lt;p&gt;同理,可以添加自定义的预处理宏 &lt;code class=&quot;highlighter-rouge&quot;&gt;ADHOC_DEBUG_TARGET=1&lt;/code&gt;
 在配置文件根据环境做不同的设置,比如:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ifdef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ADHOC_DEBUG_TARGET&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ifdef&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ADHOC_DEBUG_TARGET&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kAPIURL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ADHOC_RELEASE_TARGET&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kAPIURL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
@@ -142,52 +202,52 @@ WKWebView 提供了 WKScriptMessageHandler ,JavaScript能通过改对象Post信�
     &lt;span class=&quot;n&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kAPIURL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
     &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endif&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endif&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;h3 id=&quot;user-defined-settings&quot;&gt;User-Defined Settings&lt;/h3&gt;
-&lt;p&gt;在集成小米推送服务中发现了 &lt;code&gt;User-Defined&lt;/code&gt; 的使用,依葫芦话瓢,&lt;code&gt;Preprocessor Macros&lt;/code&gt; 实现的功能也可以换种方法实现.&lt;/p&gt;
+&lt;p&gt;在集成小米推送服务中发现了 &lt;code class=&quot;highlighter-rouge&quot;&gt;User-Defined&lt;/code&gt; 的使用,依葫芦话瓢,&lt;code class=&quot;highlighter-rouge&quot;&gt;Preprocessor Macros&lt;/code&gt; 实现的功能也可以换种方法实现.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://7u2qbg.com1.z0.glb.clouddn.com/Screen_Shot_2016-01-25_at_16_23_12.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;那么怎么取得 &lt;code&gt;DEFINEDENV&lt;/code&gt; 对应的值.如下代码:&lt;/p&gt;
+&lt;p&gt;那么怎么取得 &lt;code class=&quot;highlighter-rouge&quot;&gt;DEFINEDENV&lt;/code&gt; 对应的值.如下代码:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSBundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mainBundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;infoDictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;valueForKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;DEFINEDENV&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;env is %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSBundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mainBundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;infoDictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;valueForKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;DEFINEDENV&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;env is %@&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;取得 &lt;code&gt;DEFINEDENV&lt;/code&gt; 值以后,然后根据实际需要做自定义操作.&lt;/p&gt;
+&lt;p&gt;取得 &lt;code class=&quot;highlighter-rouge&quot;&gt;DEFINEDENV&lt;/code&gt; 值以后,然后根据实际需要做自定义操作.&lt;/p&gt;
 
-&lt;p&gt;相比较, &lt;code&gt;Preprocessor Macros&lt;/code&gt; 和 &lt;code&gt;User-Defined Settings&lt;/code&gt; 使用场景还是有区别的.本人实际也没什么经验.&lt;/p&gt;
+&lt;p&gt;相比较, &lt;code class=&quot;highlighter-rouge&quot;&gt;Preprocessor Macros&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;User-Defined Settings&lt;/code&gt; 使用场景还是有区别的.本人实际也没什么经验.&lt;/p&gt;
 
-&lt;p&gt;主观感受　&lt;code&gt;Preprocessor Macros&lt;/code&gt; 用的多的地方可能是自定义配置.&lt;/p&gt;
+&lt;p&gt;主观感受　&lt;code class=&quot;highlighter-rouge&quot;&gt;Preprocessor Macros&lt;/code&gt; 用的多的地方可能是自定义配置.&lt;/p&gt;
 
-&lt;p&gt;对于 &lt;code&gt;User-Defined Settings&lt;/code&gt; ,我们有时候需要根据测试环境和生成环境不同设置不同图片,或者不同的　&lt;code&gt;Target&lt;/code&gt; 使用不同的图片.这时候它很适用:&lt;/p&gt;
+&lt;p&gt;对于 &lt;code class=&quot;highlighter-rouge&quot;&gt;User-Defined Settings&lt;/code&gt; ,我们有时候需要根据测试环境和生成环境不同设置不同图片,或者不同的　&lt;code class=&quot;highlighter-rouge&quot;&gt;Target&lt;/code&gt; 使用不同的图片.这时候它很适用:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getEnvImageName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imageName&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getEnvImageName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imageName&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;suffix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSBundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mainBundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;infoDictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;valueForKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;IMAGE_SUFFIX&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;suffix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSBundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mainBundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;infoDictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;valueForKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;IMAGE_SUFFIX&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imageName&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stringByAppendingString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suffix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;其他&lt;/h3&gt;
-&lt;p&gt;以上仅是实际使用的一些皮毛,对于 Xcode 中的 &lt;code&gt;Target&lt;/code&gt; 的 configure 设置怎么链入编译器,是个很深的话题,回头再研究.&lt;/p&gt;
+&lt;h3 id=&quot;其他&quot;&gt;其他&lt;/h3&gt;
+&lt;p&gt;以上仅是实际使用的一些皮毛,对于 Xcode 中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Target&lt;/code&gt; 的 configure 设置怎么链入编译器,是个很深的话题,回头再研究.&lt;/p&gt;
 </description>
         <pubDate>Mon, 25 Jan 2016 00:00:00 +0800</pubDate>
-        <link>/2016/01/25/iOS_Multi-Target_Configuration/</link>
-        <guid isPermaLink="true">/2016/01/25/iOS_Multi-Target_Configuration/</guid>
+        <link>http://localhost:4000/2016/01/25/iOS_Multi-Target_Configuration/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/01/25/iOS_Multi-Target_Configuration/</guid>
         
         
-        <category>ios</category>
+        <category>iOS</category>
         
       </item>
     
       <item>
         <title>Runtime随感合集</title>
-        <description>&lt;h3 id=&quot;property-&quot;&gt;不能动态添加 property 问题&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;不能动态添加-property-问题&quot;&gt;不能动态添加 property 问题&lt;/h3&gt;
 &lt;p&gt;这个其实还是很好理解的, property 可以理解为对实例变量的 get set 方法.关键点在实例变量,编译的时候实例变量的布局已经确定.
 至于动态添加方法 Class 结构中有对于 指针数组,用于存储方法列表的指针.
 至于实例变量,是能动态添加的,通过 Runtime 的 Associated Objects 函数添加实例变量,印象中是添加在一个全局的管理器中.&lt;/p&gt;
 
-&lt;h3 id=&quot;receiver-message--objective-c-runtime-&quot;&gt;从 [receiver message] 引发的对 Objective-C Runtime 的理解&lt;/h3&gt;
+&lt;h3 id=&quot;从-receiver-message-引发的对-objective-c-runtime-的理解&quot;&gt;从 [receiver message] 引发的对 Objective-C Runtime 的理解&lt;/h3&gt;
 &lt;p&gt;对于执行某个方法,最简单的模型是能直接找到函数指针.这样就不能是Runtime了,因为在编译的时候就知道了要掉哪个地址的函数.&lt;/p&gt;
 
 &lt;p&gt;站在运行时看, receiver 是对象是实例, message 可以直观上理解为函数指针,但我也是上过小学的人,这么理解肯定不对,好歹也是个函数指针的封装,还有些额外信息,看起来问题复杂了.&lt;/p&gt;
@@ -207,123 +267,123 @@ metaClass ,还有一些其他重要的指针数组,比如装实例变量的数�
 理想情况下 message 会被找到,但是万一没有了?Runtime 提供了一些补救的措施,这也是 Runtime 的一部分.有三个重要环节,
 动态方法解析,重定向,方法转发.&lt;/p&gt;
 
-&lt;p&gt;如果 message 对应的结构体封装没找到,首先执行动态方法解析,给一个改过自新的机会,&lt;code&gt;+ (BOOL)resolveInstanceMethod:(SEL)aSEL&lt;/code&gt;,
-Runtime 问码农,你愿意给改类动态添加对应的message吗? 我不愿意.OK,Runtime还是会再给一次机会. &lt;code&gt;- (id)forwardingTargetForSelector:(SEL)aSelector&lt;/code&gt; 将被调用, Runtime 的期望值降低了,你不干那你把活仍给其他对象干总OK吧.
-码农比较倔,就不扔给其他对象,本是同根生,相煎何太急,就返回 &lt;code&gt;nil&lt;/code&gt; 怎么滴. Runtime 还是比较温和的, &lt;code&gt;- (void)forwardInvocation:(NSInvocation *)anInvocation&lt;/code&gt; 方法转发的调用被抛出,不过已经很无语了.不坚持的码农不是好码农,就是不处理,代价就是App崩溃了.用户在骂,尼玛,这破软件
+&lt;p&gt;如果 message 对应的结构体封装没找到,首先执行动态方法解析,给一个改过自新的机会,&lt;code class=&quot;highlighter-rouge&quot;&gt;+ (BOOL)resolveInstanceMethod:(SEL)aSEL&lt;/code&gt;,
+Runtime 问码农,你愿意给改类动态添加对应的message吗? 我不愿意.OK,Runtime还是会再给一次机会. &lt;code class=&quot;highlighter-rouge&quot;&gt;- (id)forwardingTargetForSelector:(SEL)aSelector&lt;/code&gt; 将被调用, Runtime 的期望值降低了,你不干那你把活仍给其他对象干总OK吧.
+码农比较倔,就不扔给其他对象,本是同根生,相煎何太急,就返回 &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt; 怎么滴. Runtime 还是比较温和的, &lt;code class=&quot;highlighter-rouge&quot;&gt;- (void)forwardInvocation:(NSInvocation *)anInvocation&lt;/code&gt; 方法转发的调用被抛出,不过已经很无语了.不坚持的码农不是好码农,就是不处理,代价就是App崩溃了.用户在骂,尼玛,这破软件
 请的什么临时工啊.&lt;/p&gt;
 
 &lt;p&gt;以上是 Runtime 的主要流程,看起来比较枯燥,但是用的好,普通码农和优秀码农的区别就出来了.经典案例, &lt;a href=&quot;http://tech.glowing.com/cn/method-swizzling-aop/&quot;&gt;Method Swizzling 和 AOP 实践&lt;/a&gt;,看完整个人就不好.他们怎么能成角儿啊，得敲多少行代码，我什么时候才能成角儿啊.(出自霸王别姬).&lt;/p&gt;
 
 &lt;p&gt;发现今天思维异常活跃,一气呵成,感觉非常好.PS,这只是自己念念叨叨,随感而发. Runtime 这块,很多蚂蝗的文章写的深入浅出.&lt;/p&gt;
 
-&lt;h3 id=&quot;app&quot;&gt;App不能添加动态库的问题&lt;/h3&gt;
+&lt;h3 id=&quot;app不能添加动态库的问题&quot;&gt;App不能添加动态库的问题&lt;/h3&gt;
 &lt;p&gt;悬而未决,现在的认识只是系统安全限制,技术上添加动态库是没问题的.这个需要研究下.&lt;/p&gt;
 </description>
         <pubDate>Tue, 28 Jul 2015 00:00:00 +0800</pubDate>
-        <link>/2015/07/28/Runtime%E9%9A%8F%E6%84%9F/</link>
-        <guid isPermaLink="true">/2015/07/28/Runtime%E9%9A%8F%E6%84%9F/</guid>
+        <link>http://localhost:4000/2015/07/28/Runtime%E9%9A%8F%E6%84%9F/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015/07/28/Runtime%E9%9A%8F%E6%84%9F/</guid>
         
         
-        <category>ios</category>
+        <category>iOS</category>
         
       </item>
     
       <item>
         <title>WebViewJavascriptBridge 初探</title>
-        <description>&lt;p&gt;一般而言,对 native 调用h5中的js方法, &lt;code&gt;UIWebView&lt;/code&gt; 有提供API &lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;
+        <description>&lt;p&gt;一般而言,对 native 调用h5中的js方法, &lt;code class=&quot;highlighter-rouge&quot;&gt;UIWebView&lt;/code&gt; 有提供API &lt;code class=&quot;highlighter-rouge&quot;&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;
 ,改方法返回 string 类型的字符串,传入参数为一个 string 类型的js方法.&lt;/p&gt;
 
-&lt;p&gt;对于h5中的js与 native 通信,是通过拦截 &lt;code&gt;UIWebView&lt;/code&gt; 的 &lt;code&gt;webView:shouldStartLoadWithRequest:navigationType&lt;/code&gt; 方法.&lt;/p&gt;
+&lt;p&gt;对于h5中的js与 native 通信,是通过拦截 &lt;code class=&quot;highlighter-rouge&quot;&gt;UIWebView&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;webView:shouldStartLoadWithRequest:navigationType&lt;/code&gt; 方法.&lt;/p&gt;
 
 &lt;p&gt;以上为大致的原理, WebViewJavascriptBridge 在此基础上做了写封装.&lt;/p&gt;
 
-&lt;h3 id=&quot;js&quot;&gt;本地调js&lt;/h3&gt;
+&lt;h3 id=&quot;本地调js&quot;&gt;本地调js&lt;/h3&gt;
 
-&lt;p&gt;WebViewJavascriptBridge 中调用 js 方法,还是通过 &lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt; .如下代码&lt;/p&gt;
+&lt;p&gt;WebViewJavascriptBridge 中调用 js 方法,还是通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt; .如下代码&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_sendData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;WVJBResponseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;handlerName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;handlerName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_sendData&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;WVJBResponseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;handlerName&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;handlerName&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nx&quot;&gt;NSMutableDictionary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSMutableDictionary&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;dictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;data&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;data&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stringWithFormat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;objc_cb_%ld&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_uniqueId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stringWithFormat&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;objc_cb_%ld&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_uniqueId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
         &lt;span class=&quot;nx&quot;&gt;_responseCallbacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;callbackId&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;callbackId&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;handlerName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;handlerName&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;handlerName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;handlerName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;handlerName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_queueMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_queueMessage&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;ol&gt;
   &lt;li&gt;将传到js的数据封装下.&lt;/li&gt;
-  &lt;li&gt;将responseCallback 这个block存到本地的一个 &lt;code&gt;NSMutableDictionary&lt;/code&gt; 容器中,key值为一个每次调用
-  &lt;code&gt;_sendData:responseCallback:handlerName&lt;/code&gt; 自增的int型的标识和特定字符串的组合(&lt;code&gt;[NSString stringWithFormat:@&quot;objc_cb_%ld&quot;, ++_uniqueId]&lt;/code&gt;).&lt;/li&gt;
-  &lt;li&gt;移交给其他函数处理这个message,核心就是调用 &lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;,期间会有
+  &lt;li&gt;将responseCallback 这个block存到本地的一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;NSMutableDictionary&lt;/code&gt; 容器中,key值为一个每次调用
+  &lt;code class=&quot;highlighter-rouge&quot;&gt;_sendData:responseCallback:handlerName&lt;/code&gt; 自增的int型的标识和特定字符串的组合(&lt;code class=&quot;highlighter-rouge&quot;&gt;[NSString stringWithFormat:@&quot;objc_cb_%ld&quot;, ++_uniqueId]&lt;/code&gt;).&lt;/li&gt;
+  &lt;li&gt;移交给其他函数处理这个message,核心就是调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;,期间会有
   数据的转换(json).&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;js-1&quot;&gt;js调本地&lt;/h3&gt;
-&lt;p&gt;上述代码中,responseCallback 的实现是js会伪造一个新url请求,让 &lt;code&gt;UIWebView&lt;/code&gt; 来拦截.
+&lt;h3 id=&quot;js调本地&quot;&gt;js调本地&lt;/h3&gt;
+&lt;p&gt;上述代码中,responseCallback 的实现是js会伪造一个新url请求,让 &lt;code class=&quot;highlighter-rouge&quot;&gt;UIWebView&lt;/code&gt; 来拦截.
 responseCallback 是js掉本地的方法的一种情况.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;BOOL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;UIWebView&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shouldStartLoadWithRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSURLRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;navigationType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;UIWebViewNavigationType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;navigationType&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;BOOL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;UIWebView&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shouldStartLoadWithRequest&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSURLRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;navigationType&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;UIWebViewNavigationType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;navigationType&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_webView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;YES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;nx&quot;&gt;NSURL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
     &lt;span class=&quot;nx&quot;&gt;__strong&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;WVJB_WEBVIEW_DELEGATE_TYPE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;strongDelegate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_webViewDelegate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;// 拦截是不是 js 伪造的请求&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;([[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isEqualToString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kCustomProtocolScheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;([[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isEqualToString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kQueueHasMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;([[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isEqualToString&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kCustomProtocolScheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;([[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isEqualToString&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;kQueueHasMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_flushMessageQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;WebViewJavascriptBridge: WARNING: Received unknown WebViewJavascriptBridge command %@://%@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;kCustomProtocolScheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;WebViewJavascriptBridge: WARNING: Received unknown WebViewJavascriptBridge command %@://%@&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;kCustomProtocolScheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;strongDelegate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;strongDelegate&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;respondsToSelector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;shouldStartLoadWithRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;navigationType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;strongDelegate&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shouldStartLoadWithRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;navigationType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;navigationType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;strongDelegate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;strongDelegate&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;respondsToSelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;webView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;shouldStartLoadWithRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;navigationType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:)])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;strongDelegate&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;webView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;webView&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;shouldStartLoadWithRequest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;navigationType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;navigationType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;YES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;如上述注释,如果有拦截到会调用 &lt;code&gt;[self _flushMessageQueue]&lt;/code&gt; 方法.
-改方法主要是 主动再次掉 &lt;code&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;,js 方法明是 &lt;code&gt;WebViewJavascriptBridge._fetchQueue&lt;/code&gt;,该方法在js容器中存储了回调数据.其他顺利成章的处理数据流程.如下:&lt;/p&gt;
+&lt;p&gt;如上述注释,如果有拦截到会调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;[self _flushMessageQueue]&lt;/code&gt; 方法.
+改方法主要是 主动再次掉 &lt;code class=&quot;highlighter-rouge&quot;&gt;stringByEvaluatingJavaScriptFromString&lt;/code&gt;,js 方法明是 &lt;code class=&quot;highlighter-rouge&quot;&gt;WebViewJavascriptBridge._fetchQueue&lt;/code&gt;,该方法在js容器中存储了回调数据.其他顺利成章的处理数据流程.如下:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_flushMessageQueue&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messageQueueString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_webView&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stringByEvaluatingJavaScriptFromString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;WebViewJavascriptBridge._fetchQueue();&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_flushMessageQueue&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messageQueueString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_webView&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stringByEvaluatingJavaScriptFromString&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;WebViewJavascriptBridge._fetchQueue();&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
 
-    &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_deserializeMessageJSON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messageQueueString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isKindOfClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSArray&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_deserializeMessageJSON&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messageQueueString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isKindOfClass&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSArray&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;WVJBMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isKindOfClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;WVJBMessage&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;isKindOfClass&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;WVJBMessage&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;WebViewJavascriptBridge: WARNING: Invalid %@ received: %@&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
             &lt;span class=&quot;k&quot;&gt;continue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;RCVD&amp;quot;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_log&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RCVD&quot;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
 
-        &lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;responseId&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;responseId&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
             &lt;span class=&quot;nx&quot;&gt;WVJBResponseCallback&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_responseCallbacks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;responseData&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_responseCallbacks&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;removeObjectForKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;responseData&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;_responseCallbacks&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;removeObjectForKey&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
             &lt;span class=&quot;nx&quot;&gt;WVJBResponseCallback&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;callbackId&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;NSString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;callbackId&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
             &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
                 &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
                     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
                         &lt;span class=&quot;nx&quot;&gt;responseData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSNull&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
                     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-                    &lt;span class=&quot;nx&quot;&gt;WVJBMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;msg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;responseId&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;responseData&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseData&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-                    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_queueMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;WVJBMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;msg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;responseId&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;callbackId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;responseData&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;responseData&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+                    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;_queueMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
                 &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
                 &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ignoreResponseData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -332,29 +392,29 @@ responseCallback 是js掉本地的方法的一种情况.&lt;/p&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
             &lt;span class=&quot;nx&quot;&gt;WVJBHandler&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;handlerName&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_messageHandlers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;handlerName&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;handlerName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_messageHandlers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;handlerName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
                 &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;_messageHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
             &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSException&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;raise&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;WVJBNoHandlerException&amp;quot;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;No handler for message from JS: %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NSException&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;raise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;WVJBNoHandlerException&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;No handler for message from JS: %@&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-            &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;data&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;data&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;responseCallback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;不懂 js 是硬伤,以上很多都是基于假设,不过假设应该是对的.  &lt;/p&gt;
+&lt;p&gt;不懂 js 是硬伤,以上很多都是基于假设,不过假设应该是对的.&lt;/p&gt;
 </description>
         <pubDate>Sun, 05 Jul 2015 00:00:00 +0800</pubDate>
-        <link>/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2/</link>
-        <guid isPermaLink="true">/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2/</guid>
+        <link>http://localhost:4000/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015/07/05/WebViewJavascriptBridge%E5%88%9D%E6%8E%A2/</guid>
         
         
-        <category>ios</category>
+        <category>iOS</category>
         
       </item>
     
@@ -366,18 +426,20 @@ responseCallback 是js掉本地的方法的一种情况.&lt;/p&gt;
 &lt;p&gt;滑动帧率很低时,当为GPU瓶颈时,
 &lt;img src=&quot;http://7u2qbg.com1.z0.glb.clouddn.com/insrument_CoremeAnimation2015-01-27 10.24.26.png&quot; alt=&quot;Insrument_CoreAnimation&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;这时候一般下面俩值数值很高.
-+ &lt;strong&gt;&lt;em&gt;Renderer Utilization&lt;/em&gt;&lt;/strong&gt; 这个值一般大于50%有可能会掉帧,主要是因为视图过度混合(重叠的半透明图层)或者离屏渲染引起的.
-+ &lt;strong&gt;&lt;em&gt;Tiler Utilization&lt;/em&gt;&lt;/strong&gt;这个值大于50%也会降低帧率,造成的原因是图层太多.&lt;/p&gt;
+&lt;p&gt;这时候一般下面俩值数值很高.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Renderer Utilization&lt;/em&gt;&lt;/strong&gt; 这个值一般大于50%有可能会掉帧,主要是因为视图过度混合(重叠的半透明图层)或者离屏渲染引起的.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Tiler Utilization&lt;/em&gt;&lt;/strong&gt;这个值大于50%也会降低帧率,造成的原因是图层太多.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h3 id=&quot;time-profiler&quot;&gt;Time Profiler&lt;/h3&gt;
 &lt;p&gt;滑动时帧率很低时,有可能是CPU瓶颈,这时候一般都能在Time Profiler中看到,下图是正常情况,当App的CPU利用率接近渲染进程(backboardd),是时候优化Time Profiler中高危份子了.
 &lt;img src=&quot;http://7u2qbg.com1.z0.glb.clouddn.com/instrument_timeProfiler%202015-01-27%2010.24.56.png&quot; alt=&quot;instrument_timeProfiler&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;io&quot;&gt;IO瓶颈&lt;/h3&gt;
+&lt;h3 id=&quot;io瓶颈&quot;&gt;IO瓶颈&lt;/h3&gt;
 &lt;p&gt;待续&lt;/p&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;参考&lt;/h3&gt;
+&lt;h3 id=&quot;参考&quot;&gt;参考&lt;/h3&gt;
 &lt;p&gt;下面都是不错的参考&lt;/p&gt;
 
 &lt;ul&gt;
@@ -386,11 +448,11 @@ responseCallback 是js掉本地的方法的一种情况.&lt;/p&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Sun, 04 Jan 2015 00:00:00 +0800</pubDate>
-        <link>/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/</link>
-        <guid isPermaLink="true">/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/</guid>
+        <link>http://localhost:4000/2015/01/04/iOS-App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/</link>
+        <guid isPermaLink="true">http://localhost:4000/2015/01/04/iOS-App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/</guid>
         
         
-        <category>ios</category>
+        <category>iOS</category>
         
       </item>
     
@@ -398,26 +460,26 @@ responseCallback 是js掉本地的方法的一种情况.&lt;/p&gt;
         <title>集成crashlystics</title>
         <description>&lt;p&gt;相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的&lt;/p&gt;
 
-&lt;h3 id=&quot;xcodecrashlyticscrash&quot;&gt;真机链接Xcode调试Crashlytics是收集不到Crash日志的&lt;/h3&gt;
+&lt;h3 id=&quot;真机链接xcode调试crashlytics是收集不到crash日志的&quot;&gt;真机链接Xcode调试Crashlytics是收集不到Crash日志的&lt;/h3&gt;
 &lt;p&gt;真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点.&lt;/p&gt;
 
 &lt;h3 id=&quot;debug-mode&quot;&gt;debug-mode&lt;/h3&gt;
-&lt;p&gt;Crashlytics 的SDK提供&lt;code&gt;debugMode&lt;/code&gt;属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.&lt;/p&gt;
+&lt;p&gt;Crashlytics 的SDK提供&lt;code class=&quot;highlighter-rouge&quot;&gt;debugMode&lt;/code&gt;属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Crashlytics&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;debugMode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Crashlytics&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;debugMode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;YES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h3 id=&quot;crashlytics&quot;&gt;友盟也会拦截掉Crashlytics&lt;/h3&gt;
+&lt;h3 id=&quot;友盟也会拦截掉crashlytics&quot;&gt;友盟也会拦截掉Crashlytics&lt;/h3&gt;
 &lt;p&gt;App crash后，抢hook的真不少.一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MobClick&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;setCrashReportEnabled&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MobClick&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;startWithAppkey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;YOURKEY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reportPolicy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;YOURPOLICY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channelId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;YOURCHANNELID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MobClick&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;setCrashReportEnabled&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MobClick&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;startWithAppkey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;YOURKEY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reportPolicy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;YOURPOLICY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channelId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;YOURCHANNELID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;最后强烈建议集成到slack中，真的很方便.
 PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话.&lt;/p&gt;
 </description>
         <pubDate>Fri, 19 Dec 2014 00:00:00 +0800</pubDate>
-        <link>/2014/12/19/%E9%9B%86%E6%88%90crashlytics/</link>
-        <guid isPermaLink="true">/2014/12/19/%E9%9B%86%E6%88%90crashlytics/</guid>
+        <link>http://localhost:4000/2014/12/19/%E9%9B%86%E6%88%90crashlytics/</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/12/19/%E9%9B%86%E6%88%90crashlytics/</guid>
         
         
         <category>tool</category>
@@ -426,12 +488,12 @@ PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的
     
       <item>
         <title>I/O多路复用-select函数</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;函数申明&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;
-int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set *restrict errorfds, struct timeval *restrict timeout);
-&lt;/code&gt;&lt;/p&gt;
+        <description>&lt;h3 id=&quot;函数申明&quot;&gt;函数申明&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set *restrict errorfds, struct timeval *restrict timeout);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;参数&lt;/h3&gt;
+&lt;h3 id=&quot;参数&quot;&gt;参数&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;nfds 最大文件描述符加1. (FD_SETSIZE ,大于等于系统支持的最大文件描述符number)&lt;/li&gt;
   &lt;li&gt;readfds 检查可读性的描述符集合,函数调用后可能被覆盖为可读描述符的结果返回&lt;/li&gt;
@@ -440,19 +502,19 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
   &lt;li&gt;timeout 时间结构体指针&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;是否阻塞&lt;/h3&gt;
+&lt;h3 id=&quot;是否阻塞&quot;&gt;是否阻塞&lt;/h3&gt;
 &lt;p&gt;timeout 参数决定select是否阻塞 &lt;br /&gt;
 当 timeout 为 NULL 时, select 函数会一直阻塞直到监听的文件描述符发生变化.&lt;br /&gt;
 当 timeout 为 0 时, select 函数立刻返回.&lt;br /&gt;
 当 timeout &amp;gt; 0 时, select 函数阻塞特定时间返回.&lt;br /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;返回值&lt;/h3&gt;
+&lt;h3 id=&quot;返回值&quot;&gt;返回值&lt;/h3&gt;
 &lt;p&gt;对于 select 的返回值, 负值表示 select 函数执行中发生错误. 0 表示超时结束. 正值表示有可读描述符.&lt;br /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-4&quot;&gt;示例代码&lt;/h3&gt;
+&lt;h3 id=&quot;示例代码&quot;&gt;示例代码&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;http://www.gnu.org/software/libc/manual/html_node/Server-Example.html&quot;&gt;代码源地址&lt;/a&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stdio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stdio&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stdlib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unistd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
@@ -474,7 +536,7 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nbytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
       &lt;span class=&quot;cm&quot;&gt;/* Read error. */&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;read&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;read&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
       &lt;span class=&quot;nx&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;EXIT_FAILURE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nbytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -483,7 +545,7 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
   &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
       &lt;span class=&quot;cm&quot;&gt;/* Data read. */&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;fprintf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Server: got message: `%s&amp;#39;\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;fprintf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Server: got message: `%s'\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
       &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -502,7 +564,7 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
   &lt;span class=&quot;nx&quot;&gt;sock&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;make_socket&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;PORT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;listen&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;listen&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
       &lt;span class=&quot;nx&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;EXIT_FAILURE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
@@ -524,7 +586,7 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
 
       &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;FD_SETSIZE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;read_fd_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-          &lt;span class=&quot;nx&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;select&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+          &lt;span class=&quot;nx&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;select&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
           &lt;span class=&quot;nx&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;EXIT_FAILURE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
@@ -550,11 +612,11 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
                               &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
                 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
                   &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;accept&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;accept&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
                     &lt;span class=&quot;nx&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;EXIT_FAILURE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
                   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
                 &lt;span class=&quot;nx&quot;&gt;fprintf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;s2&quot;&gt;&amp;quot;Server: connect from host %s, port %hd.\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                         &lt;span class=&quot;s2&quot;&gt;&quot;Server: connect from host %s, port %hd.\n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
                          &lt;span class=&quot;nx&quot;&gt;inet_ntoa&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sin_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
                          &lt;span class=&quot;nx&quot;&gt;ntohs&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sin_port&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
                 &lt;span class=&quot;nx&quot;&gt;FD_SET&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;active_fd_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -570,15 +632,15 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
               &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
           &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Mon, 03 Nov 2014 00:00:00 +0800</pubDate>
-        <link>/2014/11/03/I:O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8select/</link>
-        <guid isPermaLink="true">/2014/11/03/I:O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8select/</guid>
+        <link>http://localhost:4000/2014/11/03/I-O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8select/</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/11/03/I-O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8select/</guid>
         
         
-        <category>network</category>
+        <category>Network</category>
         
       </item>
     
@@ -593,22 +655,22 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
 
 &lt;p&gt;URLs cannot contain spaces. URL encoding normally replaces a space with a plus (+) sign or with %20.&lt;/p&gt;
 
-&lt;p&gt;掉坑是因为App内动态控制 url ,服务端返回的 url 带中文字符, NSString类提供了 &lt;code&gt;stringByAddingPercentEscapesUsingEncoding:&lt;/code&gt; 方法.该方法能编码非 url 的字符,但对于类似 &lt;code&gt;/&lt;/code&gt; &lt;code&gt;&amp;amp;&lt;/code&gt; 的 reserved characters 没有做处理,也就是没有严格遵守 url 应该编码成 ASCII 字符的规范.
+&lt;p&gt;掉坑是因为App内动态控制 url ,服务端返回的 url 带中文字符, NSString类提供了 &lt;code class=&quot;highlighter-rouge&quot;&gt;stringByAddingPercentEscapesUsingEncoding:&lt;/code&gt; 方法.该方法能编码非 url 的字符,但对于类似 &lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt; 的 reserved characters 没有做处理,也就是没有严格遵守 url 应该编码成 ASCII 字符的规范.
 网上给的通用String的Category:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;- (NSString *)urlencode {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- (NSString *)urlencode {
     NSMutableString *output = [NSMutableString string];
     const unsigned char *source = (const unsigned char *)[self UTF8String];
     int sourceLen = strlen((const char *)source);
     for (int i = 0; i &amp;lt; sourceLen; ++i) {
         const unsigned char thisChar = source[i];
-        if (thisChar == &#39; &#39;){
+        if (thisChar == ' '){
             [output appendString:@&quot;+&quot;];
-        } else if (thisChar == &#39;.&#39; || thisChar == &#39;-&#39; ||
-                   thisChar == &#39;_&#39; || thisChar == &#39;~&#39; ||
-                   (thisChar &amp;gt;= &#39;a&#39; &amp;amp;&amp;amp; thisChar &amp;lt;= &#39;z&#39;) ||
-                   (thisChar &amp;gt;= &#39;A&#39; &amp;amp;&amp;amp; thisChar &amp;lt;= &#39;Z&#39;) ||
-                   (thisChar &amp;gt;= &#39;0&#39; &amp;amp;&amp;amp; thisChar &amp;lt;= &#39;9&#39;)) {
+        } else if (thisChar == '.' || thisChar == '-' ||
+                   thisChar == '_' || thisChar == '~' ||
+                   (thisChar &amp;gt;= 'a' &amp;amp;&amp;amp; thisChar &amp;lt;= 'z') ||
+                   (thisChar &amp;gt;= 'A' &amp;amp;&amp;amp; thisChar &amp;lt;= 'Z') ||
+                   (thisChar &amp;gt;= '0' &amp;amp;&amp;amp; thisChar &amp;lt;= '9')) {
             [output appendFormat:@&quot;%c&quot;, thisChar];
         } else {
             [output appendFormat:@&quot;%%%02X&quot;, thisChar];
@@ -617,31 +679,34 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
   return output;
 }
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
         <pubDate>Mon, 28 Jul 2014 00:00:00 +0800</pubDate>
-        <link>/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91/</link>
-        <guid isPermaLink="true">/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91/</guid>
+        <link>http://localhost:4000/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91/</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91/</guid>
         
         
-        <category>ios</category>
+        <category>iOS</category>
         
       </item>
     
       <item>
         <title>Duplicate Symbol问题</title>
-        <description>&lt;h2 id=&quot;duplicate-symbol-xxx-&quot;&gt;Duplicate Symbol xxx 原因和解决&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;duplicate-symbol-xxx-原因和解决&quot;&gt;Duplicate Symbol xxx 原因和解决&lt;/h2&gt;
 &lt;p&gt;今天引入新的静态库时发生Duplicate Symbol xxx，检查了下工程配置，other linker flag-&amp;gt; -all_load.(此处是铺垫)。然后网上参考了些资料，见尾部。&lt;/p&gt;
 
-&lt;h3 id=&quot;duplicate-symbol&quot;&gt;Duplicate Symbol原因&lt;/h3&gt;
-&lt;p&gt;看报错描述大意知道是俩框架某个Symbol冲突了，那么问题来了，这个冲突的Symbol代表的是什么，函数还是类？其实仔细想想就答案了，Objective-C 这种runtime机制的语言Symbol怎么可能是函数，苹果文档也解释了这点:
-&amp;gt;Objective-C does not define linker symbols for each function (or method, in Objective-C) - instead, linker symbols are only generated for each class. &lt;/p&gt;
+&lt;h3 id=&quot;duplicate-symbol原因&quot;&gt;Duplicate Symbol原因&lt;/h3&gt;
+&lt;p&gt;看报错描述大意知道是俩框架某个Symbol冲突了，那么问题来了，这个冲突的Symbol代表的是什么，函数还是类？其实仔细想想就答案了，Objective-C 这种runtime机制的语言Symbol怎么可能是函数，苹果文档也解释了这点:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Objective-C does not define linker symbols for each function (or method, in Objective-C) - instead, linker symbols are only generated for each class.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;h3 id=&quot;duplicate-symbol-1&quot;&gt;Duplicate Symbol解决&lt;/h3&gt;
+&lt;h3 id=&quot;duplicate-symbol解决&quot;&gt;Duplicate Symbol解决&lt;/h3&gt;
 &lt;p&gt;OK，现在说说看到的解决方法。&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;工具解压静态库，删除相同编译文件，重新打包。如果的时间多想玩玩或者老板让这么干(我不是在黑老板)，&lt;a href=&quot;http://atnan.com/blog/2012/01/12/avoiding-duplicate-symbol-errors-during-linking-by-removing-classes-from-static-libraries&quot;&gt;参考在这&lt;/a&gt;	.&lt;/li&gt;
-  &lt;li&gt;修改other linker flag，常见的other linker flag有&lt;code&gt;-ObjC &lt;/code&gt;,&lt;code&gt;-all_load &lt;/code&gt;,&lt;code&gt;-force_load &lt;/code&gt;.
+  &lt;li&gt;修改other linker flag，常见的other linker flag有&lt;code class=&quot;highlighter-rouge&quot;&gt;-ObjC &lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;-all_load &lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;-force_load &lt;/code&gt;.
     &lt;ul&gt;
       &lt;li&gt;-ObjC  -ObjC allow the static library to use objective-c specific stuffs like kvc or categories.&lt;/li&gt;
       &lt;li&gt;-all_load   Loads all members of static archive libraries.&lt;/li&gt;
@@ -652,12 +717,14 @@ int select(int nfds, fd_set *restrict readfds, fd_set *restrict writefds, fd_set
 
 &lt;p&gt;看解释真没发现-ObjC和-all_load有什么区别，不过事实上other linker flag-&amp;gt; -all_load就会报Duplicate Symbol xxx，而other linker flag-&amp;gt; –ObjC编译通过，只能大胆假设-ObjC下linker会链接所有静态库文件，但不管多少静态库，有没有重复，反正静态库中文件保证只被链接一次，有点GCD中dispatch_once的味道。在求证过程中对-all_load的描述都指向&lt;a href=&quot;https://developer.apple.com/library/mac/qa/qa1490/_index.html&quot;&gt;Technical Q&amp;amp;A QA1490&lt;/a&gt;，但是该Document已修改，感觉苹果应该修正了这个问题。&lt;/p&gt;
 
-&lt;p&gt;PS -all_load引入的原因
-&amp;gt;Important: For 64-bit and iPhone OS applications, there is a linker bug that prevents -ObjC from loading objects files from static libraries that contain only categories and no classes. The workaround is to use the -allload or -forceload flags.&lt;/p&gt;
+&lt;p&gt;PS -all_load引入的原因&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Important: For 64-bit and iPhone OS applications, there is a linker bug that prevents -ObjC from loading objects files from static libraries that contain only categories and no classes. The workaround is to use the -allload or -forceload flags.&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;Anyway,&lt;code&gt;-ObjC&lt;/code&gt;,&lt;code&gt;-force_load &lt;/code&gt;都是快速解决问题的方法。至于&lt;code&gt;-ObjC &lt;/code&gt;与&lt;code&gt;-all_load &lt;/code&gt;,&lt;code&gt;-force_load &lt;/code&gt;的区别，有空再研究下。&lt;/p&gt;
+&lt;p&gt;Anyway,&lt;code class=&quot;highlighter-rouge&quot;&gt;-ObjC&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;-force_load &lt;/code&gt;都是快速解决问题的方法。至于&lt;code class=&quot;highlighter-rouge&quot;&gt;-ObjC &lt;/code&gt;与&lt;code class=&quot;highlighter-rouge&quot;&gt;-all_load &lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;-force_load &lt;/code&gt;的区别，有空再研究下。&lt;/p&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;参考引用&lt;/h3&gt;
+&lt;h3 id=&quot;参考引用&quot;&gt;参考引用&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://developer.apple.com/library/mac/qa/qa1490/_index.html&quot;&gt;Technical Q&amp;amp;A QA1490
 Building Objective-C static libraries with categories&lt;/a&gt;&lt;/p&gt;
@@ -667,29 +734,8 @@ Building Objective-C static libraries with categories&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/2567498/objective-c-categories-in-static-library&quot;&gt;Objective-C categories in static library&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 02 Jul 2014 00:00:00 +0800</pubDate>
-        <link>/2014/07/02/Duplicate-Symbol%E9%97%AE%E9%A2%98/</link>
-        <guid isPermaLink="true">/2014/07/02/Duplicate-Symbol%E9%97%AE%E9%A2%98/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>阅读笔记索引</title>
-        <description>&lt;h2 id=&quot;section&quot;&gt;图形相关&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques.md&quot;&gt;Core-Animation-Advanced-Techniques-寄宿图&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques-图层几何学.md&quot;&gt;Core-Animation-Advanced-Techniques-图层几何学&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques-变换.md&quot;&gt;Core-Animation-Advanced-Techniques-变换&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques-视觉效果.md&quot;&gt;Core-Animation-Advanced-Techniques-视觉效果&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques隐式动画.md&quot;&gt;Core-Animation-Advanced-Techniques-隐式动画&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/Core-Animation-Advanced-Techniques显示动画.md&quot;&gt;Core-Animation-Advanced-Techniques-显式动画&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/iOS-Core-Animation-Advanced-Techniques-图层性能.md&quot;&gt;Core-Animation-Advanced-Techniques-图层性能&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ezrohir/ezrohir.github.io/blob/master/snippet/iOS-Core-Animation-Advanced-Techniques-高效绘图.md&quot;&gt;Core-Animation-Advanced-Techniques-高效绘图&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 03 Mar 2014 23:14:54 +0800</pubDate>
-        <link>/2014/03/03/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E7%B4%A2%E5%BC%95/</link>
-        <guid isPermaLink="true">/2014/03/03/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%E7%B4%A2%E5%BC%95/</guid>
+        <link>http://localhost:4000/2014/07/02/Duplicate-Symbol%E9%97%AE%E9%A2%98/</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/07/02/Duplicate-Symbol%E9%97%AE%E9%A2%98/</guid>
         
         
       </item>

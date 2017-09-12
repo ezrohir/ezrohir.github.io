@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Projects</title>
-	<meta name="description" content="Ez's Ideas & Blogs">
+	<title>CrashLog常见类型</title>
+	<meta name="description" content="CrashLog常见类型App大了后,各种奇怪的问题出现了,以下为碰到的常见的CrashLog,所有CrashLog都是Symbolicated,样本有些是Crashlytics的,有些是本地Xcode解析出来的.">
 	
-	<link rel="canonical" href="http://localhost:4000/projects/">
+	<link rel="canonical" href="http://localhost:4000/2017/09/12/CrashLog%E5%B8%B8%E8%A7%81%E7%B1%BB%E5%9E%8B/">
 	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="http://localhost:4000/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -63,8 +63,8 @@
         
           
             
-              <li class="active">
-              
+              <li>
+            
             <a href="/projects/"><span class="glyphicon "></span> Projects</a></li>
           
         
@@ -90,19 +90,66 @@
       <div class="row">
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
+      <header>
+        <h1>CrashLog常见类型</h1>
+        <p>Sep 12, 2017</p>
+      </header>
+      <hr>
       <article>
-        <ul id="markdown-toc">
-  <li><a href="#all-my-projects" id="markdown-toc-all-my-projects">All my projects</a></li>
-</ul>
+        <h2 id="crashlog常见类型">CrashLog常见类型</h2>
+<p>App大了后,各种奇怪的问题出现了,以下为碰到的常见的CrashLog,所有CrashLog都是Symbolicated,样本有些是Crashlytics的,有些是本地Xcode解析出来的.</p>
 
-<h1 id="all-my-projects">All my projects</h1>
-<p>很寒酸.</p>
+<h4 id="calayer-position-contains-nan">CALayer position contains NaN</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code>Fatal Exception: CALayerInvalidGeometry
+0  CoreFoundation                 0x1c9bfb3d __exceptionPreprocess
+1  libobjc.A.dylib                0x1bc47067 objc_exception_throw
+2  CoreFoundation                 0x1c9bfa85 -[NSException initWithCoder:]
+3  QuartzCore                     0x1f83d82b CA::Layer::set_position(CA::Vec2&lt;double&gt; const&amp;, bool)
+4  QuartzCore                     0x1f83d9e3 -[CALayer setPosition:]
+5  QuartzCore                     0x1f83e049 -[CALayer setFrame:]
+6  UIKit                          0x21be5429 -[UIView(Geometry) setFrame:]
+7  UIKit                          0x21bf7ffd -[UIImageView _setViewGeometry:forMetric:]
+8  UIKit                          0x21bf7f63 -[UIImageView setFrame:]
+</code></pre>
+</div>
+<p>有时候觉得匪夷所思,但是它确实就产生了.产生的主要原因可能是除数是0, 网上看了看也有可能初始化造成,比如</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>UIEdgeInsets a;
+a.left = (...some calculation);
+button.imageEdgeInsets = a;
+</code></pre>
+</div>
+
+<h4 id="线程限制">线程限制</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code>Date/Time:           2017-08-17 15:32:36.822 +0800
+Launch Time:         2017-08-17 15:24:50.041 +0800
+OS Version:          iOS 8.4.1 (12H321)
+Report Version:      105
+
+Exception Type:  EXC_RESOURCE
+Exception Subtype: WAKEUPS
+Exception Message: (Limit 150/sec) Observed 269/sec over 300 secs
+Triggered by Thread:  16
+</code></pre>
+</div>
+<p>Your app is sending a wakeup command to a particular thread in the app quite often - apparently an average of 206 times a second. Background threads in iOS 8 have a hard limit on how many times you can run a sleep/wake cycle on each thread per second, and having a high count here is usually an indication that something is wrong / inefficient in your thread management.</p>
+
+<p>Without seeing your code, my recommendation is that you check your C++ algorithms for sleep/wake calls, or multithread the background process to start new threads each cycle.</p>
+
+<h4 id="其他类型">其他类型</h4>
+<p><a href="https://www.raywenderlich.com/23704/demystifying-ios-application-crash-logs">Raywenderlich</a>有很好的教程.</p>
+
+<h3 id="参考引用">参考引用</h3>
+<ul>
+  <li><a href="https://stackoverflow.com/questions/25848441/app-shutdown-with-exc-resource-wakeups-exception-on-ios-8-gm">EXC_RESOURCE WAKEUPS</a></li>
+  <li><a href="https://developer.apple.com/library/content/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184">Understanding and Analyzing Application Crash Reports</a></li>
+</ul>
 
       </article>
       <hr>
-    <script>
-        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-    </script>
+        </div> -->
+        <script>
+            window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"26"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
     </div>
 	
     <!-- duoshuo.com javascript include code. -->
@@ -112,6 +159,7 @@
 
 
   </div>
+
   <div id="content" class="col-sm-3">
     <!-- <div id="myAffix" class="shadow-bottom-center hidden-xs" data-spy="affix" data-offset-top="0" data-offset-bottom="-20"> -->
     <div id="myAffix" class="shadow-bottom-center hidden-xs" >
@@ -121,6 +169,7 @@
       <div class="content-text"></div>
     </div>
   </div>
+
 </div>
 
     </div>
@@ -151,7 +200,7 @@
           </a>
           
           <span class="point"> · </span>
-          <span><a href="https://github.com/LiXizhi/LiXizhi.github.io/blob/master/pages/1_projects.md">View source</a></span>
+          <span><a href="https://github.com/LiXizhi/LiXizhi.github.io/blob/master/_posts/iOS/2017-09-12-CrashLog常见类型.md">View source</a></span>
           <span class="point"> · </span>
           <span><a href="/feed.xml">RSS</a></span>
           <span class="point"> · </span>
