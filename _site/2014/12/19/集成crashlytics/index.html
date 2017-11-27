@@ -8,8 +8,8 @@
 	<title>集成crashlystics</title>
 	<meta name="description" content="相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的">
 	
-	<link rel="canonical" href="http://localhost:4000/2014/12/19/%E9%9B%86%E6%88%90crashlytics/">
-	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="http://localhost:4000/feed.xml" />
+	<link rel="canonical" href="/2014/12/19/%E9%9B%86%E6%88%90crashlytics/">
+	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
     
@@ -98,19 +98,19 @@
       <article>
         <p>相比友盟的crash统计，感觉Crashlytics专业得多，但集成过程中，坑还是蛮多的</p>
 
-<h3 id="真机链接xcode调试crashlytics是收集不到crash日志的">真机链接Xcode调试Crashlytics是收集不到Crash日志的</h3>
+<h3 id="xcodecrashlyticscrash">真机链接Xcode调试Crashlytics是收集不到Crash日志的</h3>
 <p>真机链接Xcode调试中，crash处理会被Xcode的debugger工具接管，虽然在Editor Scheme中可以设置禁用debugger，但最好别这么干，Crashlytics角色是crash收集工具（虽然官网说可以扔掉Xcode debugger了），一般调试还是Xcode的debugger更方便。但对于某些不稳定bug，Crashlytics好像更方便点.</p>
 
 <h3 id="debug-mode">debug-mode</h3>
-<p>Crashlytics 的SDK提供<code class="highlighter-rouge">debugMode</code>属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.</p>
+<p>Crashlytics 的SDK提供<code>debugMode</code>属性，初次集成的时候打开debugMode属性终端会输出reports上传到服务器的过程，很方便.</p>
 
-<figure class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="p">[</span><span class="n">Crashlytics</span> <span class="n">sharedInstance</span><span class="p">].</span><span class="n">debugMode</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span></code></pre></figure>
+<div class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="p">[</span><span class="n">Crashlytics</span> <span class="n">sharedInstance</span><span class="p">].</span><span class="n">debugMode</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span></code></pre></div>
 
-<h3 id="友盟也会拦截掉crashlytics">友盟也会拦截掉Crashlytics</h3>
+<h3 id="crashlytics">友盟也会拦截掉Crashlytics</h3>
 <p>App crash后，抢hook的真不少.一般App都会用到友盟统计，友盟统计默认开启crash统计，会造成Crashlytics拿不到crash信息，解决如下:</p>
 
-<figure class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="p">[</span><span class="n">MobClick</span> <span class="n">setCrashReportEnabled</span><span class="p">:</span><span class="n">NO</span><span class="p">];</span>
-<span class="p">[</span><span class="n">MobClick</span> <span class="n">startWithAppkey</span><span class="p">:</span><span class="n">YOURKEY</span> <span class="n">reportPolicy</span><span class="p">:</span><span class="n">YOURPOLICY</span> <span class="n">channelId</span><span class="p">:</span><span class="n">YOURCHANNELID</span><span class="p">];</span></code></pre></figure>
+<div class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="p">[</span><span class="n">MobClick</span> <span class="n">setCrashReportEnabled</span><span class="p">:</span><span class="n">NO</span><span class="p">];</span>
+<span class="p">[</span><span class="n">MobClick</span> <span class="n">startWithAppkey</span><span class="p">:</span><span class="n">YOURKEY</span> <span class="n">reportPolicy</span><span class="p">:</span><span class="n">YOURPOLICY</span> <span class="n">channelId</span><span class="p">:</span><span class="n">YOURCHANNELID</span><span class="p">];</span></code></pre></div>
 
 <p>最后强烈建议集成到slack中，真的很方便.
 PS.千万别用平时用的邮箱注册Crashlytics，如果App不是很稳定的话.</p>

@@ -8,8 +8,8 @@
 	<title>App优化的一些总结</title>
 	<meta name="description" content="iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.">
 	
-	<link rel="canonical" href="http://localhost:4000/2015/01/04/iOS-App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/">
-	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="http://localhost:4000/feed.xml" />
+	<link rel="canonical" href="/2015/01/04/iOS%20App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/">
+	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
     
@@ -102,20 +102,18 @@
 <p>滑动帧率很低时,当为GPU瓶颈时,
 <img src="http://7u2qbg.com1.z0.glb.clouddn.com/insrument_CoremeAnimation2015-01-27 10.24.26.png" alt="Insrument_CoreAnimation" /></p>
 
-<p>这时候一般下面俩值数值很高.</p>
-<ul>
-  <li><strong><em>Renderer Utilization</em></strong> 这个值一般大于50%有可能会掉帧,主要是因为视图过度混合(重叠的半透明图层)或者离屏渲染引起的.</li>
-  <li><strong><em>Tiler Utilization</em></strong>这个值大于50%也会降低帧率,造成的原因是图层太多.</li>
-</ul>
+<p>这时候一般下面俩值数值很高.
++ <strong><em>Renderer Utilization</em></strong> 这个值一般大于50%有可能会掉帧,主要是因为视图过度混合(重叠的半透明图层)或者离屏渲染引起的.
++ <strong><em>Tiler Utilization</em></strong>这个值大于50%也会降低帧率,造成的原因是图层太多.</p>
 
 <h3 id="time-profiler">Time Profiler</h3>
 <p>滑动时帧率很低时,有可能是CPU瓶颈,这时候一般都能在Time Profiler中看到,下图是正常情况,当App的CPU利用率接近渲染进程(backboardd),是时候优化Time Profiler中高危份子了.
 <img src="http://7u2qbg.com1.z0.glb.clouddn.com/instrument_timeProfiler%202015-01-27%2010.24.56.png" alt="instrument_timeProfiler" /></p>
 
-<h3 id="io瓶颈">IO瓶颈</h3>
+<h3 id="io">IO瓶颈</h3>
 <p>待续</p>
 
-<h3 id="参考">参考</h3>
+<h3 id="section">参考</h3>
 <p>下面都是不错的参考</p>
 
 <ul>

@@ -8,8 +8,8 @@
 	<title>URL Encoding 的坑</title>
 	<meta name="description" content="URL EncodingURLs can only be sent over the Internet using the ASCII character-set.">
 	
-	<link rel="canonical" href="http://localhost:4000/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91/">
-	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="http://localhost:4000/feed.xml" />
+	<link rel="canonical" href="/2014/07/28/URL_Encoding%E7%9A%84%E5%9D%91/">
+	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
     
@@ -105,10 +105,10 @@
 
 <p>URLs cannot contain spaces. URL encoding normally replaces a space with a plus (+) sign or with %20.</p>
 
-<p>掉坑是因为App内动态控制 url ,服务端返回的 url 带中文字符, NSString类提供了 <code class="highlighter-rouge">stringByAddingPercentEscapesUsingEncoding:</code> 方法.该方法能编码非 url 的字符,但对于类似 <code class="highlighter-rouge">/</code> <code class="highlighter-rouge">&amp;</code> 的 reserved characters 没有做处理,也就是没有严格遵守 url 应该编码成 ASCII 字符的规范.
+<p>掉坑是因为App内动态控制 url ,服务端返回的 url 带中文字符, NSString类提供了 <code>stringByAddingPercentEscapesUsingEncoding:</code> 方法.该方法能编码非 url 的字符,但对于类似 <code>/</code> <code>&amp;</code> 的 reserved characters 没有做处理,也就是没有严格遵守 url 应该编码成 ASCII 字符的规范.
 网上给的通用String的Category:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- (NSString *)urlencode {
+<pre><code>- (NSString *)urlencode {
     NSMutableString *output = [NSMutableString string];
     const unsigned char *source = (const unsigned char *)[self UTF8String];
     int sourceLen = strlen((const char *)source);
@@ -129,7 +129,6 @@
   return output;
 }
 </code></pre>
-</div>
 
       </article>
       <hr>

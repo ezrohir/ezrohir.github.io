@@ -6,10 +6,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>CrashLog常见类型</title>
-	<meta name="description" content="CrashLog常见类型App大了后,各种奇怪的问题出现了,以下为碰到的常见的CrashLog,所有CrashLog都是Symbolicated,样本有些是Crashlytics的,有些是本地Xcode解析出来的.">
+	<meta name="description" content="CrashLog常见类型">
 	
-	<link rel="canonical" href="http://localhost:4000/2016/04/07/helloworld/">
-	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="http://localhost:4000/feed.xml" />
+	<link rel="canonical" href="/2015/09/13/CrashLog/">
+	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
     
@@ -92,15 +92,17 @@
     <div class="post-area post">
       <header>
         <h1>CrashLog常见类型</h1>
-        <p>Apr 7, 2016</p>
+        <p>Sep 13, 2015</p>
       </header>
       <hr>
       <article>
-        <h2 id="crashlog常见类型">CrashLog常见类型</h2>
+        <h2 id="crashlog">CrashLog常见类型</h2>
+
 <p>App大了后,各种奇怪的问题出现了,以下为碰到的常见的CrashLog,所有CrashLog都是Symbolicated,样本有些是Crashlytics的,有些是本地Xcode解析出来的.</p>
 
 <h4 id="calayer-position-contains-nan">CALayer position contains NaN</h4>
-<div class="highlighter-rouge"><pre class="highlight"><code>Fatal Exception: CALayerInvalidGeometry
+<p><code>
+Fatal Exception: CALayerInvalidGeometry
 0  CoreFoundation                 0x1c9bfb3d __exceptionPreprocess
 1  libobjc.A.dylib                0x1bc47067 objc_exception_throw
 2  CoreFoundation                 0x1c9bfa85 -[NSException initWithCoder:]
@@ -110,35 +112,34 @@
 6  UIKit                          0x21be5429 -[UIView(Geometry) setFrame:]
 7  UIKit                          0x21bf7ffd -[UIImageView _setViewGeometry:forMetric:]
 8  UIKit                          0x21bf7f63 -[UIImageView setFrame:]
-</code></pre>
-</div>
-<p>有时候觉得匪夷所思,但是它确实就产生了.产生的主要原因可能是除数是0, 网上看了看也有可能初始化造成,比如</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>UIEdgeInsets a;
+</code>
+有时候觉得匪夷所思,但是它确实就产生了.产生的主要原因可能是除数是0, 网上看了看也有可能初始化造成,比如
+<code>
+UIEdgeInsets a;
 a.left = (...some calculation);
 button.imageEdgeInsets = a;
-</code></pre>
-</div>
+</code></p>
 
-<h4 id="线程限制">线程限制</h4>
-<div class="highlighter-rouge"><pre class="highlight"><code>Date/Time:           2017-08-17 15:32:36.822 +0800
+<h4 id="section">线程限制</h4>
+<p>```
+Date/Time:           2017-08-17 15:32:36.822 +0800
 Launch Time:         2017-08-17 15:24:50.041 +0800
 OS Version:          iOS 8.4.1 (12H321)
-Report Version:      105
+Report Version:      105</p>
 
-Exception Type:  EXC_RESOURCE
+<p>Exception Type:  EXC_RESOURCE
 Exception Subtype: WAKEUPS
 Exception Message: (Limit 150/sec) Observed 269/sec over 300 secs
 Triggered by Thread:  16
-</code></pre>
-</div>
-<p>Your app is sending a wakeup command to a particular thread in the app quite often - apparently an average of 206 times a second. Background threads in iOS 8 have a hard limit on how many times you can run a sleep/wake cycle on each thread per second, and having a high count here is usually an indication that something is wrong / inefficient in your thread management.</p>
+```
+Your app is sending a wakeup command to a particular thread in the app quite often - apparently an average of 206 times a second. Background threads in iOS 8 have a hard limit on how many times you can run a sleep/wake cycle on each thread per second, and having a high count here is usually an indication that something is wrong / inefficient in your thread management.</p>
 
 <p>Without seeing your code, my recommendation is that you check your C++ algorithms for sleep/wake calls, or multithread the background process to start new threads each cycle.</p>
 
-<h4 id="其他类型">其他类型</h4>
+<h4 id="section-1">其他类型</h4>
 <p><a href="https://www.raywenderlich.com/23704/demystifying-ios-application-crash-logs">Raywenderlich</a>有很好的教程.</p>
 
-<h3 id="参考引用">参考引用</h3>
+<h3 id="section-2">参考引用</h3>
 <ul>
   <li><a href="https://stackoverflow.com/questions/25848441/app-shutdown-with-exc-resource-wakeups-exception-on-ios-8-gm">EXC_RESOURCE WAKEUPS</a></li>
   <li><a href="https://developer.apple.com/library/content/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184">Understanding and Analyzing Application Crash Reports</a></li>
@@ -200,7 +201,7 @@ Triggered by Thread:  16
           </a>
           
           <span class="point"> · </span>
-          <span><a href="https://github.com/LiXizhi/LiXizhi.github.io/blob/master/_posts/iOS/2016-04-07-helloworld.md">View source</a></span>
+          <span><a href="https://github.com/LiXizhi/LiXizhi.github.io/blob/master/_posts/iOS/2015-09-12-CrashLog.md">View source</a></span>
           <span class="point"> · </span>
           <span><a href="/feed.xml">RSS</a></span>
           <span class="point"> · </span>
