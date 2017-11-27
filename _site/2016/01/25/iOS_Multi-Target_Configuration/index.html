@@ -8,8 +8,8 @@
 	<title>iOS多Target配置</title>
 	<meta name="description" content="开发过程中我们都有根据不同需求场景构建不同配置App的需求.以我们现在开发的App为例,因为没有使用 TestFight,每天的daylibulid放在fir.im上并通过fir.im提供的构建工具打包上传, 所以有如下环境版本:">
 	
-	<link rel="canonical" href="/2016/01/25/iOS_Multi-Target_Configuration/">
-	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="/feed.xml" />
+	<link rel="canonical" href="http://localhost:4000/2016/01/25/iOS_Multi-Target_Configuration/">
+	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="http://localhost:4000/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
     
@@ -107,19 +107,19 @@
 <p>很显然,不同的 Tagget 的配置是不一样的.手动改的话经常遗漏,比如我在提交1.1版本的时候就忘记移除开发调试选项的bundle发现后不得不重新提交ipa文件,痛定思痛,参考了一些优秀博客,使App支持多了Target的自动配置,以下为一点感悟.</p>
 
 <h3 id="preprocessor-macros">Preprocessor Macros</h3>
-<p>在Project-&gt;Targets-&gt;Build Settings-&gt;Apple LLVM7.0 - Preprocessing 中可以设置宏,代码中出镜率很高的 <code>DEBUG</code></p>
+<p>在Project-&gt;Targets-&gt;Build Settings-&gt;Apple LLVM7.0 - Preprocessing 中可以设置宏,代码中出镜率很高的 <code class="highlighter-rouge">DEBUG</code></p>
 
-<div class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="o">#</span><span class="n">ifdef</span> <span class="n">DEBUG</span>
-<span class="o">#</span><span class="n">endif</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="o">#</span><span class="n">ifdef</span> <span class="n">DEBUG</span>
+<span class="o">#</span><span class="n">endif</span></code></pre></figure>
 
 <p>在这里可以发现它的身影.</p>
 
 <p><img src="http://7u2qbg.com1.z0.glb.clouddn.com/Screen_Shot_2016-01-25_at_16_06_41.jpg" alt="" /></p>
 
-<p>同理,可以添加自定义的预处理宏 <code>ADHOC_DEBUG_TARGET=1</code>
+<p>同理,可以添加自定义的预处理宏 <code class="highlighter-rouge">ADHOC_DEBUG_TARGET=1</code>
 在配置文件根据环境做不同的设置,比如:</p>
 
-<div class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="o">#</span><span class="n">ifdef</span> <span class="n">ADHOC_DEBUG_TARGET</span>
+<figure class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="o">#</span><span class="n">ifdef</span> <span class="n">ADHOC_DEBUG_TARGET</span>
     <span class="n">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">const</span> <span class="n">kAPIURL</span> <span class="o">=</span> <span class="o">...</span>
 <span class="o">#</span><span class="n">elif</span> <span class="n">ADHOC_RELEASE_TARGET</span>
     <span class="n">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">const</span> <span class="n">kAPIURL</span> <span class="o">=</span> <span class="o">...</span>
@@ -127,34 +127,34 @@
     <span class="n">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">const</span> <span class="n">kAPIURL</span> <span class="o">=</span> <span class="o">...</span>
 <span class="o">#</span><span class="k">else</span>
     <span class="o">...</span><span class="p">.</span>
-<span class="o">#</span><span class="n">endif</span></code></pre></div>
+<span class="o">#</span><span class="n">endif</span></code></pre></figure>
 
 <h3 id="user-defined-settings">User-Defined Settings</h3>
-<p>在集成小米推送服务中发现了 <code>User-Defined</code> 的使用,依葫芦话瓢,<code>Preprocessor Macros</code> 实现的功能也可以换种方法实现.</p>
+<p>在集成小米推送服务中发现了 <code class="highlighter-rouge">User-Defined</code> 的使用,依葫芦话瓢,<code class="highlighter-rouge">Preprocessor Macros</code> 实现的功能也可以换种方法实现.</p>
 
 <p><img src="http://7u2qbg.com1.z0.glb.clouddn.com/Screen_Shot_2016-01-25_at_16_23_12.jpg" alt="" /></p>
 
-<p>那么怎么取得 <code>DEFINEDENV</code> 对应的值.如下代码:</p>
+<p>那么怎么取得 <code class="highlighter-rouge">DEFINEDENV</code> 对应的值.如下代码:</p>
 
-<div class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="n">NSString</span><span class="o">*</span> <span class="n">env</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="n">infoDictionary</span><span class="p">]</span> <span class="n">valueForKey</span><span class="p">:</span><span class="err">@</span><span class="s2">&quot;</span><span class="s">DEFINEDENV&quot;</span><span class="p">];</span>
-<span class="n">NSLog</span><span class="p">(</span><span class="err">@</span><span class="s2">&quot;</span><span class="s">env is %@&quot;</span><span class="p">,</span><span class="n">env</span><span class="p">);</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="n">NSString</span><span class="o">*</span> <span class="n">env</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="n">infoDictionary</span><span class="p">]</span> <span class="n">valueForKey</span><span class="p">:</span><span class="err">@</span><span class="s2">"DEFINEDENV"</span><span class="p">];</span>
+<span class="n">NSLog</span><span class="p">(</span><span class="err">@</span><span class="s2">"env is %@"</span><span class="p">,</span><span class="n">env</span><span class="p">);</span></code></pre></figure>
 
-<p>取得 <code>DEFINEDENV</code> 值以后,然后根据实际需要做自定义操作.</p>
+<p>取得 <code class="highlighter-rouge">DEFINEDENV</code> 值以后,然后根据实际需要做自定义操作.</p>
 
-<p>相比较, <code>Preprocessor Macros</code> 和 <code>User-Defined Settings</code> 使用场景还是有区别的.本人实际也没什么经验.</p>
+<p>相比较, <code class="highlighter-rouge">Preprocessor Macros</code> 和 <code class="highlighter-rouge">User-Defined Settings</code> 使用场景还是有区别的.本人实际也没什么经验.</p>
 
-<p>主观感受　<code>Preprocessor Macros</code> 用的多的地方可能是自定义配置.</p>
+<p>主观感受　<code class="highlighter-rouge">Preprocessor Macros</code> 用的多的地方可能是自定义配置.</p>
 
-<p>对于 <code>User-Defined Settings</code> ,我们有时候需要根据测试环境和生成环境不同设置不同图片,或者不同的　<code>Target</code> 使用不同的图片.这时候它很适用:</p>
+<p>对于 <code class="highlighter-rouge">User-Defined Settings</code> ,我们有时候需要根据测试环境和生成环境不同设置不同图片,或者不同的　<code class="highlighter-rouge">Target</code> 使用不同的图片.这时候它很适用:</p>
 
-<div class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">getEnvImageName</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">imageName</span>
+<figure class="highlight"><pre><code class="language-lua" data-lang="lua"><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">getEnvImageName</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">imageName</span>
 <span class="p">{</span>
-    <span class="n">NSString</span><span class="o">*</span> <span class="n">suffix</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="n">infoDictionary</span><span class="p">]</span> <span class="n">valueForKey</span><span class="p">:</span><span class="err">@</span><span class="s2">&quot;</span><span class="s">IMAGE_SUFFIX&quot;</span><span class="p">];</span>
+    <span class="n">NSString</span><span class="o">*</span> <span class="n">suffix</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="n">infoDictionary</span><span class="p">]</span> <span class="n">valueForKey</span><span class="p">:</span><span class="err">@</span><span class="s2">"IMAGE_SUFFIX"</span><span class="p">];</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">imageName</span> <span class="n">stringByAppendingString</span><span class="p">:</span><span class="n">suffix</span><span class="p">];</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
-<h3 id="section">其他</h3>
-<p>以上仅是实际使用的一些皮毛,对于 Xcode 中的 <code>Target</code> 的 configure 设置怎么链入编译器,是个很深的话题,回头再研究.</p>
+<h3 id="其他">其他</h3>
+<p>以上仅是实际使用的一些皮毛,对于 Xcode 中的 <code class="highlighter-rouge">Target</code> 的 configure 设置怎么链入编译器,是个很深的话题,回头再研究.</p>
 
       </article>
       <hr>

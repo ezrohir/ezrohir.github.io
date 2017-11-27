@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Projects</title>
-	<meta name="description" content="Ez's Ideas & Blogs">
+	<title>App优化的一些总结</title>
+	<meta name="description" content="iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.">
 	
-	<link rel="canonical" href="http://localhost:4000/projects/">
+	<link rel="canonical" href="http://localhost:4000/2015/01/04/iOS-App%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E4%BC%98%E5%8C%96/">
 	<link rel="alternate" type="application/rss+xml" title="Ez's Personal Website" href="http://localhost:4000/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -63,8 +63,8 @@
         
           
             
-              <li class="active">
-              
+              <li>
+            
             <a href="/projects/"><span class="glyphicon "></span> Projects</a></li>
           
         
@@ -90,19 +90,45 @@
       <div class="row">
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
+      <header>
+        <h1>App优化的一些总结</h1>
+        <p>Jan 4, 2015</p>
+      </header>
+      <hr>
       <article>
-        <ul id="markdown-toc">
-  <li><a href="#all-my-projects" id="markdown-toc-all-my-projects">All my projects</a></li>
+        <p>iOS8以后,发现App卡爆了,于是用Instruments分析了下,下面是一些使用总结.</p>
+
+<h3 id="core-animation">Core Animation</h3>
+<p>滑动帧率很低时,当为GPU瓶颈时,
+<img src="http://7u2qbg.com1.z0.glb.clouddn.com/insrument_CoremeAnimation2015-01-27 10.24.26.png" alt="Insrument_CoreAnimation" /></p>
+
+<p>这时候一般下面俩值数值很高.</p>
+<ul>
+  <li><strong><em>Renderer Utilization</em></strong> 这个值一般大于50%有可能会掉帧,主要是因为视图过度混合(重叠的半透明图层)或者离屏渲染引起的.</li>
+  <li><strong><em>Tiler Utilization</em></strong>这个值大于50%也会降低帧率,造成的原因是图层太多.</li>
 </ul>
 
-<h1 id="all-my-projects">All my projects</h1>
-<p>很寒酸.</p>
+<h3 id="time-profiler">Time Profiler</h3>
+<p>滑动时帧率很低时,有可能是CPU瓶颈,这时候一般都能在Time Profiler中看到,下图是正常情况,当App的CPU利用率接近渲染进程(backboardd),是时候优化Time Profiler中高危份子了.
+<img src="http://7u2qbg.com1.z0.glb.clouddn.com/instrument_timeProfiler%202015-01-27%2010.24.56.png" alt="instrument_timeProfiler" /></p>
+
+<h3 id="io瓶颈">IO瓶颈</h3>
+<p>待续</p>
+
+<h3 id="参考">参考</h3>
+<p>下面都是不错的参考</p>
+
+<ul>
+  <li><a href="http://www.hrchen.com/2013/05/performance-with-instruments/">Instruments的基本使用</a></li>
+  <li><a href="http://stackoverflow.com/questions/13158796/what-triggers-offscreen-rendering-blending-and-layoutsubviews-in-ios">Offscreen rendering, Blending, layout的触发条件</a></li>
+</ul>
 
       </article>
       <hr>
-    <script>
-        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-    </script>
+        </div> -->
+        <script>
+            window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"26"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
     </div>
 	
     <!-- duoshuo.com javascript include code. -->
@@ -112,6 +138,7 @@
 
 
   </div>
+
   <div id="content" class="col-sm-3">
     <!-- <div id="myAffix" class="shadow-bottom-center hidden-xs" data-spy="affix" data-offset-top="0" data-offset-bottom="-20"> -->
     <div id="myAffix" class="shadow-bottom-center hidden-xs" >
@@ -121,6 +148,7 @@
       <div class="content-text"></div>
     </div>
   </div>
+
 </div>
 
     </div>
@@ -151,7 +179,7 @@
           </a>
           
           <span class="point"> · </span>
-          <span><a href="https://github.com/LiXizhi/LiXizhi.github.io/blob/master/pages/1_projects.md">View source</a></span>
+          <span><a href="https://github.com/LiXizhi/LiXizhi.github.io/blob/master/_posts/iOS/2015-01-04-iOS App滑动卡顿的优化.md">View source</a></span>
           <span class="point"> · </span>
           <span><a href="/feed.xml">RSS</a></span>
           <span class="point"> · </span>
