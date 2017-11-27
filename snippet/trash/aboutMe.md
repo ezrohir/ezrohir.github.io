@@ -15,9 +15,9 @@ Email: jie.tane@gmail.com
 ### Skills
 --------------------
 + 熟悉`Git工作流`,`Instrument`,`Charles`等相关开发工具.
-+ 了解计算机基础, 常用的网络协议,常用的语言特性.
-+ 熟悉 Object-C 语言特性, UIKit 框架
-+ 了解MVC,MVVM等常见的构架模式及变种
++ 了解计算机基础, 常用的网络协议, Object-C 语言特性.
++ 熟悉App性能优化, 调试, 了解MVC, MVVM等常见的构架模式.
+
 
 ### Work Experlence
 ------------------------
