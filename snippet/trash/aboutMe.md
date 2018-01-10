@@ -47,7 +47,7 @@ Email: jie.tane@gmail.com
 
 + 2014.03 - 2015.10: ***上海动享网络科技有限公司***
 
-	完成运动社区App [酷动](https://itunes.apple.com/cn/app/ku-dong-hu-wai-ji-xian-yun/id897489848?mt=8) 1.0版到3.0版的迭代开发工作.其中1.0.3版被 App Store 推荐过.
+	完成运动社区App [酷动](https://itunes.apple.com/cn/app/ku-dong-hu-wai-ji-xian-yun/id897489848?mt=8) 1.0版到3.0版的迭代开发工作. 其中1.0.3版被 App Store 推荐过.
 
 	主要完成功能:
 	+ 网络,缓存,本地路由,JS和本地通信等基础服务
@@ -60,7 +60,7 @@ Email: jie.tane@gmail.com
 
 + 2012.09 - 2014.02:  ***上海银贤信息有限公司***
 
-	完成楼盘相关App定制开发(样例[铂珏公馆](https://itunes.apple.com/cn/app/bo-jue-gong-guan/id802814669?mt=8)),产品主要是介绍楼盘区位户型等相关信息,并加入Unity样板房场景,实现虚拟看房.
+	完成楼盘相关App定制开发(样例[铂珏公馆](https://itunes.apple.com/cn/app/bo-jue-gong-guan/id802814669?mt=8)), 产品主要是介绍楼盘区位户型等相关信息, 并加入Unity样板房场景, 实现虚拟看房.
 
 	主要完成功能:
 	+ 核心动画库封装,常用工具类封装.
